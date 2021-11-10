@@ -72,6 +72,7 @@ public class ApiController {
         System.out.println("asdf");
         Menu deleteMenu = adminService.findMenuId(menu.getmId());
         if (deleteMenu == null) {
+
             return new Result("no"); //삭제 실패
         } else {
             adminService.deleteMenu(menu.getmId()); //없는 경우 추가 있는 경우 변경 -> save함수
@@ -93,8 +94,8 @@ public class ApiController {
 
     @PostMapping("/addCrew")
     public Result addCrew(@RequestBody Manager manager) {
-        Optional<Manager> findCrew = managerRepository.findById(manager.getMnId());
-        if (findCrew.isPresent()) {
+        Optional<Manager> findCrew = managerRepository.findById(manager.getMnNumber());
+        if(findCrew.isPresent()) {
             managerRepository.save(manager); //없는 경우 추가 있는 경우 변경 -> save함수
         } else {
             managerRepository.save(manager);

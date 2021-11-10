@@ -2,10 +2,10 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Add User</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Add User</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -35,6 +35,9 @@
   </tbody>
 </table>
 
+    </tr>
+    </tbody>
+</table>
 <label>아이디<input type="text" id="mnId"></label><br>
 <label>이름<input type="text" id="mnName"></label><br>
 <label>비밀번호<input type="text" id="mnPassword"></label><br>
@@ -42,47 +45,46 @@
 
 <!--스크립트-->
 <script th:inline="javascript">
-  $(function () {
-    $('#add').click((event) => {
-      const mnId = $('#mnId').val();
-      const mnName = $('#mnName').val();
-      const mnPassword = $('#mnPassword').val();
-      // console.log(mInven);
-      const path = 'api/addCrew';
-      const json = JSON.stringify({
-        'mnId' : mnId,
-        'mnName': mnName,
-        'mnPassword': mnPassword
-      });
+    $(function () {
+        $('#add').click((event) => {
+            const mnId = $('#mnId').val();
+            const mnName = $('#mnName').val();
+            const mnPassword = $('#mnPassword').val();
+            // console.log(mInven);
+            const path = 'api/addCrew';
+            const json = JSON.stringify({
+                'mnId': mnId,
+                'mnName': mnName,
+                'mnPassword': mnPassword
+            });
 
-      const csrfToken =/*[[${_csrf.token}]]*/ null;
-      const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+            const csrfToken =/*[[${_csrf.token}]]*/ null;
+            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
 
-      console.log(json + "1");
-      $.ajax({
-        url: path,
-        type: 'POST',
-        contentType: 'application/json',
-        data: json,
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader(csrfHeader, csrfToken);
-        }
-      })
-              .done((response) => {
-                if (response.result == 'ok') {
-                  alert('등록되었습니다. 관리자');
-                  console.log(1);
-                  window.location.href = '/addmanager'
-                } else {
-                  alert('등록되지 않았습니다.');
-
+            console.log(json + "1");
+            $.ajax({
+                url: path,
+                type: 'POST',
+                contentType: 'application/json',
+                data: json,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
                 }
-              })
-              .fail((response) => {
-                alert('(에러)등록되지 않았습니다.');
-              });
-    });
+            })
+                .done((response) => {
+                    if (response.result == 'ok') {
+                        alert('관리자가 등록되었습니다.');
+                        console.log(1);
+                        window.location.href = '/addmanager'
+                    } else {
+                        alert('관리자가 등록되지 않았습니다.');
 
+                    }
+                })
+                .fail((response) => {
+                    alert('(에러)등록되지 않았습니다.');
+                });
+        });
 
     //관리자 삭제
     $('.deleteManager').click(function () {
@@ -124,6 +126,7 @@
               });
     });
   });
+
 </script>
 </body>
 </html>

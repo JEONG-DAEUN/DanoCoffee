@@ -15,7 +15,7 @@
 <table border="2px">
     <thead>
     <tr>
-        <th>메뉴아이디</th>
+        <th style="display:none;">메뉴 아이디</th>
         <th>메뉴명</th>
         <th>가격</th>
         <th>재고여부</th>
@@ -30,7 +30,7 @@
     </thead>
     <tbody>
     <tr th:each="product : ${Menu}">
-        <td th:text="${product.mId}"></td>
+        <td style="display:none;" th:text="${product.mId}"></td>
         <td th:text="${product.mName}"></td>
         <td th:text="${product.mPrice}"></td>
         <td th:text="${product.mInven}"></td>
@@ -155,11 +155,11 @@
             })
                 .done((response) => {
                     if (response.result == 'ok') {
-                        alert('삭제되었습니다.');
+                        alert('메뉴가 삭제되었습니다.');
                         window.location.href = '/addmenu'
                         console.log(1);
                     } else {
-                        alert('삭제되지 않았습니다.');
+                        alert('메뉴가 삭제되지 않았습니다.');
                         console.log(2);
 
                     }

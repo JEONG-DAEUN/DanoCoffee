@@ -13,7 +13,6 @@ import java.util.Optional;
 public class AdminService {
     @Autowired
     MenuRepository menuRepository;
-
     @Autowired
     CategoryRepository categoryRepository;
 
@@ -24,6 +23,15 @@ public class AdminService {
     public void deleteMenu(int mId) {
         menuRepository.deleteById(mId);
     }
+
+    public void deleteManager(int mnNumber) {
+        managerRepository.deleteById(mnNumber);
+    }
+
+
+//    public void deleteManager(int mId) {
+//        managerRepository.deleteById(mId);
+//    }
 
 //    public void updateMenu(int mId) {
 //        menuRepository.(mId);
