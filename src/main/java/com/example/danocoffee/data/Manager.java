@@ -3,6 +3,7 @@ package com.example.danocoffee.data;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "manager")
 public class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

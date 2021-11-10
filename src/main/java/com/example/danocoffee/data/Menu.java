@@ -5,6 +5,7 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "menu")
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +22,10 @@ public class Menu {
     private String mImg;
 
     @ManyToOne(targetEntity = Category.class)
-    @JoinColumn(name="cId")
+    @JoinColumn(name = "cId")
     private Category cId;
 
-    public Menu(int mId, String mName,int mPrice, boolean mInven, String mImg, Category cId) {
+    public Menu(int mId, String mName, int mPrice, boolean mInven, String mImg, Category cId) {
         this.mId = mId;
         this.mName = mName;
         this.mPrice = mPrice;
