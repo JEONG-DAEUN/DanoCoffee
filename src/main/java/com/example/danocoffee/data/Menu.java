@@ -15,7 +15,7 @@ public class Menu {
 
     private int mPrice;
 
-    @ColumnDefault("true")
+    @Column(columnDefinition = "boolean default true")
     private boolean mInven;
 
     @Column(length = 300)
@@ -25,6 +25,7 @@ public class Menu {
     @JoinColumn(name = "cId")
     private Category cId;
 
+    public Menu(){}
     public Menu(int mId, String mName, int mPrice, boolean mInven, String mImg, Category cId) {
         this.mId = mId;
         this.mName = mName;

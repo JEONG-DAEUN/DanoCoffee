@@ -11,15 +11,18 @@ public class Category {
     private int cId;
 
     private String cName;
-
-    @OneToMany
-    @JoinColumn(name="menu")
-    private List<Menu> cMenu;
-
-    public Category(int cId, String cName, List<Menu> cMenu) {
+    public Category(){}
+    public Category(int cId, String cName) {
         this.cId = cId;
         this.cName = cName;
-        this.cMenu = cMenu;
+    }
+
+    public int getcId() {
+        return cId;
+    }
+
+    public String getcName() {
+        return cName;
     }
 
     public void setcId(int cId) {
@@ -30,7 +33,4 @@ public class Category {
         this.cName = cName;
     }
 
-    public void setMenu(List<Menu> cMenu) {
-        this.cMenu = cMenu;
-    }
 }

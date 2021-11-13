@@ -6,28 +6,39 @@ import java.io.Serializable;
 @Entity
 @Table(name = "orderList")
 public class Orderlist implements Serializable {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int orlId;
+
     @ManyToOne(targetEntity = Menu.class)
-    @JoinColumn(name= "mId")
+    @JoinColumn(name = "mId")
     private Menu mId;
 
-    @Id
     @ManyToOne(targetEntity = Pay.class)
-    @JoinColumn(name= "pId")
+    @JoinColumn(name = "pId")
     private Pay pId;
 
-    private int oTotalPrice;
+    private int orlPayment;
 
-    @Id
-    @ManyToOne(targetEntity = Size.class)
-    @JoinColumn(name = "sId")
-    private Size sId;
+    @Column(nullable = false)
+    private int orlTotalPrice;
 
-    public Orderlist(Menu mId, Pay pId, int oTotalPrice,Size sId) {
+
+    public Orderlist(int orlId, Menu mId, Pay pId, int orlPayment, int orlTotalPrice) {
+        this.orlId = orlId;
         this.mId = mId;
         this.pId = pId;
-        this.oTotalPrice =oTotalPrice;
-        this.sId =sId;
+        this.orlPayment = orlPayment;
+        this.orlTotalPrice = orlTotalPrice;
+    }
+
+    public int getOrlId() {
+        return orlId;
+    }
+
+    public void setOrlId(int orlId) {
+        this.orlId = orlId;
     }
 
     public Menu getmId() {
@@ -46,20 +57,19 @@ public class Orderlist implements Serializable {
         this.pId = pId;
     }
 
-    public int getoTotalPrice() {
-        return oTotalPrice;
+    public int getOrlPayment() {
+        return orlPayment;
     }
 
-    public void setoTotalPrice(int oTotalPrice) {
-        this.oTotalPrice = oTotalPrice;
+    public void setOrlPayment(int orlPayment) {
+        this.orlPayment = orlPayment;
     }
 
-    public Size getsId() {
-        return sId;
+    public int getOrlTotalPrice() {
+        return orlTotalPrice;
     }
 
-    public void setsId(Size sId) {
-        this.sId = sId;
+    public void setOrlTotalPrice(int orlTotalPrice) {
+        this.orlTotalPrice = orlTotalPrice;
     }
-
 }

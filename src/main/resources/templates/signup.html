@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<label for="mnName">Member Name</label>
+<input type="text" id="mnName"><br>
+<label for="mnId">Member Name</label>
+<input type="text" id="mnId"><br>
+<label for="mnPassword">Password</label>
+<input type="password" id="mnPassword"><br>
+<button id="signup">Signup</button>
+
+<script>
+		$(() => {
+			$('#signup').on('click', () => {
+				const mnName = $('#mnName').val();
+				const mnId = $('#mnId').val();
+				const mnPassword = $('#mnPassword').val();
+				if (mnId == "" || mnName == "" || mnPassword == "") {
+					alert('필수 항목이 누락되었습니다.');
+					return;
+				}
+				const member = {
+				    mnId : mnId
+					mnName: mnName,
+					mnPassword: mnPassword
+				}
+
+				$.ajax({
+					url: '/api/signup',
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(member)
+				}).done((response) => {
+					if (response.result == 'ok') {
+						alert('회원 가입이 완료되었습니다.');
+						window.location.href = '/'
+					} else {
+						alert('회원 가입에 실패했습니다.');
+					}
+				}).fail((result) => {
+					alert('회원 가입에 실패했습니다.');
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>

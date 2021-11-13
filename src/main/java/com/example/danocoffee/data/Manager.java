@@ -6,27 +6,26 @@ import javax.persistence.*;
 @Table(name = "manager")
 public class Manager {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int mId;
+    private String mnId;
 
     @Column(nullable=false,length=100)
     private String mnName;
     @Column
-    private String mPassword;
+    private String mnPassword;
 
     Manager(){}
-    Manager(int mId, String mnName, String mPassword){
-        this.mId = mId;
+    Manager(String mnId, String mnName, String mnPassword){
+        this.mnId = mnId;
         this.mnName = mnName;
-        this.mPassword = mPassword;
+        this.mnPassword = mnPassword;
     }
 
-    public int getmId() {
-        return mId;
+    public String getMnId() {
+        return mnId;
     }
 
-    public void setmId(int mId) {
-        this.mId = mId;
+    public void setMnId(String mnId) {
+        this.mnId = mnId;
     }
 
     public String getMnName() {
@@ -37,11 +36,11 @@ public class Manager {
         this.mnName = mnName;
     }
 
-    public String getmPassword() {
-        return mPassword;
+    public String getMnPassword() {
+        return mnPassword;
     }
 
-    public void setmPassword(String mPassword) {
-        this.mPassword = mPassword;
+    public void setMnPassword(String mnPassword) {
+        this.mnPassword = mnPassword;
     }
 }
