@@ -23,12 +23,20 @@ public class WebController {
         return "signup";
     }
 
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+    @GetMapping("/denied")
+    public String denied() {
+        return "denied";
+    }
+
     @GetMapping("/management")
     public String management(Model model) {
         model.addAttribute("menus", menuRepository.findAll(Sort.by(Sort.Direction.DESC, "mId")));
         return "management";
     }
-
-
 
 }

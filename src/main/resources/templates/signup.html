@@ -11,7 +11,7 @@
 <body>
 <label for="mnName">Member Name</label>
 <input type="text" id="mnName"><br>
-<label for="mnId">Member Name</label>
+<label for="mnId">Member Id</label>
 <input type="text" id="mnId"><br>
 <label for="mnPassword">Password</label>
 <input type="password" id="mnPassword"><br>
@@ -28,9 +28,9 @@
 					return;
 				}
 				const member = {
-				    mnId : mnId
-					mnName: mnName,
-					mnPassword: mnPassword
+				    'mnId' : mnId,
+					'mnName' : mnName,
+					'mnPassword' : mnPassword
 				}
 
 				$.ajax({

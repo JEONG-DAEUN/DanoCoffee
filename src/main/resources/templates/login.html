@@ -2,12 +2,15 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Login</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 </head>
 <body>
 <section>
   <div th:if="${param.error}">Failed. Check username and password.</div>
   <form th:action="@{/login}" method="post">
-    Username <input type="text" name="username"/><br>
+    Username <input type="text" name="ManagerId"/><br>
     Password<input type="password" name="password"><br>
     <input type="submit" value="Login"/>
   </form>

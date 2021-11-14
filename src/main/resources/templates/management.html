@@ -36,10 +36,12 @@
 <label for="mPrice">MenuPrice(메뉴가격)</label>
 <input id="mPrice" type="number"><br>
 <label for="mInven">MenuInventory(메뉴재고관리)</label>
-<select id="mInven">
-    <option value="1">있음</option>
-    <option value="0">없음</option>
-</select>
+<!--<select id="mInven">-->
+<!--    <option value="1">있음</option>-->
+<!--    <option value="0">없음</option>-->
+<!--</select>-->
+    <input type="radio" id="mInven" value="1">있음</input>
+    <input type="radio" id="mInven" value="0">없음</input>
 <br>
 <!--
 <label for="mImg">MenuImg(메뉴이미지)</label>
@@ -58,13 +60,14 @@
                 $('#save').on('click',()=>{
                     const mName = $('#mName').val();
                     const mPrice = $('#mPrice').val();
-                    const mInven = Number($("#mInven option:selected").val());
+                    const mInven = Number($('#mInven').val());
                     // const mImg = $('#mImg').val();
                      const cId = Number($("#cId option:selected").val());
                      const url='/api/addmenu';
                      const data = {
                         'mName':mName,
                         'mPrice':mPrice,
+                        'mInven':mInven,
                         'cId':{
                             'cId':cId
                         }
