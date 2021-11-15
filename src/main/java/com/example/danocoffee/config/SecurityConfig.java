@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 //.antMatchers("/managenent/**").hasAnyAuthority("QUERY", "WRITE") // 접근 권한.
-                .antMatchers("/managenent/**", "/login/**", "/signup/**", "/denied/**").hasRole("admin") // 관리자만 접근 가능.
+                .antMatchers("/managenent/**", "/login/**", "/signup/**", "/denied/**","/addManager").hasRole("admin") // 관리자만 접근 가능.
                 .antMatchers("/**").permitAll() // 위 경우를 빼고 모든 권한을 줌=로그인 필요 없음.
                 .anyRequest().authenticated()
                 .and()

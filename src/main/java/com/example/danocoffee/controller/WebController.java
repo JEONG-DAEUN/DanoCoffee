@@ -23,6 +23,10 @@ public class WebController {
         return "signup";
     }
 
+    @GetMapping("addManager")
+    public String addManager(){
+        return "addManager";
+    }
 
     @GetMapping("/login")
     public String login() {
@@ -32,6 +36,8 @@ public class WebController {
     public String denied() {
         return "denied";
     }
+
+
 
     @GetMapping("/management")
     public String management(Model model) {
