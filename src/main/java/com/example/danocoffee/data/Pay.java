@@ -1,22 +1,23 @@
 package com.example.danocoffee.data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
+@Table(name = "pay")
 public class Pay {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY) //int.autoincrement
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pId; //결제아이디
 
-    @Column(nullable = false, length=7)
-    private int pPayment;
+    @Column
+    private int pPayment; //결제금액
 
-    @Column(nullable = false, length=10)
-    private String pMethod;
+    private String pMethod; //결제방법
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="pTime")
+    @Column(name="pTime") //결제시간
     private java.util.Date timestampField;
 
     public int getpId() {
@@ -52,12 +53,5 @@ public class Pay {
     }
 
     public Pay() {
-    }
-
-    public Pay(int pId, int pPayment, String pMethod, Date timestampField) {
-        this.pId = pId;
-        this.pPayment = pPayment;
-        this.pMethod = pMethod;
-        this.timestampField = timestampField;
     }
 }

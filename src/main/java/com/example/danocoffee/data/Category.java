@@ -1,15 +1,20 @@
 package com.example.danocoffee.data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "category")
 public class Category {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY) //int.autoincrement
-    private int cId; //카테고리아이디
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int cId; //카테고리 아이디
 
-    @Column(nullable = false, length=20)
-    private String cName;
+    private String cName; //카테고리명
+
+//    @OneToMany
+//    @JoinColumn(name="menu")
+//    private List<Menu> mId;
 
     public int getcId() {
         return cId;
@@ -27,11 +32,14 @@ public class Category {
         this.cName = cName;
     }
 
-    public Category() {
-    }
+//    public List<Menu> getmId() {
+//        return mId;
+//    }
+//
+//    public void setmId(List<Menu> mId) {
+//        this.mId = mId;
+//    }
 
-    public Category(int cId, String cName) {
-        this.cId = cId;
-        this.cName = cName;
+    public Category() {
     }
 }

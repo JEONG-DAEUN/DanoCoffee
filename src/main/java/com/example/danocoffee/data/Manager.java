@@ -3,22 +3,22 @@ package com.example.danocoffee.data;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "manager")
 public class Manager {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY) //int.autoincrement
-    private int mnId;
+    private String mnId; //관리자아이디
 
-    @Column(nullable = false, length=10)
-    private String mnName;
+    @Column
+    private String mnName; //이름
+    private String mnPassword; //비밀번호
 
-    @Column(nullable = false, length=200)
-    private String mnPassword;
+    private String mnRole="admin"; //권한
 
-    public int getMnId() {
+    public String getMnId() {
         return mnId;
     }
 
-    public void setMnId(int mnId) {
+    public void setMnId(String mnId) {
         this.mnId = mnId;
     }
 
@@ -38,12 +38,14 @@ public class Manager {
         this.mnPassword = mnPassword;
     }
 
-    public Manager() {
+    public String getMnRole() {
+        return mnRole;
     }
 
-    public Manager(int mnId, String mnName, String mnPassword) {
-        this.mnId = mnId;
-        this.mnName = mnName;
-        this.mnPassword = mnPassword;
+    public void setMnRole(String mnRole) {
+        this.mnRole = mnRole;
+    }
+
+    public Manager() {
     }
 }

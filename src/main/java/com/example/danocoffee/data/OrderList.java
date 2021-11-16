@@ -2,27 +2,33 @@ package com.example.danocoffee.data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name="orderlist")
 public class OrderList implements Serializable {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY) //int.autoincrement
+    private int orlId;
+
     @ManyToOne
     @JoinColumn(name="mId")
-    private Menu mId;
+    private Menu mId; //메누아이디
 
     @ManyToOne
     @JoinColumn(name="pId")
-    private Pay pId;
+    private Pay pId; //결제아이디
 
-    @ManyToOne
-    @JoinColumn(name="sId")
-    private Size sId;
+    @Column
+    private int orlPayment; //가격
+    private int orlTotalPrice; //수량
 
-    @Column(nullable = false, length=5)
-    private int oTotalPrice;
+    public int getOrlId() {
+        return orlId;
+    }
 
-    public OrderList() {
+    public void setOrlId(int orlId) {
+        this.orlId = orlId;
     }
 
     public Menu getmId() {
@@ -41,19 +47,23 @@ public class OrderList implements Serializable {
         this.pId = pId;
     }
 
-    public Size getsId() {
-        return sId;
+    public int getOrlPayment() {
+        return orlPayment;
     }
 
-    public void setsId(Size sId) {
-        this.sId = sId;
+    public void setOrlPayment(int orlPayment) {
+        this.orlPayment = orlPayment;
     }
 
-    public int getoTotalPrice() {
-        return oTotalPrice;
+    public int getOrlTotalPrice() {
+        return orlTotalPrice;
     }
 
-    public void setoTotalPrice(int oTotalPrice) {
-        this.oTotalPrice = oTotalPrice;
+    public void setOrlTotalPrice(int orlTotalPrice) {
+        this.orlTotalPrice = orlTotalPrice;
+    }
+
+
+    public OrderList() {
     }
 }

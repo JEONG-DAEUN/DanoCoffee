@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add User</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<span th:text="${mnName}"></span>님의 관리자 페이지 (메뉴 등록 및 수정,삭제)
+<br>
+
+<table border="2px">
+    <thead>
+    <tr>
+        <th>메뉴아이디</th>
+        <th>메뉴명</th>
+        <th>가격</th>
+        <th>재고여부</th>
+        <th>이미지</th>
+        <th>카테고리</th>
+        <th>가격 수정</th>
+        <th>재고 수정</th>
+        <th>이미지 수정</th>
+        <th>카테고리 수정</th>
+        <th>삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${Menu}">
+        <td th:text="${product.mId}"></td>
+        <td th:text="${product.mName}"></td>
+        <td th:text="${product.mPrice}"></td>
+        <td th:text="${product.mInven}"></td>
+        <td th:text="${product.mImg}"></td>
+        <td th:text="${product.cId.cName}"></td>
+
+        <td>
+            <button class="updatePrice">가격 수정</button>
+        </td>
+        <td>
+            <button class="updateInven">재고 수정</button>
+        </td>
+        <td>
+            <button class="updateImage">이미지 수정</button>
+        </td>
+        <td>
+            <button class="updateCategory">카테고리 수정</button>
+        </td>
+        <td>
+            <button class="deleteMenu">삭제</button>
+            <br></td>
+
+
+    </tr>
+    </tbody>
+</table>
+
+<label>메뉴명<input type="text" id="mName"></label><br>
+<label>메뉴가격<input type="text" id="mPrice"></label><br>
+<label>재고여부<select id="mInven">
+    <option>true</option>
+    <option>false</option>
+</select></label><br>
+<label>이미지<input type="text" id="mImg"></label><br>
+<label>카테고리<select id="cId">
+    <option value="1">커피</option>
+    <option value="2">티</option>
+    <option value="3">에이드</option>
+</select></label><br>
+<button id="addMenu">등록</button>
+
+<!--스크립트-->
+<script th:inline="javascript">
+    $(function () {
+
+        //  메뉴 등록
+        $('#addMenu').click((event) => {
+
+            const mName = $('#mName').val();
+            const mPrice = Number($('#mPrice').val());
+            const mInven = $('#mInven option:selected').val();
+            // console.log(mInven);
+            const cId = Number($('#cId option:selected').val());
+            const path = 'api/addMenu';
+            const json = JSON.stringify({
+                'mName': mName,
+                'mPrice': mPrice,
+                'mInven': mInven,
+                'cId': {
+                    'cId': cId
+                }
+            });
+
+            const csrfToken =/*[[${_csrf.token}]]*/ null;
+            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+            console.log(json);
+            $.ajax({
+                url: path,
+                type: 'POST',
+                contentType: 'application/json',
+                data: json,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            })
+                .done((response) => {
+                    if (response.result == 'ok') {
+                        alert('등록되었습니다.');
+                        window.location.href = '/addmenu'
+                        console.log(1);
+                    } else {
+                        alert('등록되지 않았습니다.');
+                        console.log(2);
+
+                    }
+                })
+                .fail((response) => {
+                    alert('(에러)등록되지 않았습니다.');
+                    console.log(3);
+
+                });
+        });
+
+
+
+
+        //메뉴 삭제
+        $('.deleteMenu').click(function () {
+            var mId = $(this).closest("tr").children().eq(0).text();
+            console.log(mId);
+
+            const path = 'api/deleteMenu';
+            const json = JSON.stringify({
+                'mId' : mId
+            });
+            console.log(json);
+            const csrfToken =/*[[${_csrf.token}]]*/ null;
+            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+            $.ajax({
+                url: path,
+                type: 'DELETE',
+                contentType: 'application/json',
+                data: json,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            })
+                .done((response) => {
+                    if (response.result == 'ok') {
+                        alert('삭제되었습니다.');
+                        window.location.href = '/addmenu'
+                        console.log(1);
+                    } else {
+                        alert('삭제되지 않았습니다.');
+                        console.log(2);
+
+                    }
+                })
+                .fail((response) => {
+                    alert('(에러)');
+                    console.log(3);
+
+                });
+        });
+
+
+
+
+        //가격 수정
+        $('.updatePrice').click(function () {
+            var mId = Number($(this).closest("tr").children().eq(2).text());
+            console.log(mId);
+//수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써.
+            const path = 'api/updatePrice';
+            const json = JSON.stringify({
+                'mId' : mId
+            });
+            console.log(json);
+            const csrfToken =/*[[${_csrf.token}]]*/ null;
+            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+            $.ajax({
+                url: path,
+                type: 'DELETE',
+                contentType: 'application/json',
+                data: json,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            })
+                .done((response) => {
+                    if (response.result == 'ok') {
+                        alert('삭제되었습니다.');
+                        window.location.href = '/addmenu'
+                        console.log(1);
+                    } else {
+                        alert('삭제되지 않았습니다.');
+                        console.log(2);
+
+                    }
+                })
+                .fail((response) => {
+                    alert('(에러)');
+                    console.log(3);
+
+                });
+        });
+
+
+
+
+    });
+</script>
+</body>
+</html>

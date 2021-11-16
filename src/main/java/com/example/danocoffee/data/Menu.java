@@ -1,20 +1,20 @@
 package com.example.danocoffee.data;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
-
 @Entity
+@Table(name = "menu")
 public class Menu {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY) //int.autoincrement
     private int mId; //메뉴아이디
 
-    @Column(nullable = false, length=20)
+    @Column
     private String mName; //메뉴명
-    @Column(nullable = false, length=5)
     private int mPrice; //가격
     private boolean mInven; //재고수량
-    @Column(nullable = false, length=300)
     private String mImg; //메뉴이미지
 
     @ManyToOne

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!--      th:replace="~{layout::layout(~{::title},~{},~{::section})}"><head>-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<title>Login</title>
+<body>
+<section>
+    <div th:if="${param.error}">Failed. Check username and password.</div>
+    <form th:action="@{/login}" method="post">
+        Username <input type="text" id="userid" name="username"><br>
+        Password <input type="password" id="password" name="password"><br>
+        <input type="submit" id="save" value="Login">
+    </form>
+</section>
+<!--<script th:inline="javascript">-->
+<!--    $(function() {-->
+<!--        $('#save').click((event) => {-->
+<!--            const username = $('#userid').val();-->
+<!--            const password = $('#password').val();-->
+<!--            const path = 'api/addmanager';-->
+<!--            const json = JSON.stringify({-->
+<!--                'mnId': username,-->
+<!--                'mnPassword': password-->
+<!--            });-->
+
+<!--            const csrfToken=/*[[${_csrf.token}]]*/ null;-->
+<!--            const csrfHeader=/*[[${_csrf.headerName}]]*/ null;-->
+
+<!--            console.log(username);-->
+<!--            console.log(password);-->
+<!--            $.ajax({-->
+<!--                url: path,-->
+<!--                type: 'POST',-->
+<!--                contentType: 'application/json',-->
+<!--                data: json,-->
+<!--                beforeSend:function(xhr) {-->
+<!--                    xhr.setRequestHeader(csrfHeader, csrfToken);-->
+<!--                }-->
+<!--            }).done((result) => {-->
+<!--                alert('로그인 성공');-->
+
+<!--            }).fail((err) => {-->
+<!--                alert('로그인 실패')-->
+<!--            })-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+</body>
+</html>

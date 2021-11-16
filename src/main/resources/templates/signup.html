@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 회원 가입</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+<!--  <input type="text" id="mnId">아이디-->
+<!--  <input type="text" id="mnName">이름-->
+<!--  <input type="text" id="mnPassword">비밀번호-->
+
+<body>
+<span th:text="${mnName}"></span>님의 관리자 페이지 (메뉴 등록 및 수정,삭제)
+<br>
+
+<table border="2px">
+    <thead>
+    <tr>
+        <th>메뉴아이디</th>
+        <th>메뉴명</th>
+        <th>가격</th>
+        <th>재고수량</th>
+        <th>이미지</th>
+        <th>카테고리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${Menu}">
+        <td th:text="${product.mId}"></td>`
+        <td th:text="${product.mName}"></td>
+        <td th:text="${product.mPrice}"></td>
+        <td th:text="${product.mInven}"></td>
+        <td th:text="${product.mImg}"></td>
+        <td th:text="${product.cId.cName}"></td>
+
+    </tr>
+    </tbody>
+</table>
+
+<label>메뉴명<input type="text" id="mName"></label><br>
+<label>메뉴가격<input type="text" id="mPrice"></label><br>
+<label>재고여부<select id="mInven">
+    <option>true</option>
+    <option>false</option>
+</select></label><br>
+<label>이미지<input type="text" id="mImg"></label><br>
+<label>카테고리<select id="cId">
+    <option value="1">커피</option>
+    <option value="2">티</option>
+    <option value="3">에이드</option>
+</select></label><br>
+<button id="addMenu">등록</button>
+
+<!--스크립트-->
+<script th:inline="javascript">
+    $(function () {
+        $('#addMenu').click((event) => {
+
+            const mName = $('#mName').val();
+            const mPrice = $('#mPrice').val();
+            const mInven = $('#mInven option:selected').val();
+            // console.log(mInven);
+            const cId =  Number($('#cId option:selected').val());
+            const path = 'api/addMenu';
+            const json = JSON.stringify({
+                'mName': mName,
+                'mPrice': mPrice,
+                'mInven': mInven,
+                'cId': {
+                    'cId': cId
+                }
+            });
+
+            const csrfToken =/*[[${_csrf.token}]]*/ null;
+            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+            console.log(json);
+            $.ajax({
+                url: path,
+                type: 'POST',
+                contentType: 'application/json',
+                data: json,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            })
+                .done((response) => {
+                    if (response.result == 'ok') {
+                        alert('등록되었습니다.');
+                        window.location.href = '/manager'
+                        console.log(1);
+                    } else {
+                        alert('등록되지 않았습니다.');
+                        console.log(2);
+
+                    }
+                })
+                .fail((response) => {
+                    alert('(에러)등록되지 않았습니다.');
+                    console.log(3);
+
+                });
+        });
+    });
+</script>
+</body>
+</html>
