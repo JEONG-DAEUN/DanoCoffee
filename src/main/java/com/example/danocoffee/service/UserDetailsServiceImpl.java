@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<com.example.danocoffee.data.Manager> dbuser = managerRepository.findById(username);
+        Optional<com.example.danocoffee.data.Manager> dbuser = managerRepository.findByMnId(username);
         if(dbuser.isEmpty()) {
             throw new UsernameNotFoundException("Invalid username");
         }
