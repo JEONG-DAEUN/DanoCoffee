@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    //implementation 'org.thymelaef.extras:thymeleaf-extras-springsecurity5'
+    // implementation 'org.thymelaef.extras:thymeleaf-extras-springsecurity5' //타임리프 시큐리티 th:sec
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

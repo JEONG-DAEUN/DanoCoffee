@@ -17,14 +17,20 @@
   <tr>
     <th>아이디</th>
     <th>이름</th>
-    <th>비밀번호</th>
+    <th>아이디 수정</th>
+    <th>삭제</th>
   </tr>
   </thead>
   <tbody>
   <tr th:each="c : ${Crew}">
     <td th:text="${c.mnId}"></td>
     <td th:text="${c.mnName}"></td>
-    <td th:text="${c.mnPassword}"></td>
+    <td>
+      <button class="updatemnId">아이디 수정</button>
+    </td>
+    <td>
+      <button class="deleteManager">삭제</button>
+    </td>
   </tr>
   </tbody>
 </table>
@@ -74,6 +80,47 @@
               })
               .fail((response) => {
                 alert('(에러)등록되지 않았습니다.');
+              });
+    });
+
+
+    //관리자 삭제
+    $('.deleteManager').click(function () {
+      var mId = $(this).closest("tr").children().eq(0).text();
+      console.log(mId);
+
+      const path = 'api/deleteManager';
+      const json = JSON.stringify({
+        'mId' : mId
+      });
+      console.log(json);
+      const csrfToken =/*[[${_csrf.token}]]*/ null;
+      const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+      $.ajax({
+        url: path,
+        type: 'DELETE',
+        contentType: 'application/json',
+        data: json,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader(csrfHeader, csrfToken);
+        }
+      })
+              .done((response) => {
+                if (response.result == 'ok') {
+                  alert('삭제되었습니다.');
+                  window.location.href = '/addmenu'
+                  console.log(1);
+                } else {
+                  alert('삭제되지 않았습니다.');
+                  console.log(2);
+
+                }
+              })
+              .fail((response) => {
+                alert('(에러)');
+                console.log(3);
+
               });
     });
   });
