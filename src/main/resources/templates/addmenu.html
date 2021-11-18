@@ -15,7 +15,7 @@
 <table border="2px">
     <thead>
     <tr>
-        <th style="display:none;">메뉴 아이디</th>
+        <th>메뉴아이디</th>
         <th>메뉴명</th>
         <th>가격</th>
         <th>재고여부</th>
@@ -30,11 +30,11 @@
     </thead>
     <tbody>
     <tr th:each="product : ${Menu}">
-        <td style="display:none;" th:text="${product.mId}"></td>
+        <td th:text="${product.mId}"></td>
         <td th:text="${product.mName}"></td>
         <td th:text="${product.mPrice}"></td>
         <td th:text="${product.mInven}"></td>
-        <td th:text="${product.mImg}"></td>
+        <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}"/></td>
         <td th:text="${product.cId.cName}"></td>
 
         <td>
@@ -57,73 +57,76 @@
     </tr>
     </tbody>
 </table>
+<form th:action="@{/api/addMenu}"  enctype="multipart/form-data" method="post">
+    <label>메뉴명<input type="text" placeholder="메뉴명" name="mName"></label><br>
+    <label>메뉴가격<input type="number" placeholder="메뉴가격" name="mPrice"></label><br>
+    <label >재고여부<select name="mInven">
+        <option>true</option>
+        <option>false</option>
+    </select></label><br>
+    <label>이미지<input type="file" name="mImg"  accept="image/jpeg"></label><br>
+<!--    name : 파일 이름으로 날리는건 name으로 날려야함.-->
+    <label>카테고리<select name="cId">
+        <option value=1>커피</option>
+        <option value=2>티</option>
+        <option value=3>에이드</option>
+    </select></label><br>
+    <input type="submit" id="addMenu"></input>
+</form>
 
-<label>메뉴명<input type="text" id="mName"></label><br>
-<label>메뉴가격<input type="text" id="mPrice"></label><br>
-<label>재고여부<select id="mInven">
-    <option>true</option>
-    <option>false</option>
-</select></label><br>
-<label>이미지<input type="text" id="mImg"></label><br>
-<label>카테고리<select id="cId">
-    <option value="1">커피</option>
-    <option value="2">티</option>
-    <option value="3">에이드</option>
-</select></label><br>
-<button id="addMenu">등록</button>
 
 <!--스크립트-->
 <script th:inline="javascript">
     $(function () {
 
-        //  메뉴 등록
-        $('#addMenu').click((event) => {
-
-            const mName = $('#mName').val();
-            const mPrice = Number($('#mPrice').val());
-            const mInven = $('#mInven option:selected').val();
-            // console.log(mInven);
-            const cId = Number($('#cId option:selected').val());
-            const path = 'api/addMenu';
-            const json = JSON.stringify({
-                'mName': mName,
-                'mPrice': mPrice,
-                'mInven': mInven,
-                'cId': {
-                    'cId': cId
-                }
-            });
-
-            const csrfToken =/*[[${_csrf.token}]]*/ null;
-            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
-
-            console.log(json);
-            $.ajax({
-                url: path,
-                type: 'POST',
-                contentType: 'application/json',
-                data: json,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                }
-            })
-                .done((response) => {
-                    if (response.result == 'ok') {
-                        alert('등록되었습니다.');
-                        window.location.href = '/addmenu'
-                        console.log(1);
-                    } else {
-                        alert('등록되지 않았습니다.');
-                        console.log(2);
-
-                    }
-                })
-                .fail((response) => {
-                    alert('(에러)등록되지 않았습니다.');
-                    console.log(3);
-
-                });
-        });
+        // //  메뉴 등록
+        // $('#addMenu').click((event) => {
+        //
+        //     const mName = $('#mName').val();
+        //     const mPrice = Number($('#mPrice').val());
+        //     const mInven = $('#mInven option:selected').val();
+        //     // console.log(mInven);
+        //     const cId = Number($('#cId option:selected').val());
+        //     const path = 'api/addMenu';
+        //     const json = JSON.stringify({
+        //         'mName': mName,
+        //         'mPrice': mPrice,
+        //         'mInven': mInven,
+        //         'cId': {
+        //             'cId': cId
+        //         }
+        //     });
+        //
+        //     const csrfToken =/*[[${_csrf.token}]]*/ null;
+        //     const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+        //
+        //     console.log(json);
+        //     $.ajax({
+        //         url: path,
+        //         type: 'POST',
+        //         contentType: 'application/json',
+        //         data: json,
+        //         beforeSend: function (xhr) {
+        //             xhr.setRequestHeader(csrfHeader, csrfToken);
+        //         }
+        //     })
+        //         .done((response) => {
+        //             if (response.result == 'ok') {
+        //                 alert('등록되었습니다.');
+        //                 window.location.href = '/addmenu'
+        //                 console.log(1);
+        //             } else {
+        //                 alert('등록되지 않았습니다.');
+        //                 console.log(2);
+        //
+        //             }
+        //         })
+        //         .fail((response) => {
+        //             alert('(에러)등록되지 않았습니다.');
+        //             console.log(3);
+        //
+        //         });
+        // });
 
 
 
@@ -152,11 +155,11 @@
             })
                 .done((response) => {
                     if (response.result == 'ok') {
-                        alert('메뉴가 삭제되었습니다.');
+                        alert('삭제되었습니다.');
                         window.location.href = '/addmenu'
                         console.log(1);
                     } else {
-                        alert('메뉴가 삭제되지 않았습니다.');
+                        alert('삭제되지 않았습니다.');
                         console.log(2);
 
                     }
