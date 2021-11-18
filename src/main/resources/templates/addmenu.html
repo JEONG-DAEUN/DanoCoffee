@@ -21,6 +21,7 @@
         <th>재고여부</th>
         <th>이미지</th>
         <th>카테고리</th>
+        <th>메뉴명 수정</th>
         <th>가격 수정</th>
         <th>재고 수정</th>
         <th>이미지 수정</th>
@@ -37,6 +38,9 @@
         <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}"/></td>
         <td th:text="${product.cId.cName}"></td>
 
+        <td>
+            <button class="updateName">메뉴명 수정</button>
+        </td>
         <td>
             <button class="updatePrice">가격 수정</button>
         </td>
@@ -174,14 +178,19 @@
 
 
 
+
+
+
         //가격 수정
         $('.updatePrice').click(function () {
-            var mId = Number($(this).closest("tr").children().eq(2).text());
+            var newmPrice= prompt("수정할 가격을 입력하세요.");
+            var mId = Number($(this).closest("tr").children().eq(0).text());
             console.log(mId);
-//수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써.
+            //수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써
             const path = 'api/updatePrice';
             const json = JSON.stringify({
-                'mId' : mId
+                'mId' : mId,
+                'newmPrice' : newmPrice
             });
             console.log(json);
             const csrfToken =/*[[${_csrf.token}]]*/ null;
@@ -189,7 +198,7 @@
 
             $.ajax({
                 url: path,
-                type: 'DELETE',
+                type: 'PUT',
                 contentType: 'application/json',
                 data: json,
                 beforeSend: function (xhr) {
@@ -198,11 +207,53 @@
             })
                 .done((response) => {
                     if (response.result == 'ok') {
-                        alert('삭제되었습니다.');
+                        alert('가격이 수정되었습니다.');
                         window.location.href = '/addmenu'
                         console.log(1);
                     } else {
-                        alert('삭제되지 않았습니다.');
+                        alert('가격이 수정되지 않았습니다.');
+                        console.log(2);
+
+                    }
+                })
+                .fail((response) => {
+                    alert('(에러)');
+                    console.log(3);
+
+                });
+        });
+
+
+        // 메뉴명 수정 : updateName
+        $('.updateName').click(function () {
+            var newmName = prompt("수정할 메뉴명을 입력하세요.");
+            var mId = Number($(this).closest("tr").children().eq(0).text());
+            console.log(mId);
+            const path = 'api/updateName';
+            const json = JSON.stringify({
+                'mId' : mId,
+                'newmName' : newmName
+            });
+            console.log(json);
+            const csrfToken =/*[[${_csrf.token}]]*/ null;
+            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+            $.ajax({
+                url: path,
+                type: 'POST',
+                contentType: 'application/json',
+                data: json,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            })
+                .done((response) => {
+                    if (response.result == 'ok') {
+                        alert('메뉴명이 수정되었습니다.');
+                        window.location.href = '/addmenu'
+                        console.log(1);
+                    } else {
+                        alert('메뉴명이 수정되지 않았습니다.');
                         console.log(2);
 
                     }

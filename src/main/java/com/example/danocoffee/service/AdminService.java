@@ -1,8 +1,10 @@
 package com.example.danocoffee.service;
 
 import com.example.danocoffee.data.Category;
+import com.example.danocoffee.data.Manager;
 import com.example.danocoffee.data.Menu;
 import com.example.danocoffee.repository.CategoryRepository;
+import com.example.danocoffee.repository.ManagerRepository;
 import com.example.danocoffee.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ public class AdminService {
     MenuRepository menuRepository;
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    ManagerRepository managerRepository;
 
     public AdminService(MenuRepository menuRepository) {
         this.menuRepository = menuRepository;
@@ -23,10 +27,7 @@ public class AdminService {
     public void deleteMenu(int mId) {
         menuRepository.deleteById(mId);
     }
-
-    public void deleteManager(int mnNumber) {
-        managerRepository.deleteById(mnNumber);
-    }
+    public void deleteManager(int mnNumber) { managerRepository.deleteById(mnNumber); }
 
 
 //    public void deleteManager(int mId) {
@@ -50,6 +51,11 @@ public class AdminService {
         return findMenu.get();
     }
 
+    public Manager findManagerId(int mnNumber) {
+        Optional<Manager> findManager = managerRepository.findById(mnNumber);
+        return findManager.get();
+    }
+
     public Category findCategoryId(int cId) {
         Optional<Category> findCategoryId = categoryRepository.findById(cId);
         return findCategoryId.get();
@@ -59,7 +65,5 @@ public class AdminService {
         menuRepository.save(menu);
     }
 
-    public void deleteMenu(Menu menu) {
-        menuRepository.deleteById(menu.getmId());
-    }
+
 }

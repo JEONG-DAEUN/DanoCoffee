@@ -72,7 +72,6 @@ public class ApiController {
         System.out.println("asdf");
         Menu deleteMenu = adminService.findMenuId(menu.getmId());
         if (deleteMenu == null) {
-
             return new Result("no"); //삭제 실패
         } else {
             adminService.deleteMenu(menu.getmId()); //없는 경우 추가 있는 경우 변경 -> save함수
@@ -106,8 +105,9 @@ public class ApiController {
     @PutMapping("/updatePrice")
     public Result updateMenu(@RequestBody Menu menu) {
         Menu updatePrice = adminService.findMenuName(menu.getmName());
-        if (updatePrice == null) {
+        if (updatePrice == null) { 
             return new Result("no"); // 가격 수정 실패
+
         } else {
             adminService.deleteMenu(menu.getmId()); //없는 경우 추가 있는 경우 변경 -> save함수
             return new Result("ok"); // 가격 수정 성공

@@ -15,8 +15,28 @@ public class Menu {
     private String mName; //메뉴명
     private int mPrice; //가격
     private boolean mInven; //재고수량
-    private String mImg; //메뉴이미지 경로
-    private String mImgName; //메뉴이미지이름
+    private String mImg; //메뉴이미지
+    private String mImgName;
+    @Transient
+    private int newmPrice; //변경할 가격
+    @Transient
+    private String newmName; //변경할 이름
+
+    public String getNewmName() {
+        return newmName;
+    }
+
+    public void setNewmName(String newmName) {
+        this.newmName = newmName;
+    }
+
+    public int getNewmPrice() {
+        return newmPrice;
+    }
+
+    public void setNewmPrice(int newmPrice) {
+        this.newmPrice = newmPrice;
+    }
 
     public String getmImgName() {
         return mImgName;
