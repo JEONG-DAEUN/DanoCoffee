@@ -42,8 +42,8 @@ public class ApiController {
     @DeleteMapping("/deleteMenu")
     public Result deleteMenu(@RequestBody Menu menu) {
         System.out.println("asdf");
-        Menu deleteMenu = adminService.findMenuId(menu.getmId());
-        if(deleteMenu==null) {
+        Menu findMenu = adminService.findMenuId(menu.getmId());
+        if(findMenu==null) {
             return new Result("no"); //삭제 실패
         }else {
             adminService.deleteMenu(menu.getmId()); //없는 경우 추가 있는 경우 변경 -> save함수
@@ -51,9 +51,22 @@ public class ApiController {
         }
     }
 
+    @DeleteMapping("/deleteManager")
+    public Result deleteManager(@RequestBody Manager manager) {
+        System.out.println("delete Manager");
+        Manager findManager = adminService.findManagerId(manager.getMnNumber());
+        System.out.println("asssss");
+        if(findManager==null) {
+            return new Result("no"); //삭제 실패
+        }else {
+            adminService.deleteManager(manager.getMnNumber()); //없는 경우 추가 있는 경우 변경 -> save함수
+            return new Result("ok");
+        }
+    }
+
     @PostMapping("/addCrew")
     public Result addCrew(@RequestBody Manager manager) {
-        Optional<Manager> findCrew = managerRepository.findById(manager.getMnId());
+        Optional<Manager> findCrew = managerRepository.findById(manager.getMnNumber());
         if(findCrew.isPresent()) {
             managerRepository.save(manager); //없는 경우 추가 있는 경우 변경 -> save함수
         }else {

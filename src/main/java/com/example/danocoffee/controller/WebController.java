@@ -23,7 +23,7 @@ public class WebController {
     }
 
     @GetMapping("/addmenu") // 상품등록
-    private String management(Model model, Principal user) {
+    public String management(Model model, Principal user) {
         model.addAttribute("mnName", user.getName());
         model.addAttribute("Menu", menuRepository.findAll());
         System.out.println(menuRepository.findAll());
@@ -31,7 +31,7 @@ public class WebController {
     }
 
     @GetMapping("/addmanager") //관리자등록
-    private String addManager(Model model, Principal user) {
+    public String addManager(Model model, Principal user) {
         model.addAttribute("mnName", user.getName());
         model.addAttribute("Crew", managerRepository.findAll());
         System.out.println(managerRepository.findAll());
@@ -39,7 +39,7 @@ public class WebController {
     }
 
     @GetMapping("/login")
-    private String login() {
+    public String login() {
         return "login";
     }
 }

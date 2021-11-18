@@ -6,13 +6,23 @@ import javax.persistence.*;
 @Table(name = "manager")
 public class Manager {
     @Id
-    private String mnId; //관리자아이디
+    @GeneratedValue(strategy=GenerationType.IDENTITY) //int.autoincrement
+    private int mnNumber; //관리자번호
 
     @Column
+    private String mnId; //관리자아이디
     private String mnName; //이름
     private String mnPassword; //비밀번호
 
     private String mnRole="admin"; //권한
+
+    public int getMnNumber() {
+        return mnNumber;
+    }
+
+    public void setMnNumber(int mnNumber) {
+        this.mnNumber = mnNumber;
+    }
 
     public String getMnId() {
         return mnId;
@@ -47,5 +57,13 @@ public class Manager {
     }
 
     public Manager() {
+    }
+
+    public Manager(int mnNumber, String mnId, String mnName, String mnPassword, String mnRole) {
+        this.mnNumber = mnNumber;
+        this.mnId = mnId;
+        this.mnName = mnName;
+        this.mnPassword = mnPassword;
+        this.mnRole = mnRole;
     }
 }
