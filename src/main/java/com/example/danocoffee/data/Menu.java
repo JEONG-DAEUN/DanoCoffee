@@ -1,7 +1,5 @@
 package com.example.danocoffee.data;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 
 @Entity
@@ -16,10 +14,12 @@ public class Menu {
     private int mPrice; //가격
     private boolean mInven; //재고수량
     private String mImg; //메뉴이미지
-
+    private String mImgName;
     @ManyToOne
     @JoinColumn(name="cId")
     private Category cId;
+
+
 
     public int getmId() {
         return mId;
@@ -49,8 +49,9 @@ public class Menu {
         return mInven;
     }
 
-    public void setmInven(boolean mInven) {
+    public boolean setmInven(boolean mInven) {
         this.mInven = mInven;
+        return mInven;
     }
 
     public String getmImg() {
@@ -60,6 +61,15 @@ public class Menu {
     public void setmImg(String mImg) {
         this.mImg = mImg;
     }
+
+    public String getmImgName() {
+        return mImgName;
+    }
+
+    public void setmImgName(String mImgName) {
+        this.mImgName = mImgName;
+    }
+
 
     public Category getcId() {
         return cId;
@@ -72,12 +82,14 @@ public class Menu {
     public Menu() {
     }
 
-    public Menu(int mId, String mName, int mPrice, boolean mInven, String mImg, Category cId) {
-        this.mId = mId;
+    public Menu(String mName, int mPrice, boolean mInven, String mImg, String mImgName, Category cId) {
+        this.cId = cId;
         this.mName = mName;
         this.mPrice = mPrice;
         this.mInven = mInven;
+        this.mImgName = mImgName;
         this.mImg = mImg;
-        this.cId = cId;
+
     }
+
 }

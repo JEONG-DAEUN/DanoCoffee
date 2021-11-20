@@ -4,6 +4,7 @@ import com.example.danocoffee.data.Category;
 import com.example.danocoffee.data.Manager;
 import com.example.danocoffee.data.Menu;
 import com.example.danocoffee.data.Result;
+import com.example.danocoffee.data.dto.MenuDTO;
 import com.example.danocoffee.repository.ManagerRepository;
 import com.example.danocoffee.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ApiController {
     }
 
     @PostMapping(value="/addMenu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) //멀티파트 폼데이터 쓰겠다고 빈에 알려줌.
-    public String addMenu(
+    public String addMenu( //메뉴 등록
                           @RequestParam("mName") String mName,
                           @RequestParam("mPrice") int mPrice,
                           @RequestParam("mInven") boolean mInven,
@@ -67,8 +68,8 @@ public class ApiController {
     }
 
 
-    @DeleteMapping("/deleteMenu")
-    public Result deleteMenu(@RequestBody Menu menu) {
+    @DeleteMapping("/deleteMenu") //메뉴 삭제
+    public Result deleteMenu(@RequestBody Menu menu) throws Exception {
         System.out.println("asdf");
         Menu deleteMenu = adminService.findMenuId(menu.getmId());
         if (deleteMenu == null) {
@@ -79,19 +80,48 @@ public class ApiController {
         }
     }
 
-//    @DeleteMapping("/deleteManager")
-//    public Result deleteMenu(@RequestBody Manager manager) {
-//        System.out.println("asdf");
-//        Menu deleteMenu = adminService.findMenuId(menu.getmId());
-//        if (deleteMenu == null) {
-//            return new Result("no"); //삭제 실패
-//        } else {
-//            adminService.deleteMenu(menu.getmId()); //없는 경우 추가 있는 경우 변경 -> save함수
-//            return new Result("ok");
-//        }
-//    }
 
-    @PostMapping("/addCrew")
+    @PutMapping("/updatemnId") //관리자 아이디 수정
+    public Result updatemnId(@RequestBody Manager manager) throws Exception {
+        System.out.println("asdf");
+        Manager updatemnId = adminService.findById(manager.getMnNumber());
+        System.out.println(manager.getMnNumber());
+        System.out.println(manager.getNewMnId());
+
+
+        if (updatemnId == null) { // 관리자 아이디 실패
+            return new Result("no");
+        } else {
+            updatemnId.setMnId(manager.getNewMnId());
+            adminService.save(updatemnId);
+//            updatePrice.setmPrice(menu.getNewmPrice());
+
+
+//            updatemenuname.setmName(menu.getNewmName());
+//
+//            adminService.save(updatemenuname);
+////            updatePrice.setmPrice(menu.getNewmPrice());
+//            System.out.println("4 " + menu.getNewmName());
+            return new Result("ok"); // 가격 수정 성공
+        }
+    }
+
+
+    @DeleteMapping("/deleteManager") //관리자 삭제
+    public Result deleteManager(@RequestBody Manager manager) throws Exception{
+        System.out.println("asdf");
+        System.out.println(manager.getMnNumber());
+        Manager deleteManager = adminService.findManagerId(manager.getMnNumber());
+        System.out.println(deleteManager);
+        System.out.println(manager.getMnNumber());
+        if (deleteManager == null) {
+            return new Result("no"); //삭제 실패
+        } else {
+            managerRepository.deleteById(manager.getMnNumber()); //없는 경우 추가 있는 경우 변경 -> save함수
+            return new Result("ok");
+        }
+    }
+    @PostMapping("/addCrew") //관리자 등록
     public Result addCrew(@RequestBody Manager manager) {
         Optional<Manager> findCrew = managerRepository.findById(manager.getMnId());
         if (findCrew.isPresent()) {
@@ -109,7 +139,108 @@ public class ApiController {
             return new Result("no"); // 가격 수정 실패
         } else {
             adminService.deleteMenu(menu.getmId()); //없는 경우 추가 있는 경우 변경 -> save함수
+    @PutMapping("/updatemenuname") //메뉴명 수정
+    public Result updatemenuname(@RequestBody MenuDTO menu) throws Exception {
+        System.out.println("asdf");
+        Menu updatemenuname = adminService.findMenuId(menu.getmId());
+        if (updatemenuname == null) { // 가격 수정 실패
+            return new Result("no");
+        } else {
+            updatemenuname.setmName(menu.getNewmName());
+
+            adminService.save(updatemenuname);
+//            updatePrice.setmPrice(menu.getNewmPrice());
+            System.out.println("4 " + menu.getNewmName());
+
             return new Result("ok"); // 가격 수정 성공
         }
+    }
+
+
+
+    @PutMapping("/updatePrice") //메뉴 가격 수정
+    public Result updateMenu(@RequestBody MenuDTO menu) throws Exception {
+        Menu updatePrice = adminService.findMenuId(menu.getmId());
+        System.out.println("1 " + updatePrice.getmId());
+        System.out.println("2 " + updatePrice.getmPrice());
+        System.out.println("3 " + menu.getNewmPrice());
+        if (updatePrice == null) { // 가격 수정 실패
+            return new Result("no");
+        } else {
+            updatePrice.setmPrice(menu.getNewmPrice());
+
+            adminService.save(updatePrice);
+//            updatePrice.setmPrice(menu.getNewmPrice());
+            System.out.println("4 " + menu.getNewmPrice());
+
+            return new Result("ok"); // 가격 수정 성공
+        }
+    }
+
+
+
+    //메뉴 이미지 수정
+    @PostMapping("/updateImage") //메뉴 이미지 수정
+    public String updateImage(MenuDTO menu,
+                              HttpServletRequest request ) throws Exception {
+        System.out.println("menu.getmId() = " + menu.getmId());
+        Menu updateImage = adminService.findMenuId(menu.getmId());
+
+        if (updateImage == null) {
+            return "no";
+        } else {
+            String path = request.getSession().getServletContext().getRealPath("\\"); //파일 저장할 경로 가져옴.
+            String fileName = UUID.randomUUID() +  menu.getmImg().getOriginalFilename();
+            String pathName = path + "\\static\\images\\" +fileName;  // 저장된 파일 이름과 경로 합친것
+            //UUID : 랜덤값으로 이름 같은 파일 구분해줌.
+            File file = new File(pathName);
+            menu.getmImg().transferTo(file); //저장
+            updateImage.setmImg(pathName);
+            updateImage.setmImgName(fileName);
+
+            adminService.save(updateImage);
+//            updatePrice.setmPrice(menu.getNewmPrice());
+            System.out.println("4 " + menu.getNewmPrice());
+
+            return  "<h2>상품 이미지 변경이 완료되었습니다. <br>" +
+                    "3초 뒤에 메뉴 목록으로 이동합니다.</h2>"
+                    + "<meta http-equiv=\"refresh\" content=\"2;url=/addmenu\" />";
+        }
+    }
+
+
+
+
+
+    //메뉴 재고 수정 : updateInven
+    @PutMapping("/updateInven") //메뉴 재고 수정
+    public Menu updateInven(@RequestBody MenuDTO menu) throws Exception {
+        System.out.println("menu = " + menu.getmId());
+        Menu updateInven = adminService.findMenuId(menu.getmId());
+        updateInven.setmInven(!updateInven.ismInven());
+        System.out.println("updateInven.ismInven() = " + updateInven.ismInven());
+            adminService.save(updateInven);
+//            updatePrice.setmPrice(menu.getNewmPrice());
+
+
+            return updateInven;
+        }
+
+
+    //카테고리 수정 : updateCategory
+    @PostMapping("/updateCategory") //메뉴 재고 수정
+    public String updateCategory(MenuDTO menu) throws Exception {
+        System.out.println("menu = " + menu.getmId());
+        Menu updateCategory = adminService.findBymId(menu.getmId());
+        System.out.println("menu.getcId().getcId() = " + menu.getcId().getcId());
+        updateCategory.setcId(menu.getcId());
+        
+        adminService.save(updateCategory);
+//            updatePrice.setmPrice(menu.getNewmPrice());
+
+
+        return  "<h2>카테고리 변경이 완료되었습니다. <br>" +
+                "3초 뒤에 메뉴 목록으로 이동합니다.</h2>"
+                + "<meta http-equiv=\"refresh\" content=\"2;url=/addmenu\" />";
     }
 }

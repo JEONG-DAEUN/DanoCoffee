@@ -14,7 +14,21 @@ public class Manager {
     private String mnName; //이름
     private String mnPassword; //비밀번호
 
+
+
+    @Transient
+    private String newMnId; //수정할 관리자 아이디
+
     private String mnRole="admin"; //권한
+
+
+    public String getNewMnId() {
+        return newMnId;
+    }
+
+    public void setNewMnId(String newMnId) {
+        this.newMnId = newMnId;
+    }
 
     public int getMnNumber() {
         return mnNumber;

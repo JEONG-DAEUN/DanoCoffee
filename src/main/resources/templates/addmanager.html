@@ -1,129 +1,181 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Add User</title>
+		<script
+			src="https://code.jquery.com/jquery-3.6.0.min.js"
+			integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+			crossorigin="anonymous"
+		></script>
+	</head>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Add User</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-</head>
+	<body>
+		<span th:text="${mnName}"></span>님의 관리자 조회 수정 페이지
+		<br />
 
-<body>
-<span th:text="${mnName}"></span>님의 관리자 조회 수정 페이지
-<br>
+		<table border="2px">
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>아이디</th>
+					<th>이름</th>
+					<th>아이디 수정</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="c : ${Crew}">
+					<td th:text="${c.mnNumber}"></td>
+					<td th:text="${c.mnId}"></td>
+					<td th:text="${c.mnName}"></td>
+					<td>
+						<button class="updatemnId">아이디(닉네임) 수정</button>
+					</td>
+					<td>
+						<button class="deleteManager">삭제</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-<table border="2px">
-  <thead>
-  <tr>
-    <th>아이디</th>
-    <th>이름</th>
-    <th>아이디 수정</th>
-    <th>삭제</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="c : ${Crew}">
-    <td th:text="${c.mnId}"></td>
-    <td th:text="${c.mnName}"></td>
-    <td>
-      <button class="updatemnId">아이디 수정</button>
-    </td>
-    <td>
-      <button class="deleteManager">삭제</button>
-    </td>
-  </tr>
-  </tbody>
-</table>
+		<label>아이디<input type="text" id="mnId" /></label><br />
+		<label>이름<input type="text" id="mnName" /></label><br />
+		<label>비밀번호<input type="text" id="mnPassword" /></label><br />
+		<button id="add">등록</button>
 
-<label>아이디<input type="text" id="mnId"></label><br>
-<label>이름<input type="text" id="mnName"></label><br>
-<label>비밀번호<input type="text" id="mnPassword"></label><br>
-<button id="add">등록</button>
+		<!--스크립트-->
+		<script th:inline="javascript">
+			$(function () {
+				$('#add').click((event) => {
+					const mnNumber = $('#mnNumber').val();
+					const mnId = $('#mnId').val();
+					const mnName = $('#mnName').val();
+					const mnPassword = $('#mnPassword').val();
+					// console.log(mInven);
+					const path = 'api/addCrew';
+					const json = JSON.stringify({
+						mnId: mnId,
+						mnName: mnName,
+						mnPassword: mnPassword,
+					});
 
-<!--스크립트-->
-<script th:inline="javascript">
-  $(function () {
-    $('#add').click((event) => {
-      const mnId = $('#mnId').val();
-      const mnName = $('#mnName').val();
-      const mnPassword = $('#mnPassword').val();
-      // console.log(mInven);
-      const path = 'api/addCrew';
-      const json = JSON.stringify({
-        'mnId' : mnId,
-        'mnName': mnName,
-        'mnPassword': mnPassword
-      });
+					const csrfToken = /*[[${_csrf.token}]]*/ null;
+					const csrfHeader = /*[[${_csrf.headerName}]]*/ null;
 
-      const csrfToken =/*[[${_csrf.token}]]*/ null;
-      const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+					console.log(json + '1');
+					$.ajax({
+						url: path,
+						type: 'POST',
+						contentType: 'application/json',
+						data: json,
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(csrfHeader, csrfToken);
+						},
+					})
+						.done((response) => {
+							if (response.result == 'ok') {
+								alert('등록되었습니다. 관리자');
+								console.log(1);
+								window.location.href = '/addmanager';
+							} else {
+								alert('등록되지 않았습니다.');
+							}
+						})
+						.done((response) => {
+							if (response.result == 'ok') {
+								alert('관리자가 등록되었습니다.');
+								console.log(1);
+								window.location.href = '/addmanager';
+							} else {
+								alert('관리자가 등록되지 않았습니다.');
+							}
+						})
+						.fail((response) => {
+							alert('(에러)등록되지 않았습니다.');
+						});
+				});
 
-      console.log(json + "1");
-      $.ajax({
-        url: path,
-        type: 'POST',
-        contentType: 'application/json',
-        data: json,
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader(csrfHeader, csrfToken);
-        }
-      })
-              .done((response) => {
-                if (response.result == 'ok') {
-                  alert('등록되었습니다. 관리자');
-                  console.log(1);
-                  window.location.href = '/addmanager'
-                } else {
-                  alert('등록되지 않았습니다.');
+				//관리자 아이디 수정
+				$('.updatemnId').click(function () {
+					var newmName = prompt('수정할 메뉴명을 입력하세요.');
+					var mId = $(this).closest('tr').children().eq(0).text();
+					// var mnNumber = $('#mnNumber').val();
+					console.log(mId);
 
-                }
-              })
-              .fail((response) => {
-                alert('(에러)등록되지 않았습니다.');
-              });
-    });
+					const path = 'api/updatemnId';
+					const json = JSON.stringify({
+						mnNumber: mId,
+						newMnId: newmName,
+					});
+					console.log(json);
+					const csrfToken = /*[[${_csrf.token}]]*/ null;
+					const csrfHeader = /*[[${_csrf.headerName}]]*/ null;
 
+					$.ajax({
+						url: path,
+						type: 'PUT',
+						contentType: 'application/json',
+						data: json,
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(csrfHeader, csrfToken);
+						},
+					})
+						.done((response) => {
+							if (response.result == 'ok') {
+								alert('관리자 아이디가 수정되었습니다.');
+								window.location.href = '/addmanager';
+								console.log(1);
+							} else {
+								alert('관리자 아이디가 수정되지 않았습니다.');
+								console.log(2);
+							}
+						})
+						.fail((response) => {
+							alert('(에러)');
+							console.log(3);
+						});
+				});
 
-    //관리자 삭제
-    $('.deleteManager').click(function () {
-      var mId = $(this).closest("tr").children().eq(0).text();
-      console.log(mId);
+				//관리자 삭제
+				$('.deleteManager').click(function () {
+					var mId = $(this).closest('tr').children().eq(0).text();
+					// var mnNumber = $('#mnNumber').val();
+					console.log(mId);
 
-      const path = 'api/deleteManager';
-      const json = JSON.stringify({
-        'mId' : mId
-      });
-      console.log(json);
-      const csrfToken =/*[[${_csrf.token}]]*/ null;
-      const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+					const path = 'api/deleteManager';
+					const json = JSON.stringify({
+						mnNumber: mId,
+					});
+					console.log(json);
+					const csrfToken = /*[[${_csrf.token}]]*/ null;
+					const csrfHeader = /*[[${_csrf.headerName}]]*/ null;
 
-      $.ajax({
-        url: path,
-        type: 'DELETE',
-        contentType: 'application/json',
-        data: json,
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader(csrfHeader, csrfToken);
-        }
-      })
-              .done((response) => {
-                if (response.result == 'ok') {
-                  alert('삭제되었습니다.');
-                  window.location.href = '/addmenu'
-                  console.log(1);
-                } else {
-                  alert('삭제되지 않았습니다.');
-                  console.log(2);
-
-                }
-              })
-              .fail((response) => {
-                alert('(에러)');
-                console.log(3);
-
-              });
-    });
-  });
-</script>
-</body>
+					$.ajax({
+						url: path,
+						type: 'DELETE',
+						contentType: 'application/json',
+						data: json,
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(csrfHeader, csrfToken);
+						},
+					})
+						.done((response) => {
+							if (response.result == 'ok') {
+								alert('관리자가 삭제되었습니다.');
+								window.location.href = '/addmanager';
+								console.log(1);
+							} else {
+								alert('관리자가 삭제되지 않았습니다.');
+								console.log(2);
+							}
+						})
+						.fail((response) => {
+							alert('(에러)');
+							console.log(3);
+						});
+				});
+			});
+		</script>
+	</body>
 </html>
