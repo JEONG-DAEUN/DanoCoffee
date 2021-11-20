@@ -85,4 +85,11 @@ public class AdminService {
         Optional<Manager> findById = managerRepository.findById(mnNumber);
         return findById.get();
     }
+
+    public Menu findBymId(int mId) {
+        Optional<Menu> findById = menuRepository.findById(mId);
+        return findById.get();
+    }
+
+//    public Menu findBy(int cId)
 }

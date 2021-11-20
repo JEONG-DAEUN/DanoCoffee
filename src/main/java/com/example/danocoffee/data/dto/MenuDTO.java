@@ -1,17 +1,29 @@
 package com.example.danocoffee.data.dto;
 
 
+import com.example.danocoffee.data.Category;
+import org.springframework.web.multipart.MultipartFile;
+
 public class MenuDTO {
     private int mId;
     private String mName; //메뉴명
     private int mPrice; //가격
     private boolean mInven; //재고수량
-    private String mImg; //메뉴이미지
+    private MultipartFile mImg; //메뉴이미지
     private String mImgName;
     private int newmPrice; //변경할 가격
     private String newmName; //변경할 이름
-    private String newmImgName; //변경할 사진
-    private String newmImg; //변경할 메뉴이미지
+
+    private Category cId; //카테고리 아이디
+
+    public Category getcId() {
+        return cId;
+    }
+
+    public void setcId(Category cId) {
+        this.cId = cId;
+    }
+
     public int getmId() {
         return mId;
     }
@@ -38,17 +50,16 @@ public class MenuDTO {
     public boolean ismInven() {
         return mInven;
     }
-
-    public void setmInven(boolean mInven) {
-        this.mInven = mInven;
-    }
-
-    public String getmImg() {
+    public MultipartFile getmImg() {
         return mImg;
     }
 
-    public void setmImg(String mImg) {
+    public void setmImg(MultipartFile mImg) {
         this.mImg = mImg;
+    }
+
+    public void setmInven(boolean mInven) {
+        this.mInven = mInven;
     }
 
     public String getmImgName() {
@@ -75,19 +86,6 @@ public class MenuDTO {
         this.newmName = newmName;
     }
 
-    public String getNewmImgName() {
-        return newmImgName;
-    }
 
-    public void setNewmImgName(String newmImgName) {
-        this.newmImgName = newmImgName;
-    }
 
-    public String getNewmImg() {
-        return newmImg;
-    }
-
-    public void setNewmImg(String newmImg) {
-        this.newmImg = newmImg;
-    }
 }

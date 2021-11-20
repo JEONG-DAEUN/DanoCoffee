@@ -176,21 +176,67 @@ public class ApiController {
 
 
     //메뉴 이미지 수정
-    @PutMapping("/updateImage") //메뉴 가격 수정
-    public Result updateImage(@RequestBody MenuDTO menu) throws Exception {
+    @PostMapping("/updateImage") //메뉴 이미지 수정
+    public String updateImage(MenuDTO menu,
+                              HttpServletRequest request ) throws Exception {
+        System.out.println("menu.getmId() = " + menu.getmId());
         Menu updateImage = adminService.findMenuId(menu.getmId());
 
         if (updateImage == null) {
-            return new Result("no");
+            return "no";
         } else {
-            updateImage.setmPrice(menu.getNewmPrice());
+            String path = request.getSession().getServletContext().getRealPath("\\"); //파일 저장할 경로 가져옴.
+            String fileName = UUID.randomUUID() +  menu.getmImg().getOriginalFilename();
+            String pathName = path + "\\static\\images\\" +fileName;  // 저장된 파일 이름과 경로 합친것
+            //UUID : 랜덤값으로 이름 같은 파일 구분해줌.
+            File file = new File(pathName);
+            menu.getmImg().transferTo(file); //저장
+            updateImage.setmImg(pathName);
+            updateImage.setmImgName(fileName);
 
             adminService.save(updateImage);
 //            updatePrice.setmPrice(menu.getNewmPrice());
             System.out.println("4 " + menu.getNewmPrice());
 
-            return new Result("ok");
+            return  "<h2>상품 이미지 변경이 완료되었습니다. <br>" +
+                    "3초 뒤에 메뉴 목록으로 이동합니다.</h2>"
+                    + "<meta http-equiv=\"refresh\" content=\"2;url=/addmenu\" />";
         }
     }
 
+
+
+
+
+    //메뉴 재고 수정 : updateInven
+    @PutMapping("/updateInven") //메뉴 재고 수정
+    public Menu updateInven(@RequestBody MenuDTO menu) throws Exception {
+        System.out.println("menu = " + menu.getmId());
+        Menu updateInven = adminService.findMenuId(menu.getmId());
+        updateInven.setmInven(!updateInven.ismInven());
+        System.out.println("updateInven.ismInven() = " + updateInven.ismInven());
+            adminService.save(updateInven);
+//            updatePrice.setmPrice(menu.getNewmPrice());
+
+
+            return updateInven;
+        }
+
+
+    //카테고리 수정 : updateCategory
+    @PostMapping("/updateCategory") //메뉴 재고 수정
+    public String updateCategory(MenuDTO menu) throws Exception {
+        System.out.println("menu = " + menu.getmId());
+        Menu updateCategory = adminService.findBymId(menu.getmId());
+        System.out.println("menu.getcId().getcId() = " + menu.getcId().getcId());
+        updateCategory.setcId(menu.getcId());
+        
+        adminService.save(updateCategory);
+//            updatePrice.setmPrice(menu.getNewmPrice());
+
+
+        return  "<h2>카테고리 변경이 완료되었습니다. <br>" +
+                "3초 뒤에 메뉴 목록으로 이동합니다.</h2>"
+                + "<meta http-equiv=\"refresh\" content=\"2;url=/addmenu\" />";
+    }
 }

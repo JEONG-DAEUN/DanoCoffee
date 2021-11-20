@@ -1,7 +1,5 @@
 package com.example.danocoffee.data;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 
 @Entity
@@ -51,8 +49,9 @@ public class Menu {
         return mInven;
     }
 
-    public void setmInven(boolean mInven) {
+    public boolean setmInven(boolean mInven) {
         this.mInven = mInven;
+        return mInven;
     }
 
     public String getmImg() {

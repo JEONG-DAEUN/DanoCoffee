@@ -48,11 +48,23 @@
             <button class="updateInven">재고 수정</button>
         </td>
         <td>
+            <form method="post" th:action="@{api/updateImage}" enctype="multipart/form-data" >
+                <input name="mId" style="visibility:hidden" th:value="${product.mId}"/>
                 <input name="mImg" id="inputImage" type="file"/>
                 <button>제출</button>
+            </form>
         </td>
         <td>
-            <button class="updateCategory">카테고리 수정</button>
+            <form th:action="@{/api/updateCategory}" method="post">
+                <input name="mId" style="visibility:hidden" th:value="${product.mId}"/>
+                <label>카테고리<select name="cId">
+                    <option value=1>커피</option>
+                    <option value=2>에이드</option>
+                    <option value=3>티</option>
+                </select></label><br>
+                <input type="submit" class="updateCategory">카테고리 수정</input>
+            </form>
+
         </td>
         <td>
             <button class="deleteMenu">삭제</button>
@@ -76,7 +88,7 @@
         <option value=2>티</option>
         <option value=3>에이드</option>
     </select></label><br>
-    <input type="submit" id="addMenu"></input>
+    <input type="submit" id="addMenu">등록
 </form>
 <!--<div class="imageUpdateModal">-->
 <!--    <div class="modal-header">-->
@@ -273,23 +285,22 @@
         });
 
 
-
-
-        // 이미지 수정 : updateImage
-        $('.updateImage').click(function () {
-            var newmImage= document.querySelector('#inputImage');
-            // var newmImage =
+        //재고수정
+        $('.updateInven').click(function () {
+            // var newmPrice= prompt("수정할 가격을 입력하세요.");
             // document.write(newmPrice);
             var mId = Number($(this).closest("tr").children().eq(0).text());
+
+
             console.log(mId);
+
             //수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써
-            const path = 'api/updateImage';
+            const path = 'api/updateInven';
             const json = JSON.stringify({
                 'mId' : mId,
-                'newmImg' : newmPrice
             });
             console.log(json);
-            console.log(newmPrice);
+
             const csrfToken =/*[[${_csrf.token}]]*/ null;
             const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
 
@@ -303,15 +314,18 @@
                 }
             })
                 .done((response) => {
-                    if (response.result == 'ok') {
-                        alert('가격이 수정되었습니다.');
-                        window.location.href = '/addmenu'
-                        console.log(1);
-                    } else {
-                        alert('가격이 수정되지 않았습니다.');
-                        console.log(2);
+                    $(this).closest("tr").children().eq(3).text(response.mInven);
+                    console.log($(this).closest("tr").children().eq(3).text());
 
-                    }
+                    // if (response.result == 'ok') {
+                    //     alert('재고가 수정되었습니다.');
+                    //     window.location.href = '/addmenu'
+                    //     console.log(1);
+                    // } else {
+                    //     alert('재고가 수정되지 않았습니다.');
+                    //     console.log(2);
+                    //
+                    // }
                 })
                 .fail((response) => {
                     alert('(에러)');
