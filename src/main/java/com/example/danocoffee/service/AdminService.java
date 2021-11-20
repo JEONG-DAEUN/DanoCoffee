@@ -20,8 +20,12 @@ public class AdminService {
     @Autowired
     ManagerRepository managerRepository;
 
-    public AdminService(MenuRepository menuRepository) {
-        this.menuRepository = menuRepository;
+    public void save(Menu menu) {
+        menuRepository.save(menu);
+    }
+
+    public void save(Manager manager) {
+        managerRepository.save(manager);
     }
 
     public void deleteMenu(int mId) {
@@ -44,16 +48,27 @@ public class AdminService {
         return searchMenu;
     }
 
-
-
-    public Menu findMenuId(int mId) {
-        Optional<Menu> findMenu = menuRepository.findById(mId);
-        return findMenu.get();
+    public Manager findByMnId(String mnId) {
+        Manager findManagerId = managerRepository.findByMnId(mnId);
+        return findManagerId;
     }
 
-    public Manager findManagerId(int mnNumber) {
+
+
+    public Menu findMenuId(int mId) throws Exception{
+        Optional<Menu> findMenu = menuRepository.findById(mId);
+        if(findMenu.isPresent()) {
+        return findMenu.get(); //mId 없으면 whitelabel뜸.
+        }else throw new Exception ("메뉴 아이디 없음. 수정 불가");
+
+    }
+
+    public Manager findManagerId(int mnNumber) throws Exception{
         Optional<Manager> findManager = managerRepository.findById(mnNumber);
-        return findManager.get();
+        if(findManager.isPresent()) {
+            return findManager.get();
+        }else throw new Exception("관리자 아이디 없음. 수정 불가");
+
     }
 
     public Category findCategoryId(int cId) {
@@ -66,4 +81,8 @@ public class AdminService {
     }
 
 
+    public Manager findById(int mnNumber) {
+        Optional<Manager> findById = managerRepository.findById(mnNumber);
+        return findById.get();
+    }
 }

@@ -1,28 +1,17 @@
-package com.example.danocoffee.data;
+package com.example.danocoffee.data.dto;
 
-import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "menu")
-public class Menu {
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY) //int.autoincrement
-    private int mId; //메뉴아이디
-
-    @Column
+public class MenuDTO {
+    private int mId;
     private String mName; //메뉴명
     private int mPrice; //가격
     private boolean mInven; //재고수량
     private String mImg; //메뉴이미지
     private String mImgName;
-    @ManyToOne
-    @JoinColumn(name="cId")
-    private Category cId;
-
-
-
+    private int newmPrice; //변경할 가격
+    private String newmName; //변경할 이름
+    private String newmImgName; //변경할 사진
+    private String newmImg; //변경할 메뉴이미지
     public int getmId() {
         return mId;
     }
@@ -30,7 +19,6 @@ public class Menu {
     public void setmId(int mId) {
         this.mId = mId;
     }
-
     public String getmName() {
         return mName;
     }
@@ -71,26 +59,35 @@ public class Menu {
         this.mImgName = mImgName;
     }
 
-
-    public Category getcId() {
-        return cId;
+    public int getNewmPrice() {
+        return newmPrice;
     }
 
-    public void setcId(Category cId) {
-        this.cId = cId;
+    public void setNewmPrice(int newmPrice) {
+        this.newmPrice = newmPrice;
     }
 
-    public Menu() {
+    public String getNewmName() {
+        return newmName;
     }
 
-    public Menu(String mName, int mPrice, boolean mInven, String mImg, String mImgName, Category cId) {
-        this.cId = cId;
-        this.mName = mName;
-        this.mPrice = mPrice;
-        this.mInven = mInven;
-        this.mImgName = mImgName;
-        this.mImg = mImg;
-
+    public void setNewmName(String newmName) {
+        this.newmName = newmName;
     }
 
+    public String getNewmImgName() {
+        return newmImgName;
+    }
+
+    public void setNewmImgName(String newmImgName) {
+        this.newmImgName = newmImgName;
+    }
+
+    public String getNewmImg() {
+        return newmImg;
+    }
+
+    public void setNewmImg(String newmImg) {
+        this.newmImg = newmImg;
+    }
 }

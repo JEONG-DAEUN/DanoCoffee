@@ -48,7 +48,8 @@
             <button class="updateInven">재고 수정</button>
         </td>
         <td>
-            <button class="updateImage">이미지 수정</button>
+                <input name="mImg" id="inputImage" type="file"/>
+                <button>제출</button>
         </td>
         <td>
             <button class="updateCategory">카테고리 수정</button>
@@ -68,7 +69,7 @@
         <option>true</option>
         <option>false</option>
     </select></label><br>
-    <label>이미지<input type="file" name="mImg"  accept="image/jpeg"></label><br>
+    <label>이미지<input type="file" name="mImg"  accept="image/jpeg"/></label><br>
 <!--    name : 파일 이름으로 날리는건 name으로 날려야함.-->
     <label>카테고리<select name="cId">
         <option value=1>커피</option>
@@ -77,6 +78,11 @@
     </select></label><br>
     <input type="submit" id="addMenu"></input>
 </form>
+<!--<div class="imageUpdateModal">-->
+<!--    <div class="modal-header">-->
+<!--        <button type="button" class="close" data-dismiss="modal"></button>-->
+<!--    </div>-->
+<!--</div>-->
 
 
 <!--스크립트-->
@@ -178,12 +184,54 @@
 
 
 
+        // 메뉴명 수정 : updateName
+        $('.updateName').click(function () {
+            var newmName = prompt("수정할 메뉴명을 입력하세요.");
+            var mId = Number($(this).closest("tr").children().eq(0).text());
+            console.log(mId);
+            const path = 'api/updatemenuname';
+            const json = JSON.stringify({
+                'mId' : mId,
+                'newmName' : newmName
+            });
+            console.log(json);
+            const csrfToken =/*[[${_csrf.token}]]*/ null;
+            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+            $.ajax({
+                url: path,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: json,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            })
+                .done((response) => {
+                    if (response.result == 'ok') {
+                        alert('메뉴명이 수정되었습니다.');
+                        window.location.href = '/addmenu'
+                        console.log(1);
+                    } else {
+                        alert('메뉴명이 수정되지 않았습니다.');
+                        console.log(2);
+
+                    }
+                })
+                .fail((response) => {
+                    alert('(에러)');
+                    console.log(3);
+
+                });
+        });
+
 
 
 
         //가격 수정
         $('.updatePrice').click(function () {
             var newmPrice= prompt("수정할 가격을 입력하세요.");
+            // document.write(newmPrice);
             var mId = Number($(this).closest("tr").children().eq(0).text());
             console.log(mId);
             //수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써
@@ -193,6 +241,7 @@
                 'newmPrice' : newmPrice
             });
             console.log(json);
+            console.log(newmPrice);
             const csrfToken =/*[[${_csrf.token}]]*/ null;
             const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
 
@@ -224,23 +273,29 @@
         });
 
 
-        // 메뉴명 수정 : updateName
-        $('.updateName').click(function () {
-            var newmName = prompt("수정할 메뉴명을 입력하세요.");
+
+
+        // 이미지 수정 : updateImage
+        $('.updateImage').click(function () {
+            var newmImage= document.querySelector('#inputImage');
+            // var newmImage =
+            // document.write(newmPrice);
             var mId = Number($(this).closest("tr").children().eq(0).text());
             console.log(mId);
-            const path = 'api/updateName';
+            //수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써
+            const path = 'api/updateImage';
             const json = JSON.stringify({
                 'mId' : mId,
-                'newmName' : newmName
+                'newmImg' : newmPrice
             });
             console.log(json);
+            console.log(newmPrice);
             const csrfToken =/*[[${_csrf.token}]]*/ null;
             const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
 
             $.ajax({
                 url: path,
-                type: 'POST',
+                type: 'PUT',
                 contentType: 'application/json',
                 data: json,
                 beforeSend: function (xhr) {
@@ -249,11 +304,11 @@
             })
                 .done((response) => {
                     if (response.result == 'ok') {
-                        alert('메뉴명이 수정되었습니다.');
+                        alert('가격이 수정되었습니다.');
                         window.location.href = '/addmenu'
                         console.log(1);
                     } else {
-                        alert('메뉴명이 수정되지 않았습니다.');
+                        alert('가격이 수정되지 않았습니다.');
                         console.log(2);
 
                     }
@@ -264,6 +319,7 @@
 
                 });
         });
+
 
 
 

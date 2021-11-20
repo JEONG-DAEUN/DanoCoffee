@@ -12,5 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface ManagerRepository extends JpaRepository<Manager, Integer> {
-    public Optional<Manager> findByMnId(String mnId);
+    public Optional<Manager> findBymnId(String mnId);
+
+    public Manager findByMnId(String mnId);
 }
