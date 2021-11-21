@@ -123,7 +123,7 @@ public class ApiController {
     }
     @PostMapping("/addCrew") //관리자 등록
     public Result addCrew(@RequestBody Manager manager) {
-        Optional<Manager> findCrew = managerRepository.findById(manager.getMnId());
+        Optional<Manager> findCrew = managerRepository.findById(manager.getMnNumber());
         if (findCrew.isPresent()) {
             managerRepository.save(manager); //없는 경우 추가 있는 경우 변경 -> save함수
         } else {
@@ -132,13 +132,15 @@ public class ApiController {
         return new Result("ok");
     }
 
-    @PutMapping("/updatePrice")
-    public Result updateMenu(@RequestBody Menu menu) {
-        Menu updatePrice = adminService.findMenuName(menu.getmName());
-        if (updatePrice == null) {
-            return new Result("no"); // 가격 수정 실패
-        } else {
-            adminService.deleteMenu(menu.getmId()); //없는 경우 추가 있는 경우 변경 -> save함수
+//    @PutMapping("/updatePrice")
+//    public Result updateMenu(@RequestBody Menu menu) {
+//        Menu updatePrice = adminService.findMenuName(menu.getmName());
+//        if (updatePrice == null) {
+//            return new Result("no"); // 가격 수정 실패
+//        } else {
+//            adminService.deleteMenu(menu.getmId()); //없는 경우 추가 있는 경우 변경 -> save함수
+//        }
+//    }
     @PutMapping("/updatemenuname") //메뉴명 수정
     public Result updatemenuname(@RequestBody MenuDTO menu) throws Exception {
         System.out.println("asdf");
