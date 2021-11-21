@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 package com.example.danocoffee.controller;
 
 import com.example.danocoffee.data.Category;
@@ -8,6 +15,7 @@ import com.example.danocoffee.data.dto.MenuDTO;
 import com.example.danocoffee.repository.ManagerRepository;
 import com.example.danocoffee.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,12 +42,12 @@ public class ApiController {
 
     @PostMapping(value="/addMenu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) //멀티파트 폼데이터 쓰겠다고 빈에 알려줌.
     public String addMenu( //메뉴 등록
-                          @RequestParam("mName") String mName,
-                          @RequestParam("mPrice") int mPrice,
-                          @RequestParam("mInven") boolean mInven,
-                          @RequestParam("mImg") MultipartFile mImg,
-                          @RequestParam("cId") int cId,
-                          HttpServletRequest request
+                           @RequestParam("mName") String mName,
+                           @RequestParam("mPrice") int mPrice,
+                           @RequestParam("mInven") boolean mInven,
+                           @RequestParam("mImg") MultipartFile mImg,
+                           @RequestParam("cId") int cId,
+                           HttpServletRequest request
     ) throws IOException {
         System.out.println("image" + mImg);
         String path = request.getSession().getServletContext().getRealPath("\\"); //파일 저장할 경로 가져옴.
@@ -79,6 +87,7 @@ public class ApiController {
             return new Result("ok");
         }
     }
+
 
 
     @PutMapping("/updatemnId") //관리자 아이디 수정
@@ -121,10 +130,11 @@ public class ApiController {
             return new Result("ok");
         }
     }
+
     @PostMapping("/addCrew") //관리자 등록
     public Result addCrew(@RequestBody Manager manager) {
         Optional<Manager> findCrew = managerRepository.findById(manager.getMnNumber());
-        if (findCrew.isPresent()) {
+        if(findCrew.isPresent()) {
             managerRepository.save(manager); //없는 경우 추가 있는 경우 변경 -> save함수
         } else {
             managerRepository.save(manager);
@@ -132,15 +142,6 @@ public class ApiController {
         return new Result("ok");
     }
 
-//    @PutMapping("/updatePrice")
-//    public Result updateMenu(@RequestBody Menu menu) {
-//        Menu updatePrice = adminService.findMenuName(menu.getmName());
-//        if (updatePrice == null) {
-//            return new Result("no"); // 가격 수정 실패
-//        } else {
-//            adminService.deleteMenu(menu.getmId()); //없는 경우 추가 있는 경우 변경 -> save함수
-//        }
-//    }
     @PutMapping("/updatemenuname") //메뉴명 수정
     public Result updatemenuname(@RequestBody MenuDTO menu) throws Exception {
         System.out.println("asdf");
@@ -221,12 +222,12 @@ public class ApiController {
         Menu updateInven = adminService.findMenuId(menu.getmId());
         updateInven.setmInven(!updateInven.ismInven());
         System.out.println("updateInven.ismInven() = " + updateInven.ismInven());
-            adminService.save(updateInven);
+        adminService.save(updateInven);
 //            updatePrice.setmPrice(menu.getNewmPrice());
 
 
-            return updateInven;
-        }
+        return updateInven;
+    }
 
 
     //카테고리 수정 : updateCategory
@@ -234,13 +235,11 @@ public class ApiController {
     public String updateCategory(MenuDTO menu) throws Exception {
         System.out.println("menu = " + menu.getmId());
         Menu updateCategory = adminService.findBymId(menu.getmId());
-        System.out.println("menu.getcId().getcId() = " + menu.getcId().getcId());
+        System.out.println("menu.getcId().getcId() = " + menu.getcId());
         updateCategory.setcId(menu.getcId());
-        
+
         adminService.save(updateCategory);
 //            updatePrice.setmPrice(menu.getNewmPrice());
-
-
         return  "<h2>카테고리 변경이 완료되었습니다. <br>" +
                 "3초 뒤에 메뉴 목록으로 이동합니다.</h2>"
                 + "<meta http-equiv=\"refresh\" content=\"2;url=/addmenu\" />";

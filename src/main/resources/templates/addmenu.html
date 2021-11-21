@@ -15,7 +15,7 @@
 <table border="2px">
     <thead>
     <tr>
-        <th>메뉴아이디</th>
+        <th style="display:none;">메뉴 아이디</th>
         <th>메뉴명</th>
         <th>가격</th>
         <th>재고여부</th>
@@ -31,12 +31,12 @@
     </thead>
     <tbody>
     <tr th:each="product : ${Menu}">
-        <td th:text="${product.mId}"></td>
+        <td style="display:none;" th:text="${product.mId}"></td>
         <td th:text="${product.mName}"></td>
         <td th:text="${product.mPrice}"></td>
         <td th:text="${product.mInven}"></td>
         <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}"/></td>
-        <td th:text="${product.cId.cName}"></td>
+        <td th:text="${product.cId.cId}"></td>
 
         <td>
             <button class="updateName">메뉴명 수정</button>
@@ -82,7 +82,7 @@
         <option>false</option>
     </select></label><br>
     <label>이미지<input type="file" name="mImg"  accept="image/jpeg"/></label><br>
-<!--    name : 파일 이름으로 날리는건 name으로 날려야함.-->
+    <!--    name : 파일 이름으로 날리는건 name으로 날려야함.-->
     <label>카테고리<select name="cId">
         <option value=1>커피</option>
         <option value=2>에이드</option>
