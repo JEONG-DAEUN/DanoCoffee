@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<body>
+<button onclick="allMenu()" id="allMenu">전체</button>
+<button onclick="fcoffee()" id="coffee">커피</button>
+<button onclick="fade()" id="ade">에이드</button>
+<button onclick="ftea()" id="tea">티</button>
+
+<table border="2px">
+    <thead>
+    <tr>
+        <th style="display:none;">메뉴 아이디</th>
+        <th>메뉴명</th>
+        <th>가격</th>
+        <th>이미지</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:class="|id${product.cId.cId}|" th:each="product : ${Menu}">
+        <td style="display:none;" th:text="${product.mId}"></td>
+        <td th:text="${product.mName}"></td>
+        <td th:text="${product.mPrice}"></td>
+        <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}"/></td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+
+    var adeLength = document.getElementsByClassName('id2').length;
+    var coffeeLength = document.getElementsByClassName('id1').length;
+    var teaLength = document.getElementsByClassName('id3').length;
+    var all = adeLength + coffeeLength + teaLength;
+    var coffee = document.getElementsByClassName('id1');
+    var ade = document.getElementsByClassName('id2');
+    var tea = document.getElementsByClassName('id3');
+
+
+    function allMenu() {
+        console.log("allmenu");
+        for (i = 0; i < coffeeLength; i++) {
+            coffee[i].style.display = '';
+        }
+        for (i = 0; i < adeLength; i++) {
+            ade[i].style.display = '';
+        }
+        for(i=0; i<teaLength; i++) {
+            tea[i].style.display='';
+        }
+    }
+
+    function fcoffee() {
+        console.log("coffee");
+        console.log(document.getElementsByClassName('id1').length);
+        for(i=0; i<adeLength; i++) {
+            ade[i].style.display='none';
+        }
+        for(i=0; i<teaLength; i++) {
+            tea[i].style.display = 'none';
+        }
+        for(i=0; i<coffeeLength; i++) {
+            coffee[i].style.display='';
+        }
+
+    }
+
+    function fade() {
+        console.log("ade");
+        console.log(document.getElementsByClassName('id2').length);
+        for (i = 0; i < coffeeLength; i++) {
+            coffee[i].style.display = 'none';
+        }
+        for (i = 0; i < teaLength; i++) {
+            tea[i].style.display = 'none';
+        }
+        for(i=0; i<adeLength; i++) {
+            ade[i].style.display='';
+        }
+
+    }
+
+    function ftea() {
+        console.log("tea");
+        for (i = 0; i < coffeeLength; i++) {
+            coffee[i].style.display = 'none';
+        }
+        for (i = 0; i < adeLength; i++) {
+            ade[i].style.display = 'none';
+        }
+        for(i=0; i<teaLength; i++) {
+            tea[i].style.display='';
+        }
+    }
+</script>
+</body>
+</html>
