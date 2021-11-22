@@ -7,12 +7,10 @@
 
 package com.example.danocoffee.controller;
 
-import com.example.danocoffee.data.Category;
-import com.example.danocoffee.data.Manager;
-import com.example.danocoffee.data.Menu;
-import com.example.danocoffee.data.Result;
+import com.example.danocoffee.data.*;
 import com.example.danocoffee.data.dto.MenuDTO;
 import com.example.danocoffee.repository.ManagerRepository;
+import com.example.danocoffee.repository.OrderListRepository;
 import com.example.danocoffee.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -32,6 +30,8 @@ import java.util.UUID;
 public class ApiController {
     @Autowired
     private ManagerRepository managerRepository;
+    @Autowired
+    private OrderListRepository orderListRepository;
     @Autowired
     private AdminService adminService;
 
@@ -243,5 +243,14 @@ public class ApiController {
         return  "<h2>카테고리 변경이 완료되었습니다. <br>" +
                 "3초 뒤에 메뉴 목록으로 이동합니다.</h2>"
                 + "<meta http-equiv=\"refresh\" content=\"2;url=/addmenu\" />";
+    }
+
+
+    // 장바구니에 담기
+    @PostMapping("/addOrder")
+    public Result postAddOrder(@RequestBody OrderList orderList){
+        orderListRepository.save(orderList);
+        System.out.println("addorder");
+        return new Result("ok");
     }
 }

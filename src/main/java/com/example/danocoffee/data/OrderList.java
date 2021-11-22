@@ -5,23 +5,26 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name="orderlist")
+@Table(name = "orderlist")
 public class OrderList implements Serializable {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY) //int.autoincrement
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //int.autoincrement
     private int orlId;
 
     @ManyToOne
-    @JoinColumn(name="mId")
+    @JoinColumn(name = "mId")
     private Menu mId; //메누아이디
 
     @ManyToOne
-    @JoinColumn(name="pId")
+    @JoinColumn(name = "pId")
     private Pay pId; //결제아이디
+
+    private int orlShot = 0;
 
     @Column
     private int orlPayment; //가격
-    private int orlTotalPrice; //수량
+    private int orlCount = 1; //수량
+
 
     public int getOrlId() {
         return orlId;
@@ -55,14 +58,21 @@ public class OrderList implements Serializable {
         this.orlPayment = orlPayment;
     }
 
-    public int getOrlTotalPrice() {
-        return orlTotalPrice;
+    public int getOrlCount() {
+        return orlCount;
     }
 
-    public void setOrlTotalPrice(int orlTotalPrice) {
-        this.orlTotalPrice = orlTotalPrice;
+    public void setOrlCount(int orlCount) {
+        this.orlCount = orlCount;
     }
 
+    public int getOrlShot() {
+        return orlShot;
+    }
+
+    public void setOrlShot(int orlShot) {
+        this.orlShot = orlShot;
+    }
 
     public OrderList() {
     }

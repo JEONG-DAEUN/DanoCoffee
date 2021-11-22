@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Order</title>
@@ -29,21 +30,22 @@
     <tr th:class="|id${product.cId.cId}|" th:each="product : ${Menu}">
         <td style="display:none;" th:text="${product.mId}" id="mId"></td>
         <td th:text="${product.mName}"></td>
-        <td th:text="${product.mPrice}"></td>
-        <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}"/></td>
+        <td th:text="${product.mPrice}" id="mPrice"></td>
+        <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}" /></td>
         <td>
             샷추가
             <hr>
-            <select id="SizeOpCount">
-                <option value=1>1</option>
-                <option value=2>2</option>
-                <option value=3>3</option>
-                <option value=4>4</option>
-                <option value=5>5</option>
-                <option value=6>6</option>
+            <select class="orlShot">
+                <option value=0>0</option>
+                <option value=1>1(+300)</option>
+                <option value=2>2(+600)</option>
+                <option value=3>3(+900)</option>
+                <option value=4>4(+1200)</option>
+                <option value=5>5(+1500)</option>
+                <option value=6>6(+1800)</option>
             </select>
         </td>
-        <td><button id="putCart">담기</button></td>
+        <td><button class="putCart">담기</button></td>
     </tr>
     </tbody>
 </table>
@@ -54,140 +56,147 @@
     <div>
         <table border="1">
             <thead>
-                <tr>
-                    <td>메뉴이미지</td>
-                    <td>메뉴명</td>
-                    <td>사이즈</td>
-                    <td>샷</td>
-                    <td>수량</td>
-                    <td>X</td>
-                </tr>
+            <tr>
+                <td>메뉴이미지</td>
+                <td>메뉴명</td>
+                <td>사이즈</td>
+                <td>샷</td>
+                <td>수량</td>
+                <td>X</td>
+            </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>이미지</td>
-                    <td>메뉴명</td>
-                    <td>사이즈</td>
-                    <td>샷</td>
-                    <td>수량</td>
-                    <td><button>X</button></td>
-                </tr>
+            <tr>
+                <td>이미지</td>
+                <td>메뉴명</td>
+                <td>사이즈</td>
+                <td>샷</td>
+                <td>수량</td>
+                <td><button>X</button></td>
+            </tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<script>
+<script th:inline="javascript">
 
-    var adeLength = document.getElementsByClassName('id2').length;
-    var coffeeLength = document.getElementsByClassName('id1').length;
-    var teaLength = document.getElementsByClassName('id3').length;
-    var all = adeLength + coffeeLength + teaLength;
-    var coffee = document.getElementsByClassName('id1');
-    var ade = document.getElementsByClassName('id2');
-    var tea = document.getElementsByClassName('id3');
+        var adeLength = document.getElementsByClassName('id2').length;
+        var coffeeLength = document.getElementsByClassName('id1').length;
+        var teaLength = document.getElementsByClassName('id3').length;
+        var all = adeLength + coffeeLength + teaLength;
+        var coffee = document.getElementsByClassName('id1');
+        var ade = document.getElementsByClassName('id2');
+        var tea = document.getElementsByClassName('id3');
 
 
-    function allMenu() {
-        console.log("allmenu");
-        for (i = 0; i < coffeeLength; i++) {
-            coffee[i].style.display = '';
-        }
-        for (i = 0; i < adeLength; i++) {
-            ade[i].style.display = '';
-        }
-        for(i=0; i<teaLength; i++) {
-            tea[i].style.display='';
-        }
-    }
-
-    function fcoffee() {
-        console.log("coffee");
-        console.log(document.getElementsByClassName('id1').length);
-        for(i=0; i<adeLength; i++) {
-            ade[i].style.display='none';
-        }
-        for(i=0; i<teaLength; i++) {
-            tea[i].style.display = 'none';
-        }
-        for(i=0; i<coffeeLength; i++) {
-            coffee[i].style.display='';
+        function allMenu() {
+            console.log("allmenu");
+            for (i = 0; i < coffeeLength; i++) {
+                coffee[i].style.display = '';
+            }
+            for (i = 0; i < adeLength; i++) {
+                ade[i].style.display = '';
+            }
+            for (i = 0; i < teaLength; i++) {
+                tea[i].style.display = '';
+            }
         }
 
-    }
+        function fcoffee() {
+            console.log("coffee");
+            console.log(document.getElementsByClassName('id1').length);
+            for (i = 0; i < adeLength; i++) {
+                ade[i].style.display = 'none';
+            }
+            for (i = 0; i < teaLength; i++) {
+                tea[i].style.display = 'none';
+            }
+            for (i = 0; i < coffeeLength; i++) {
+                coffee[i].style.display = '';
+            }
 
-    function fade() {
-        console.log("ade");
-        console.log(document.getElementsByClassName('id2').length);
-        for (i = 0; i < coffeeLength; i++) {
-            coffee[i].style.display = 'none';
-        }
-        for (i = 0; i < teaLength; i++) {
-            tea[i].style.display = 'none';
-        }
-        for(i=0; i<adeLength; i++) {
-            ade[i].style.display='';
         }
 
-    }
+        function fade() {
+            console.log("ade");
+            console.log(document.getElementsByClassName('id2').length);
+            for (i = 0; i < coffeeLength; i++) {
+                coffee[i].style.display = 'none';
+            }
+            for (i = 0; i < teaLength; i++) {
+                tea[i].style.display = 'none';
+            }
+            for (i = 0; i < adeLength; i++) {
+                ade[i].style.display = '';
+            }
 
-    function ftea() {
-        console.log("tea");
-        for (i = 0; i < coffeeLength; i++) {
-            coffee[i].style.display = 'none';
         }
-        for (i = 0; i < adeLength; i++) {
-            ade[i].style.display = 'none';
-        }
-        for(i=0; i<teaLength; i++) {
-            tea[i].style.display='';
-        }
-    }
 
-    $(function () {
+        function ftea() {
+            console.log("tea");
+            for (i = 0; i < coffeeLength; i++) {
+                coffee[i].style.display = 'none';
+            }
+            for (i = 0; i < adeLength; i++) {
+                ade[i].style.display = 'none';
+            }
+            for (i = 0; i < teaLength; i++) {
+                tea[i].style.display = '';
+            }
+        }
 
-        // //  메뉴 등록
-        // $('#puCart').click((event) => {
-        //
-        //     const mId = Number($('#mId').val());
-        //
-        //     const path = 'api/addOrder';
-        //     const json = JSON.stringify({
-        //         'mId' : {
-        //              'mid' : mId
-        //              }
-        //     });
-        //
-        //     const csrfToken =/*[[${_csrf.token}]]*/ null;
-        //     const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
-        //
-        //     console.log(json);
-        //     $.ajax({
-        //         url: path,
-        //         type: 'POST',
-        //         contentType: 'application/json',
-        //         data: json,
-        //         beforeSend: function (xhr) {
-        //             xhr.setRequestHeader(csrfHeader, csrfToken);
-        //         }
-        //     })
-        //         .done((response) => {
-        //             if (response.result == 'ok') {
-        //                 alert('등록되었습니다.');
-        //                 window.location.href = '/addmenu'
-        //                 console.log(1);
-        //             } else {
-        //                 alert('등록되지 않았습니다.');
-        //                 console.log(2);
-        //
-        //             }
-        //         })
-        //         .fail((response) => {
-        //             alert('(에러)등록되지 않았습니다.');
-        //             console.log(3);
-        //
-        //         });
-        // });
-</script>
+
+        //  장바구니 담기
+        $('.putCart').click( function() {
+            console.log("1");
+            var mId = Number($(this).closest("tr").children().eq(0).text());
+            console.log(mId);
+            var orlShot = Number($('.orlShot').val());
+            var mPrice = Number($(this).closest("tr").children().eq(2).text());
+            console.log(mPrice);
+            var total = Number(mPrice + (orlShot * 300));
+            const url = 'api/addOrder';
+            const data = {
+                'mId': {
+                    'mId': mId
+                },
+                'orlShot': orlShot,
+                'orlPayment': total
+            }
+            const json = JSON.stringify(data);
+
+           const csrfToken =/*[[${_csrf.token}]]*/ null;
+            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+            console.log(json);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                contentType: 'application/json',
+                data: json,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            })
+                .done((response) => {
+                    if (response.result == 'ok') {
+                        alert('등록되었습니다.');
+                        window.location.href = '/order'
+                        console.log(1);
+                    } else {
+                        alert('등록되지 않았습니다.');
+                        console.log(2);
+
+                    }
+                })
+                .fail((response) => {
+                    alert('(에러)등록되지 않았습니다.');
+                    console.log(3);
+                });
+        });
+
+    </script>
 </body>
+
 </html>
