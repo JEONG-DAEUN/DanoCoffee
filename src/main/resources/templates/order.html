@@ -7,20 +7,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <body>
-<table border="1">
-    <tbody>
-    <tr>
-        <td onclick="allMenu()" id="allMenu">전체</td>
-        <td onclick="fcoffee()" id="coffee">커피</td>
-        <td onclick="fade()" id="ade">에이드</td>
-        <td onclick="ftea()" id="tea">티</td>
-    </tr>
-    </tbody>
-</table>
-<!--<button onclick="allMenu()" id="allMenu">전체</button>-->
-<!--<button onclick="fcoffee()" id="coffee">커피</button>-->
-<!--<button onclick="fade()" id="ade">에이드</button>-->
-<!--<button onclick="ftea()" id="tea">티</button>-->
+
+<button onclick="allMenu()" id="allMenu">전체</button>
+<button onclick="fcoffee()" id="coffee">커피</button>
+<button onclick="fade()" id="ade">에이드</button>
+<button onclick="ftea()" id="tea">티</button>
 <hr>
 <table border="2px">
     <thead>
@@ -36,19 +27,10 @@
     </thead>
     <tbody>
     <tr th:class="|id${product.cId.cId}|" th:each="product : ${Menu}">
-        <td style="display:none;" th:text="${product.mId}"></td>
+        <td style="display:none;" th:text="${product.mId}" id="mId"></td>
         <td th:text="${product.mName}"></td>
         <td th:text="${product.mPrice}"></td>
         <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}"/></td>
-        <td>
-            사이즈추가
-            <hr>
-            <select id="extraShotOpCount">
-                <option value=0>R</option>
-                <option value=1>M(+500)</option>
-                <option value=2>L(+1000)</option>
-            </select>
-        </td>
         <td>
             샷추가
             <hr>
@@ -61,7 +43,7 @@
                 <option value=6>6</option>
             </select>
         </td>
-        <td><button>담기</button></td>
+        <td><button id="putCart">담기</button></td>
     </tr>
     </tbody>
 </table>
@@ -70,17 +52,27 @@
     <p>장바구니</p>
     <hr>
     <div>
-        <table>
+        <table border="1">
             <thead>
                 <tr>
                     <td>메뉴이미지</td>
                     <td>메뉴명</td>
                     <td>사이즈</td>
-                    <td>샷추가</td>
+                    <td>샷</td>
                     <td>수량</td>
+                    <td>X</td>
                 </tr>
             </thead>
-
+            <tbody>
+                <tr>
+                    <td>이미지</td>
+                    <td>메뉴명</td>
+                    <td>사이즈</td>
+                    <td>샷</td>
+                    <td>수량</td>
+                    <td><button>X</button></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>
@@ -151,6 +143,51 @@
             tea[i].style.display='';
         }
     }
+
+    $(function () {
+
+        // //  메뉴 등록
+        // $('#puCart').click((event) => {
+        //
+        //     const mId = Number($('#mId').val());
+        //
+        //     const path = 'api/addOrder';
+        //     const json = JSON.stringify({
+        //         'mId' : {
+        //              'mid' : mId
+        //              }
+        //     });
+        //
+        //     const csrfToken =/*[[${_csrf.token}]]*/ null;
+        //     const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+        //
+        //     console.log(json);
+        //     $.ajax({
+        //         url: path,
+        //         type: 'POST',
+        //         contentType: 'application/json',
+        //         data: json,
+        //         beforeSend: function (xhr) {
+        //             xhr.setRequestHeader(csrfHeader, csrfToken);
+        //         }
+        //     })
+        //         .done((response) => {
+        //             if (response.result == 'ok') {
+        //                 alert('등록되었습니다.');
+        //                 window.location.href = '/addmenu'
+        //                 console.log(1);
+        //             } else {
+        //                 alert('등록되지 않았습니다.');
+        //                 console.log(2);
+        //
+        //             }
+        //         })
+        //         .fail((response) => {
+        //             alert('(에러)등록되지 않았습니다.');
+        //             console.log(3);
+        //
+        //         });
+        // });
 </script>
 </body>
 </html>
