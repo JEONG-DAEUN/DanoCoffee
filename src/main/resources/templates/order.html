@@ -63,11 +63,11 @@
                 <td>메뉴명</td>
                 <td>메뉴가격</td>
                 <td>샷추가</td>
-                <td>가격</td>
                 <td>감소</td>
                 <td>수량</td>
                 <td>증가</td>
-                <td>X</td>
+                <td>가격</td>
+                <td>삭제</td>
             </tr>
             </thead>
             <tbody id="olist">
@@ -161,25 +161,25 @@
 
             var orlPrice = mPrice + (300 * sel);
 
-            var html = "<tr><td>" + mId + "</td><td>" + mName + "</td><td>" + mPrice + "</td><td>" + sel + "</td><td>" + orlPrice + "</td><td><button class='countDown'>-</button></td><td>1</td><td><button class='countUp'>+</button></td><td><button class='deletecCart'>X</button></td></tr>";
+            var html = "<tr><td>" + mId + "</td><td>" + mName + "</td><td>" + mPrice + "</td><td>" + sel + "</td><td><button class='countDown'>-</button></td><td>1</td><td><button class='countUp'>+</button></td><td>" + orlPrice + "</td><td><button class='deletecCart'>X</button></td></tr>";
 
             $("#olist").append(html);
 
         });
 
         $('#olist').on('click', '.countUp', function () {
-            var count = Number($(this).closest("tr").children().eq(6).text());
+            var count = Number($(this).closest("tr").children().eq(5).text());
             var mp = Number($(this).closest("tr").children().eq(2).text());
             var sht = Number($(this).closest("tr").children().eq(3).text());
 
             count++;
             var c = (mp + (sht*300))*count;
-            $(this).closest("tr").children().eq(6).text(count);
-            $(this).closest("tr").children().eq(4).text(c);
+            $(this).closest("tr").children().eq(5).text(count);
+            $(this).closest("tr").children().eq(7).text(c);
         });
 
         $("#olist").on('click', '.countDown', function () {
-            var count = Number($(this).closest("tr").children().eq(6).text());
+            var count = Number($(this).closest("tr").children().eq(5).text());
             var mp = Number($(this).closest("tr").children().eq(2).text());
             var sht = Number($(this).closest("tr").children().eq(3).text());
 
@@ -187,13 +187,13 @@
                 alert('더이상 감소 안됩니다.');
                 count =1;
                 var c = (mp + (sht*300))*count;
-                $(this).closest("tr").children().eq(6).text(count);
-                $(this).closest("tr").children().eq(4).text(c);
+                $(this).closest("tr").children().eq(5).text(count);
+                $(this).closest("tr").children().eq(7).text(c);
             } else {
                 count--;
                 var c = (mp + (sht*300))*count;
-                $(this).closest("tr").children().eq(6).text(count);
-                $(this).closest("tr").children().eq(4).text(c);
+                $(this).closest("tr").children().eq(5).text(count);
+                $(this).closest("tr").children().eq(7).text(c);
             }
         });
 
