@@ -2,6 +2,7 @@ package com.example.danocoffee.controller;
 
 import com.example.danocoffee.repository.ManagerRepository;
 import com.example.danocoffee.repository.MenuRepository;
+import com.example.danocoffee.repository.OrderListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,8 @@ public class WebController {
     ManagerRepository managerRepository;
     @Autowired
     MenuRepository menuRepository;
-
+    @Autowired
+    OrderListRepository orderListRepository;
 
     @GetMapping("/index")
     public String index() {
@@ -43,10 +45,4 @@ public class WebController {
         return "login";
     }
 
-    @GetMapping("/order")
-    public String order(Model model) {
-        model.addAttribute("Menu", menuRepository.findAll());
-
-        return "order";
-    }
 }

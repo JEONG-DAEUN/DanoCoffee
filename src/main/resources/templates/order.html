@@ -7,6 +7,7 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 <body>
 
 <button onclick="allMenu()" id="allMenu">전체</button>
@@ -21,7 +22,6 @@
         <th>메뉴명</th>
         <th>가격</th>
         <th>이미지</th>
-        <th>사이즈</th>
         <th>샷</th>
         <th>담기</th>
     </tr>
@@ -35,7 +35,7 @@
         <td>
             샷추가
             <hr>
-            <select class="orlShot">
+            <select name="sel" class="sel">
                 <option value=0>0</option>
                 <option value=1>1(+300)</option>
                 <option value=2>2(+600)</option>
@@ -45,7 +45,9 @@
                 <option value=6>6(+1800)</option>
             </select>
         </td>
-        <td><button class="putCart">담기</button></td>
+        <td>
+            <button class="putCart">담기</button>
+        </td>
     </tr>
     </tbody>
 </table>
@@ -57,27 +59,24 @@
         <table border="1">
             <thead>
             <tr>
-                <td>메뉴이미지</td>
+                <td>메뉴아이디</td>
                 <td>메뉴명</td>
-                <td>사이즈</td>
-                <td>샷</td>
+                <td>메뉴가격</td>
+                <td>샷추가</td>
+                <td>가격</td>
+                <td>감소</td>
                 <td>수량</td>
+                <td>증가</td>
                 <td>X</td>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>이미지</td>
-                <td>메뉴명</td>
-                <td>사이즈</td>
-                <td>샷</td>
-                <td>수량</td>
-                <td><button>X</button></td>
-            </tr>
+            <tbody id="olist">
+
             </tbody>
         </table>
     </div>
 </div>
+
 
 <script th:inline="javascript">
 
@@ -148,52 +147,58 @@
 
 
         //  장바구니 담기
-        $('.putCart').click( function() {
-            console.log("1");
+        $('.putCart').click(function () {
             var mId = Number($(this).closest("tr").children().eq(0).text());
-            console.log(mId);
-            var orlShot = Number($('.orlShot').val());
+            console.log("메뉴아이디 : " + mId);
+            var mName = $(this).closest("tr").children().eq(1).text();
+            console.log("메뉴명 : " + mName);
             var mPrice = Number($(this).closest("tr").children().eq(2).text());
-            console.log(mPrice);
-            var total = Number(mPrice + (orlShot * 300));
-            const url = 'api/addOrder';
-            const data = {
-                'mId': {
-                    'mId': mId
-                },
-                'orlShot': orlShot,
-                'orlPayment': total
+            console.log("메뉴가격 : " + mPrice);
+            var mImg = $(this).closest("tr").children().eq(3).val();
+            console.log("메뉴이미지 : " + mImg);
+            var sel = Number($(this).closest("tr").children().eq(4).children("select").val());
+            console.log("샷추가 : " + sel);
+
+            var orlPrice = mPrice + (300 * sel);
+
+            var html = "<tr><td>" + mId + "</td><td>" + mName + "</td><td>" + mPrice + "</td><td>" + sel + "</td><td>" + orlPrice + "</td><td><button class='countDown'>-</button></td><td>1</td><td><button class='countUp'>+</button></td><td><button class='deletecCart'>X</button></td></tr>";
+
+            $("#olist").append(html);
+
+        });
+
+        $('#olist').on('click', '.countUp', function () {
+            var count = Number($(this).closest("tr").children().eq(6).text());
+            var mp = Number($(this).closest("tr").children().eq(2).text());
+            var sht = Number($(this).closest("tr").children().eq(3).text());
+
+            count++;
+            var c = (mp + (sht*300))*count;
+            $(this).closest("tr").children().eq(6).text(count);
+            $(this).closest("tr").children().eq(4).text(c);
+        });
+
+        $("#olist").on('click', '.countDown', function () {
+            var count = Number($(this).closest("tr").children().eq(6).text());
+            var mp = Number($(this).closest("tr").children().eq(2).text());
+            var sht = Number($(this).closest("tr").children().eq(3).text());
+
+            if (count == 1) {
+                alert('더이상 감소 안됩니다.');
+                count =1;
+                var c = (mp + (sht*300))*count;
+                $(this).closest("tr").children().eq(6).text(count);
+                $(this).closest("tr").children().eq(4).text(c);
+            } else {
+                count--;
+                var c = (mp + (sht*300))*count;
+                $(this).closest("tr").children().eq(6).text(count);
+                $(this).closest("tr").children().eq(4).text(c);
             }
-            const json = JSON.stringify(data);
+        });
 
-           const csrfToken =/*[[${_csrf.token}]]*/ null;
-            const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
-
-            console.log(json);
-            $.ajax({
-                url: url,
-                type: 'POST',
-                contentType: 'application/json',
-                data: json,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                }
-            })
-                .done((response) => {
-                    if (response.result == 'ok') {
-                        alert('등록되었습니다.');
-                        window.location.href = '/order'
-                        console.log(1);
-                    } else {
-                        alert('등록되지 않았습니다.');
-                        console.log(2);
-
-                    }
-                })
-                .fail((response) => {
-                    alert('(에러)등록되지 않았습니다.');
-                    console.log(3);
-                });
+        $("#olist").on('click', '.deletecCart', function () {
+            $(this).closest("tr").remove();
         });
 
     </script>

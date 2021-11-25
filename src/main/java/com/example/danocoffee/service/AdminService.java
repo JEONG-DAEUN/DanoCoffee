@@ -3,9 +3,11 @@ package com.example.danocoffee.service;
 import com.example.danocoffee.data.Category;
 import com.example.danocoffee.data.Manager;
 import com.example.danocoffee.data.Menu;
+import com.example.danocoffee.data.OrderList;
 import com.example.danocoffee.repository.CategoryRepository;
 import com.example.danocoffee.repository.ManagerRepository;
 import com.example.danocoffee.repository.MenuRepository;
+import com.example.danocoffee.repository.OrderListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ public class AdminService {
     CategoryRepository categoryRepository;
     @Autowired
     ManagerRepository managerRepository;
+    @Autowired
+    OrderListRepository orderListRepository;
 
     public void save(Menu menu) {
         menuRepository.save(menu);
@@ -91,6 +95,7 @@ public class AdminService {
         Optional<Menu> findById = menuRepository.findById(mId);
         return findById.get();
     }
+
 
 //    public Menu findBy(int cId)
 }

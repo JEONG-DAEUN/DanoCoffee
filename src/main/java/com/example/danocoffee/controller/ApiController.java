@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 package com.example.danocoffee.controller;
 
 import com.example.danocoffee.data.*;
@@ -245,12 +238,4 @@ public class ApiController {
                 + "<meta http-equiv=\"refresh\" content=\"2;url=/addmenu\" />";
     }
 
-
-    // 장바구니에 담기
-    @PostMapping("/addOrder")
-    public Result postAddOrder(@RequestBody OrderList orderList){
-        orderListRepository.save(orderList);
-        System.out.println("addorder");
-        return new Result("ok");
-    }
 }
