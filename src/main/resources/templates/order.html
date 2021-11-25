@@ -1,207 +1,226 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Order</title>
-</head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <head>
+        <meta charset="UTF-8">
+        <title>Order</title>
+    </head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-<body>
-
-<button onclick="allMenu()" id="allMenu">전체</button>
-<button onclick="fcoffee()" id="coffee">커피</button>
-<button onclick="fade()" id="ade">에이드</button>
-<button onclick="ftea()" id="tea">티</button>
-<hr>
-<table border="2px">
-    <thead>
-    <tr>
-        <th style="display:none;">메뉴 아이디</th>
-        <th>메뉴명</th>
-        <th>가격</th>
-        <th>이미지</th>
-        <th>샷</th>
-        <th>담기</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:class="|id${product.cId.cId}|" th:each="product : ${Menu}">
-        <td style="display:none;" th:text="${product.mId}" id="mId"></td>
-        <td th:text="${product.mName}"></td>
-        <td th:text="${product.mPrice}" id="mPrice"></td>
-        <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}" /></td>
-        <td>
-            샷추가
-            <hr>
-            <select name="sel" class="sel">
-                <option value=0>0</option>
-                <option value=1>1(+300)</option>
-                <option value=2>2(+600)</option>
-                <option value=3>3(+900)</option>
-                <option value=4>4(+1200)</option>
-                <option value=5>5(+1500)</option>
-                <option value=6>6(+1800)</option>
-            </select>
-        </td>
-        <td>
-            <button class="putCart">담기</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<div>
-    <p>장바구니</p>
-    <hr>
-    <div>
-        <table border="1">
+    <body>
+        <button onclick="allMenu()" id="allMenu">전체</button>
+        <button onclick="fcoffee()" id="coffee">커피</button>
+        <button onclick="fade()" id="ade">에이드</button>
+        <button onclick="ftea()" id="tea">티</button>
+        <hr>
+        <table border="2px">
             <thead>
             <tr>
-                <td>메뉴아이디</td>
-                <td>메뉴명</td>
-                <td>메뉴가격</td>
-                <td>샷추가</td>
-                <td>감소</td>
-                <td>수량</td>
-                <td>증가</td>
-                <td>가격</td>
-                <td>삭제</td>
+                <th style="display:none;">메뉴 아이디</th>
+                <th>이미지</th>
+                <th>메뉴명</th>
+                <th>가격</th>
+                <th>샷감소</th>
+                <th>샷(+300)</th>
+                <th>샷증가</th>
+                <th>담기</th>
             </tr>
             </thead>
-            <tbody id="olist">
-
+            <tbody class="shtcnt">
+            <tr th:class="|id${product.cId.cId}|" th:each="product : ${Menu}">
+                <td style="display:none;" th:text="${product.mId}" id="mId"></td>
+                <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}" /></td>
+                <td th:text="${product.mName}"></td>
+                <td th:text="${product.mPrice}" id="mPrice"></td>
+                <td>
+                    <button class="shtDown">-</button>
+                </td>
+                <td>0</td>
+                <td>
+                    <button class="shtUp">+</button>
+                </td>
+                <td>
+                    <button class="putCart">담기</button>
+                </td>
+            </tr>
             </tbody>
         </table>
-    </div>
-</div>
+
+        <div>
+            <p>장바구니</p>
+            <hr>
+            <div>
+                <table border="1">
+                    <thead>
+                    <tr>
+                        <td>메뉴명</td>
+                        <td>메뉴가격</td>
+                        <td>샷추가</td>
+                        <td>감소</td>
+                        <td>수량</td>
+                        <td>증가</td>
+                        <td>가격</td>
+                        <td>삭제</td>
+                    </tr>
+                    </thead>
+                    <tbody id="olist">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
 
-<script th:inline="javascript">
+    <script th:inline="javascript">
 
-        var adeLength = document.getElementsByClassName('id2').length;
-        var coffeeLength = document.getElementsByClassName('id1').length;
-        var teaLength = document.getElementsByClassName('id3').length;
-        var all = adeLength + coffeeLength + teaLength;
-        var coffee = document.getElementsByClassName('id1');
-        var ade = document.getElementsByClassName('id2');
-        var tea = document.getElementsByClassName('id3');
+            var adeLength = document.getElementsByClassName('id2').length;
+            var coffeeLength = document.getElementsByClassName('id1').length;
+            var teaLength = document.getElementsByClassName('id3').length;
+            var all = adeLength + coffeeLength + teaLength;
+            var coffee = document.getElementsByClassName('id1');
+            var ade = document.getElementsByClassName('id2');
+            var tea = document.getElementsByClassName('id3');
 
 
-        function allMenu() {
-            console.log("allmenu");
-            for (i = 0; i < coffeeLength; i++) {
-                coffee[i].style.display = '';
-            }
-            for (i = 0; i < adeLength; i++) {
-                ade[i].style.display = '';
-            }
-            for (i = 0; i < teaLength; i++) {
-                tea[i].style.display = '';
-            }
-        }
-
-        function fcoffee() {
-            console.log("coffee");
-            console.log(document.getElementsByClassName('id1').length);
-            for (i = 0; i < adeLength; i++) {
-                ade[i].style.display = 'none';
-            }
-            for (i = 0; i < teaLength; i++) {
-                tea[i].style.display = 'none';
-            }
-            for (i = 0; i < coffeeLength; i++) {
-                coffee[i].style.display = '';
-            }
-
-        }
-
-        function fade() {
-            console.log("ade");
-            console.log(document.getElementsByClassName('id2').length);
-            for (i = 0; i < coffeeLength; i++) {
-                coffee[i].style.display = 'none';
-            }
-            for (i = 0; i < teaLength; i++) {
-                tea[i].style.display = 'none';
-            }
-            for (i = 0; i < adeLength; i++) {
-                ade[i].style.display = '';
+            function allMenu() {
+                console.log("allmenu");
+                for (i = 0; i < coffeeLength; i++) {
+                    coffee[i].style.display = '';
+                }
+                for (i = 0; i < adeLength; i++) {
+                    ade[i].style.display = '';
+                }
+                for (i = 0; i < teaLength; i++) {
+                    tea[i].style.display = '';
+                }
             }
 
-        }
+            function fcoffee() {
+                console.log("coffee");
+                console.log(document.getElementsByClassName('id1').length);
+                for (i = 0; i < adeLength; i++) {
+                    ade[i].style.display = 'none';
+                }
+                for (i = 0; i < teaLength; i++) {
+                    tea[i].style.display = 'none';
+                }
+                for (i = 0; i < coffeeLength; i++) {
+                    coffee[i].style.display = '';
+                }
 
-        function ftea() {
-            console.log("tea");
-            for (i = 0; i < coffeeLength; i++) {
-                coffee[i].style.display = 'none';
             }
-            for (i = 0; i < adeLength; i++) {
-                ade[i].style.display = 'none';
+
+            function fade() {
+                console.log("ade");
+                console.log(document.getElementsByClassName('id2').length);
+                for (i = 0; i < coffeeLength; i++) {
+                    coffee[i].style.display = 'none';
+                }
+                for (i = 0; i < teaLength; i++) {
+                    tea[i].style.display = 'none';
+                }
+                for (i = 0; i < adeLength; i++) {
+                    ade[i].style.display = '';
+                }
+
             }
-            for (i = 0; i < teaLength; i++) {
-                tea[i].style.display = '';
+
+            function ftea() {
+                console.log("tea");
+                for (i = 0; i < coffeeLength; i++) {
+                    coffee[i].style.display = 'none';
+                }
+                for (i = 0; i < adeLength; i++) {
+                    ade[i].style.display = 'none';
+                }
+                for (i = 0; i < teaLength; i++) {
+                    tea[i].style.display = '';
+                }
             }
-        }
+
+            //메뉴 샷추가
+            $('.shtcnt').on('click', '.shtUp', function () {
+                var shot = Number($(this).closest("tr").children().eq(5).text());
+                if(shot == 10){
+                    alert('더 이상 증가 할 수 없습니다.');
+                }else{
+                    shot++;
+                }
+                $(this).closest("tr").children().eq(5).text(shot);
+            });
+
+            // 샷감소
+            $(".shtcnt").on('click', '.shtDown', function () {
+                var shot = Number($(this).closest("tr").children().eq(5).text());
+
+                if (shot == 0) {
+                    alert('더이상 감소 안됩니다.');
+                    shot = 0;
+                } else {
+                    shot--;;
+                }
+                $(this).closest("tr").children().eq(5).text(shot);
+            });
 
 
-        //  장바구니 담기
-        $('.putCart').click(function () {
-            var mId = Number($(this).closest("tr").children().eq(0).text());
-            console.log("메뉴아이디 : " + mId);
-            var mName = $(this).closest("tr").children().eq(1).text();
-            console.log("메뉴명 : " + mName);
-            var mPrice = Number($(this).closest("tr").children().eq(2).text());
-            console.log("메뉴가격 : " + mPrice);
-            var mImg = $(this).closest("tr").children().eq(3).val();
-            console.log("메뉴이미지 : " + mImg);
-            var sel = Number($(this).closest("tr").children().eq(4).children("select").val());
-            console.log("샷추가 : " + sel);
+            //  장바구니 담기
+            $('.putCart').click(function () {
+                var mId = Number($(this).closest("tr").children().eq(0).text());
+                console.log("메뉴아이디 : " + mId);
+                var mName = $(this).closest("tr").children().eq(2).text();
+                console.log("메뉴명 : " + mName);
+                var mPrice = Number($(this).closest("tr").children().eq(3).text());
+                console.log("메뉴가격 : " + mPrice);
+                var sel = Number($(this).closest("tr").children().eq(5).text());
+                console.log("샷추가 : " + sel);
 
-            var orlPrice = mPrice + (300 * sel);
+                var orlPrice = mPrice + (300 * sel);
 
-            var html = "<tr><td>" + mId + "</td><td>" + mName + "</td><td>" + mPrice + "</td><td>" + sel + "</td><td><button class='countDown'>-</button></td><td>1</td><td><button class='countUp'>+</button></td><td>" + orlPrice + "</td><td><button class='deletecCart'>X</button></td></tr>";
+                var html = "<tr><td style='display:none'>" + mId + "</td><td>" + mName + "</td><td>" + mPrice + "</td><td>" + sel + "</td><td><button class='countDown'>-</button></td><td>1</td><td><button class='countUp'>+</button></td><td>" + orlPrice + "</td><td><button class='deletecCart'>X</button></td></tr>";
 
-            $("#olist").append(html);
+                $("#olist").append(html);
+                $(this).closest("tr").children().eq(5).text(0);
+            });
 
-        });
+            // 수량증가
+            $('#olist').on('click', '.countUp', function () {
+                var count = Number($(this).closest("tr").children().eq(5).text());
+                var mp = Number($(this).closest("tr").children().eq(2).text());
+                var sht = Number($(this).closest("tr").children().eq(3).text());
 
-        $('#olist').on('click', '.countUp', function () {
-            var count = Number($(this).closest("tr").children().eq(5).text());
-            var mp = Number($(this).closest("tr").children().eq(2).text());
-            var sht = Number($(this).closest("tr").children().eq(3).text());
-
-            count++;
-            var c = (mp + (sht*300))*count;
-            $(this).closest("tr").children().eq(5).text(count);
-            $(this).closest("tr").children().eq(7).text(c);
-        });
-
-        $("#olist").on('click', '.countDown', function () {
-            var count = Number($(this).closest("tr").children().eq(5).text());
-            var mp = Number($(this).closest("tr").children().eq(2).text());
-            var sht = Number($(this).closest("tr").children().eq(3).text());
-
-            if (count == 1) {
-                alert('더이상 감소 안됩니다.');
-                count =1;
-                var c = (mp + (sht*300))*count;
+                count++;
+                var c = (mp + (sht * 300)) * count;
                 $(this).closest("tr").children().eq(5).text(count);
                 $(this).closest("tr").children().eq(7).text(c);
-            } else {
-                count--;
-                var c = (mp + (sht*300))*count;
-                $(this).closest("tr").children().eq(5).text(count);
-                $(this).closest("tr").children().eq(7).text(c);
-            }
-        });
+            });
 
-        $("#olist").on('click', '.deletecCart', function () {
-            $(this).closest("tr").remove();
-        });
+            // 수량감소
+            $("#olist").on('click', '.countDown', function () {
+                var count = Number($(this).closest("tr").children().eq(5).text());
+                var mp = Number($(this).closest("tr").children().eq(2).text());
+                var sht = Number($(this).closest("tr").children().eq(3).text());
 
-    </script>
-</body>
+                if (count == 1) {
+                    alert('더이상 감소 안됩니다.');
+                    count = 1;
+                    var c = (mp + (sht * 300)) * count;
+                    $(this).closest("tr").children().eq(5).text(count);
+                    $(this).closest("tr").children().eq(7).text(c);
+                } else {
+                    count--;
+                    var c = (mp + (sht * 300)) * count;
+                    $(this).closest("tr").children().eq(5).text(count);
+                    $(this).closest("tr").children().eq(7).text(c);
+                }
+            });
+
+            // 삭제
+            $("#olist").on('click', '.deletecCart', function () {
+                $(this).closest("tr").remove();
+            });
+
+        </script>
+    </body>
 
 </html>
