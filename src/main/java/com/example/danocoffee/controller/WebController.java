@@ -45,4 +45,10 @@ public class WebController {
         return "login";
     }
 
+    @GetMapping("/order")
+    public String order(Model model) {
+        model.addAttribute("Menu", menuRepository.findAll());
+        return "order";
+    }
+
 }
