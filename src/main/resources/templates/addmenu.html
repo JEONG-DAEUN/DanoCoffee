@@ -36,7 +36,7 @@
         <td th:text="${product.mPrice}"></td>
         <td th:text="${product.mInven}"></td>
         <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}"/></td>
-        <td th:text="${product.cId.cName}"></td>
+        <td th:text="${product.cId.cId}"></td>
 
         <td>
             <button class="updateName">메뉴명 수정</button>
@@ -48,7 +48,7 @@
             <button class="updateInven">재고 수정</button>
         </td>
         <td>
-            <form method="post" th:action="@{api/updateImage}" enctype="multipart/form-data" >
+            <form method="post" th:action="@{api/updateImage}" enctype="multipart/form-data">
                 <input name="mId" style="visibility:hidden" th:value="${product.mId}"/>
                 <input name="mImg" id="inputImage" type="file"/>
                 <button>제출</button>
@@ -74,15 +74,15 @@
     </tr>
     </tbody>
 </table>
-<form th:action="@{/api/addMenu}"  enctype="multipart/form-data" method="post">
+<form th:action="@{/api/addMenu}" enctype="multipart/form-data" method="post">
     <label>메뉴명<input type="text" placeholder="메뉴명" name="mName"></label><br>
     <label>메뉴가격<input type="number" placeholder="메뉴가격" name="mPrice"></label><br>
-    <label >재고여부<select name="mInven">
+    <label>재고여부<select name="mInven">
         <option>true</option>
         <option>false</option>
     </select></label><br>
-    <label>이미지<input type="file" name="mImg"  accept="image/jpeg"/></label><br>
-<!--    name : 파일 이름으로 날리는건 name으로 날려야함.-->
+    <label>이미지<input type="file" name="mImg" accept="image/jpeg"/></label><br>
+    <!--    name : 파일 이름으로 날리는건 name으로 날려야함.-->
     <label>카테고리<select name="cId">
         <option value=1>커피</option>
         <option value=2>에이드</option>
@@ -339,6 +339,7 @@
 
 
     });
+
 </script>
 </body>
 </html>

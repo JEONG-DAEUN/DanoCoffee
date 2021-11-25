@@ -1,11 +1,16 @@
+
+
+
+
+
+
+
 package com.example.danocoffee.controller;
 
-import com.example.danocoffee.data.Category;
-import com.example.danocoffee.data.Manager;
-import com.example.danocoffee.data.Menu;
-import com.example.danocoffee.data.Result;
+import com.example.danocoffee.data.*;
 import com.example.danocoffee.data.dto.MenuDTO;
 import com.example.danocoffee.repository.ManagerRepository;
+import com.example.danocoffee.repository.OrderListRepository;
 import com.example.danocoffee.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -26,6 +31,8 @@ public class ApiController {
     @Autowired
     private ManagerRepository managerRepository;
     @Autowired
+    private OrderListRepository orderListRepository;
+    @Autowired
     private AdminService adminService;
 
     @GetMapping("/manager")
@@ -35,12 +42,12 @@ public class ApiController {
 
     @PostMapping(value="/addMenu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) //멀티파트 폼데이터 쓰겠다고 빈에 알려줌.
     public String addMenu( //메뉴 등록
-                          @RequestParam("mName") String mName,
-                          @RequestParam("mPrice") int mPrice,
-                          @RequestParam("mInven") boolean mInven,
-                          @RequestParam("mImg") MultipartFile mImg,
-                          @RequestParam("cId") int cId,
-                          HttpServletRequest request
+                           @RequestParam("mName") String mName,
+                           @RequestParam("mPrice") int mPrice,
+                           @RequestParam("mInven") boolean mInven,
+                           @RequestParam("mImg") MultipartFile mImg,
+                           @RequestParam("cId") int cId,
+                           HttpServletRequest request
     ) throws IOException {
         System.out.println("image" + mImg);
         String path = request.getSession().getServletContext().getRealPath("\\"); //파일 저장할 경로 가져옴.
@@ -50,7 +57,11 @@ public class ApiController {
         //UUID : 랜덤값으로 이름 같은 파일 구분해줌.
         File file = new File(pathName);
         mImg.transferTo(file); //저장
-
+        System.out.println("mName = " + mName);
+        System.out.println("mPrice = " + mPrice);
+        System.out.println("mInven = " + mInven);
+        System.out.println("mImg = " + mImg);
+        System.out.println("cId = " + cId);
 //String mName, int mPrice, boolean mInven, String mImg, Category cId
         //DB 저장
         Category newcId = adminService.findCategoryId(cId);
@@ -215,12 +226,12 @@ public class ApiController {
         Menu updateInven = adminService.findMenuId(menu.getmId());
         updateInven.setmInven(!updateInven.ismInven());
         System.out.println("updateInven.ismInven() = " + updateInven.ismInven());
-            adminService.save(updateInven);
+        adminService.save(updateInven);
 //            updatePrice.setmPrice(menu.getNewmPrice());
 
 
-            return updateInven;
-        }
+        return updateInven;
+    }
 
 
     //카테고리 수정 : updateCategory
@@ -228,15 +239,22 @@ public class ApiController {
     public String updateCategory(MenuDTO menu) throws Exception {
         System.out.println("menu = " + menu.getmId());
         Menu updateCategory = adminService.findBymId(menu.getmId());
-        System.out.println("menu.getcId().getcId() = " + menu.getcId().getcId());
+        System.out.println("menu.getcId().getcId() = " + menu.getcId());
         updateCategory.setcId(menu.getcId());
-        
+
         adminService.save(updateCategory);
 //            updatePrice.setmPrice(menu.getNewmPrice());
-
-
         return  "<h2>카테고리 변경이 완료되었습니다. <br>" +
                 "3초 뒤에 메뉴 목록으로 이동합니다.</h2>"
                 + "<meta http-equiv=\"refresh\" content=\"2;url=/addmenu\" />";
+    }
+
+
+    // 장바구니에 담기
+    @PostMapping("/addOrder")
+    public Result postAddOrder(@RequestBody OrderList orderList){
+        orderListRepository.save(orderList);
+        System.out.println("addorder");
+        return new Result("ok");
     }
 }

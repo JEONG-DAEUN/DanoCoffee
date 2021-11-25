@@ -15,6 +15,7 @@ import java.util.Optional;
 public class AdminService {
     @Autowired
     MenuRepository menuRepository;
+
     @Autowired
     CategoryRepository categoryRepository;
     @Autowired
@@ -58,7 +59,7 @@ public class AdminService {
     public Menu findMenuId(int mId) throws Exception{
         Optional<Menu> findMenu = menuRepository.findById(mId);
         if(findMenu.isPresent()) {
-        return findMenu.get(); //mId 없으면 whitelabel뜸.
+            return findMenu.get(); //mId 없으면 whitelabel뜸.
         }else throw new Exception ("메뉴 아이디 없음. 수정 불가");
 
     }
