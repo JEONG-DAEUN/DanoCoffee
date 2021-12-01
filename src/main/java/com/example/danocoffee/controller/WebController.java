@@ -1,8 +1,8 @@
 package com.example.danocoffee.controller;
 
+import com.example.danocoffee.data.Menu;
 import com.example.danocoffee.repository.ManagerRepository;
 import com.example.danocoffee.repository.MenuRepository;
-import com.example.danocoffee.repository.OrderListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +16,7 @@ public class WebController {
     ManagerRepository managerRepository;
     @Autowired
     MenuRepository menuRepository;
-    @Autowired
-    OrderListRepository orderListRepository;
+
 
     @GetMapping("/index")
     public String index() {
@@ -25,7 +24,7 @@ public class WebController {
     }
 
     @GetMapping("/addmenu") // 상품등록
-    public String management(Model model, Principal user) {
+    private String management(Model model, Principal user) {
         model.addAttribute("mnName", user.getName());
         model.addAttribute("Menu", menuRepository.findAll());
         System.out.println(menuRepository.findAll());
@@ -33,7 +32,7 @@ public class WebController {
     }
 
     @GetMapping("/addmanager") //관리자등록
-    public String addManager(Model model, Principal user) {
+    private String addManager(Model model, Principal user) {
         model.addAttribute("mnName", user.getName());
         model.addAttribute("Crew", managerRepository.findAll());
         System.out.println(managerRepository.findAll());
@@ -41,13 +40,13 @@ public class WebController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    private String login() {
         return "login";
     }
 
-    @GetMapping("/order")
-    public String order(Model model) {
-        model.addAttribute("Menu", menuRepository.findAll());
+    @GetMapping("/order") // 장바구니
+    private String Cart(Model model, Menu menu) {
+        model.addAttribute("Menu",  menuRepository.findAll());
         return "order";
     }
 

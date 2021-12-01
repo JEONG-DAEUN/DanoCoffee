@@ -1,7 +1,7 @@
-package com.example.danocoffee.data.dto;
+
+package com.example.danocoffee.data;
 
 
-import com.example.danocoffee.data.Category;
 import org.springframework.web.multipart.MultipartFile;
 
 public class MenuDTO {
@@ -31,6 +31,7 @@ public class MenuDTO {
     public void setmId(int mId) {
         this.mId = mId;
     }
+
     public String getmName() {
         return mName;
     }
@@ -50,9 +51,12 @@ public class MenuDTO {
     public boolean ismInven() {
         return mInven;
     }
+
+
     public MultipartFile getmImg() {
         return mImg;
     }
+
 
     public void setmImg(MultipartFile mImg) {
         this.mImg = mImg;
@@ -85,7 +89,6 @@ public class MenuDTO {
     public void setNewmName(String newmName) {
         this.newmName = newmName;
     }
-
 
 
 }
