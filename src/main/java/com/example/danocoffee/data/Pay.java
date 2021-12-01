@@ -14,11 +14,17 @@ public class Pay {
     @Column
     private int pPayment; //결제금액
 
-    private String pMethod; //결제방법
+//    private String pMethod; //결제방법
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="pTime") //결제시간
     private java.util.Date timestampField;
+
+    public Pay(int pPayment, Date date) {
+        this.pPayment = pPayment;
+        this.timestampField = date;
+
+    }
 
     public int getpId() {
         return pId;
@@ -36,13 +42,13 @@ public class Pay {
         this.pPayment = pPayment;
     }
 
-    public String getpMethod() {
-        return pMethod;
-    }
-
-    public void setpMethod(String pMethod) {
-        this.pMethod = pMethod;
-    }
+//    public String getpMethod() {
+//        return pMethod;
+//    }
+//
+//    public void setpMethod(String pMethod) {
+//        this.pMethod = pMethod;
+//    }
 
     public Date getTimestampField() {
         return timestampField;

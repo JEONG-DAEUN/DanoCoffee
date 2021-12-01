@@ -2,282 +2,317 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Order</title>
-	<style>
-		.scrolltbody table {
-			width: 500px;
-			border-top: 1px solid #444444;
-			border-collapse: collapse;
-			text-align: center;
-		}
+  <meta charset="UTF-8">
+  <title>Order</title>
+  <style>
+    .scrolltbody table {
+      width: 500px;
+      border-top: 1px solid #444444;
+      border-collapse: collapse;
+      text-align: center;
+    }
 
-		.scrolltbody tr,
-		.scrolltbody td {
-			border-bottom: 1px solid #444444;
-			padding: 10px;
+    .scrolltbody tr,
+    .scrolltbody td {
+      border-bottom: 1px solid #444444;
+      padding: 10px;
 
-		}
+    }
 
-		.scrolltbody thead {
-			background-color: rgb(128, 64, 64);
-			font-size: 18px;
-			color: #ffffff;
-		}
+    .scrolltbody thead {
+      background-color: rgb(128, 64, 64);
+      font-size: 18px;
+      color: #ffffff;
+    }
 
-		.shtcnt {
-			max-height: 200px;
-			overflow-y: scroll;
-		}
-	</style>
+    .shtcnt {
+      max-height: 200px;
+      overflow-y: scroll;
+    }
+  </style>
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <body>
-	<button onclick="allMenu()" id="allMenu">전체</button>
-	<button onclick="fcoffee()" id="coffee">커피</button>
-	<button onclick="fade()" id="ade">에이드</button>
-	<button onclick="ftea()" id="tea">티</button>
-	<hr>
-	<table class='scrolltbody'>
-		<colgroup>
-			<col width="25%">
-			<col width="10%">
-			<col width="10%">
-			<col width="10%">
-			<col width="10%">
-			<col width="10%">
-			<col width="8%">
-		</colgroup>
-		<thead>
-			<tr>
-				<th style="display:none;">메뉴 아이디</th>
-				<th>이미지</th>
-				<th>메뉴명</th>
-				<th>가격</th>>
-				<th>담기</th>
-			</tr>
-		</thead>
-		<tbody class="shtcnt">
-			<tr th:class="|id${product.cId.cId}|" th:each="product : ${Menu}">
-				<td style="display:none;" th:text="${product.mId}" id="mId"></td>
-				<td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}" /></td>
-				<td th:text="${product.mName}"></td>
-				<td th:text="${product.mPrice}" id="mPrice"></td>
-				<td>
-					<button class="putCart">담기</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+<button onclick="allMenu()" id="allMenu">전체</button>
+<button onclick="fcoffee()" id="coffee">커피</button>
+<button onclick="fade()" id="ade">에이드</button>
+<button onclick="ftea()" id="tea">티</button>
+<hr>
+<table class='scrolltbody'>
+  <colgroup>
+    <col width="25%">
+    <col width="10%">
+    <col width="10%">
+    <col width="10%">
+    <col width="10%">
+    <col width="10%">
+    <col width="8%">
+  </colgroup>
+  <thead>
+  <tr>
+    <th style="display:none;">메뉴 아이디</th>
+    <th>이미지</th>
+    <th>메뉴명</th>
+    <th>가격</th>
+    <th>담기</th>
+  </tr>
+  </thead>
+  <tbody class="shtcnt">
+  <tr th:class="|id${product.cId.cId}|" th:each="product : ${Menu}">
+    <td style="display:none;" th:text="${product.mId}" id="mId"></td>
+    <td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}" /></td>
+    <td th:text="${product.mName}"></td>
+    <td th:text="${product.mPrice}" id="mPrice"></td>
+    <td>
+      <button class="putCart">담기</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
 
-	<div class="cartbox">
-		<p>장바구니</p>
-		<hr>
-		<div>
-			<table border="1">
-				<thead>
-					<tr>
-						<td>메뉴명</td>
-						<td>감소</td>
-						<td>수량</td>
-						<td>증가</td>
-						<td>가격</td>
-						<td>삭제</td>
-					</tr>
-				</thead>
-				<tbody id="olist">
+<div class="cartbox">
+  <p>장바구니</p>
+  <hr>
+  <div>
+    <table border="1">
+      <thead>
+      <tr>
+        <td>메뉴명</td>
+        <td>감소</td>
+        <td>수량</td>
+        <td>증가</td>
+        <td>가격</td>
+        <td>삭제</td>
+      </tr>
+      </thead>
+      <tbody id="olist">
 
-				</tbody>
-			</table>
-		</div>
-		<hr>
-		<div>
-			총금액 : <p class="ttp">0</p>
-		</div>
-		<button class="pay">결제</button>
-	</div>
+      </tbody>
+    </table>
+  </div>
+  <hr>
+  <div>
+    총금액 : <p class="ttp">0</p>
+  </div>
+</div>
+<button id="pay">결제</button>
 
 
-	<script th:inline="javascript">
-		$(() => {
+<script th:inline="javascript">
+  $(() => {
+    var sum =0; // 장바구니 총가격
+    var adeLength = document.getElementsByClassName('id2').length;
+    var coffeeLength = document.getElementsByClassName('id1').length;
+    var teaLength = document.getElementsByClassName('id3').length;
+    var all = adeLength + coffeeLength + teaLength;
+    var coffee = document.getElementsByClassName('id1');
+    var ade = document.getElementsByClassName('id2');
+    var tea = document.getElementsByClassName('id3');
 
-			var adeLength = document.getElementsByClassName('id2').length;
-			var coffeeLength = document.getElementsByClassName('id1').length;
-			var teaLength = document.getElementsByClassName('id3').length;
-			var all = adeLength + coffeeLength + teaLength;
-			var coffee = document.getElementsByClassName('id1');
-			var ade = document.getElementsByClassName('id2');
-			var tea = document.getElementsByClassName('id3');
+    // 전체 메뉴 포시
+    function allMenu() {
+      console.log("allmenu");
+      for (i = 0; i < coffeeLength; i++) {
+        coffee[i].style.display = '';
+      }
+      for (i = 0; i < adeLength; i++) {
+        ade[i].style.display = '';
+      }
+      for (i = 0; i < teaLength; i++) {
+        tea[i].style.display = '';
+      }
+    }
+    // 커피 카테고리만 표시
+    function fcoffee() {
+      console.log("coffee");
+      console.log(document.getElementsByClassName('id1').length);
+      for (i = 0; i < adeLength; i++) {
+        ade[i].style.display = 'none';
+      }
+      for (i = 0; i < teaLength; i++) {
+        tea[i].style.display = 'none';
+      }
+      for (i = 0; i < coffeeLength; i++) {
+        coffee[i].style.display = '';
+      }
 
-			// 전체 메뉴 포시
-			function allMenu() {
-				console.log("allmenu");
-				for (i = 0; i < coffeeLength; i++) {
-					coffee[i].style.display = '';
-				}
-				for (i = 0; i < adeLength; i++) {
-					ade[i].style.display = '';
-				}
-				for (i = 0; i < teaLength; i++) {
-					tea[i].style.display = '';
-				}
-			}
-			// 커피 카테고리만 표시
-			function fcoffee() {
-				console.log("coffee");
-				console.log(document.getElementsByClassName('id1').length);
-				for (i = 0; i < adeLength; i++) {
-					ade[i].style.display = 'none';
-				}
-				for (i = 0; i < teaLength; i++) {
-					tea[i].style.display = 'none';
-				}
-				for (i = 0; i < coffeeLength; i++) {
-					coffee[i].style.display = '';
-				}
+    }
+    //에이드 카테고리만 표시
+    function fade() {
+      console.log("ade");
+      console.log(document.getElementsByClassName('id2').length);
+      for (i = 0; i < coffeeLength; i++) {
+        coffee[i].style.display = 'none';
+      }
+      for (i = 0; i < teaLength; i++) {
+        tea[i].style.display = 'none';
+      }
+      for (i = 0; i < adeLength; i++) {
+        ade[i].style.display = '';
+      }
 
-			}
-			//에이드 카테고리만 표시
-			function fade() {
-				console.log("ade");
-				console.log(document.getElementsByClassName('id2').length);
-				for (i = 0; i < coffeeLength; i++) {
-					coffee[i].style.display = 'none';
-				}
-				for (i = 0; i < teaLength; i++) {
-					tea[i].style.display = 'none';
-				}
-				for (i = 0; i < adeLength; i++) {
-					ade[i].style.display = '';
-				}
+    }
+    // 티 카테고리만 표시
+    function ftea() {
+      console.log("tea");
+      for (i = 0; i < coffeeLength; i++) {
+        coffee[i].style.display = 'none';
+      }
+      for (i = 0; i < adeLength; i++) {
+        ade[i].style.display = 'none';
+      }
+      for (i = 0; i < teaLength; i++) {
+        tea[i].style.display = '';
+      }
+    }
 
-			}
-			// 티 카테고리만 표시
-			function ftea() {
-				console.log("tea");
-				for (i = 0; i < coffeeLength; i++) {
-					coffee[i].style.display = 'none';
-				}
-				for (i = 0; i < adeLength; i++) {
-					ade[i].style.display = 'none';
-				}
-				for (i = 0; i < teaLength; i++) {
-					tea[i].style.display = '';
-				}
-			}
+    //  장바구니 담기
+    $('.putCart').click(function () {
+      var mId = Number($(this).closest("tr").children().eq(0).text());
+      console.log("메뉴아이디 : " + mId);
+      var mName = $(this).closest("tr").children().eq(2).text();
+      console.log("메뉴명 : " + mName);
+      var mPrice = Number($(this).closest("tr").children().eq(3).text());
+      console.log("메뉴가격 : " + mPrice);
 
-			//  장바구니 담기
-			$('.putCart').click(function () {
-				var mId = Number($(this).closest("tr").children().eq(0).text());
-				console.log("메뉴아이디 : " + mId);
-				var mName = $(this).closest("tr").children().eq(2).text();
-				console.log("메뉴명 : " + mName);
-				var mPrice = Number($(this).closest("tr").children().eq(3).text());
-				console.log("메뉴가격 : " + mPrice);
+      var olistLenght = $("#olist tr").length;  // 장바구니 테이블의 길이
+      console.log("olistLenght : " + olistLenght);
+      if (olistLenght == 0) {  // 장바구니 처음에 담을 때는 아무것도 없어 길이가 0이기 떄문에 조건을 주어 처음에는 담는다.
+        var html = "<tr><td style='display:none'>" + mId + "</td><td>" + mName + "</td><td><button class='countDown'>-</button></td><td>1</td><td><button class='countUp'>+</button></td><td>" + mPrice + "</td><td><button class='deletecCart'>X</button></td></tr>";
+        $("#olist").append(html);
+      } else { // 처음으로 장바구니에 상품을 담은 후에는 중복이 있을 수 있어서 반복을 돌려 찾는다.
+        var ll = 0; // 이거는 중복이 있을 때 장바구니에 새로 행을 추가하는 것을 방지하기 위해 만든것이다 (별다른 의미 없음)
+        for (var i = 0; i < olistLenght + 1; i++) {
+          var idchk = Number($("#olist").children().eq(i).children().eq(0).text()); // 중복되는 메뉴의 아이디가 있는지 확인하기 위한 변수
+          console.log("idchk : " + idchk);
 
-				var olistLenght = $("#olist tr").length;  // 장바구니 테이블의 길이
-				console.log("olistLenght : " + olistLenght);
-				if (olistLenght == 0) {  // 장바구니 처음에 담을 때는 아무것도 없어 길이가 0이기 떄문에 조건을 주어 처음에는 담는다. 
-					var html = "<tr><td style='display:none'>" + mId + "</td><td>" + mName + "</td><td><button class='countDown'>-</button></td><td>1</td><td><button class='countUp'>+</button></td><td>" + mPrice + "</td><td><button class='deletecCart'>X</button></td></tr>";
-					$("#olist").append(html);
-				} else { // 처음으로 장바구니에 상품을 담은 후에는 중복이 있을 수 있어서 반복을 돌려 찾는다.
-					var ll = 0; // 이거는 중복이 있을 때 장바구니에 새로 행을 추가하는 것을 방지하기 위해 만든것이다 (별다른 의미 없음)
-					for (var i = 0; i < olistLenght + 1; i++) {
-						var idchk = Number($("#olist").children().eq(i).children().eq(0).text()); // 중복되는 메뉴의 아이디가 있는지 확인하기 위한 변수
-						console.log("idchk : " + idchk);
+          if (mId == idchk) {  // 만일 중복 아이디가 있다면
+            var cnt = Number($("#olist").children().eq(i).children().eq(3).text()); // 장바구니 상품의 수량
+            cnt++;
+            var mpt = mPrice * cnt;
+            $("#olist").children().eq(i).children().eq(3).text(cnt); // 수량 증가
+            $("#olist").children().eq(i).children().eq(5).text(mpt); // 수량 증가에 따른 가격
+            ll = 1;
+            break;
+          }
 
-						if (mId == idchk) {  // 만일 중복 아이디가 있다면
-							var cnt = Number($("#olist").children().eq(i).children().eq(3).text()); // 장바구니 상품의 수량
-							cnt++;
-							var mpt = mPrice * cnt;
-							$("#olist").children().eq(i).children().eq(3).text(cnt); // 수량 증가
-							$("#olist").children().eq(i).children().eq(5).text(mpt); // 수량 증가에 따른 가격
-							ll = 1;
-							break;
-						}
+        }
+        if (ll == 0) { // 중복하는 아이디가 없다면 장바구니에 추가
+          var html = "<tr><td style='display:none'>" + mId + "</td><td>" + mName + "</td><td><button class='countDown'>-</button></td><td>1</td><td><button class='countUp'>+</button></td><td>" + mPrice + "</td><td><button class='deletecCart'>X</button></td></tr>";
+          $("#olist").append(html);
+        }
 
-					}
-					if (ll == 0) { // 중복하는 아이디가 없다면 장바구니에 추가
-						var html = "<tr><td style='display:none'>" + mId + "</td><td>" + mName + "</td><td><button class='countDown'>-</button></td><td>1</td><td><button class='countUp'>+</button></td><td>" + mPrice + "</td><td><button class='deletecCart'>X</button></td></tr>";
-						$("#olist").append(html);
-					}
+      }
+      totalPrices();
 
-				}
-				totalPrices();
+    });
 
-			});
+    // 수량증가
+    $('#olist').on('click', '.countUp', function () {
+      var count = Number($(this).closest("tr").children().eq(3).text());
+      var mp = Number($(this).closest("tr").children().eq(5).text());
+      var b = mp / count; // 상품의 원가를 알기 위한 변수
+      count++;
+      var c = b * count;
+      $(this).closest("tr").children().eq(3).text(count);
+      $(this).closest("tr").children().eq(5).text(c);
+      totalPrices();
+    });
 
-			// 수량증가
-			$('#olist').on('click', '.countUp', function () {
-				var count = Number($(this).closest("tr").children().eq(3).text());
-				var mp = Number($(this).closest("tr").children().eq(5).text());
-				var b = mp / count; // 상품의 원가를 알기 위한 변수
-				count++;
-				var c = b * count; 
-				$(this).closest("tr").children().eq(3).text(count);
-				$(this).closest("tr").children().eq(5).text(c);
-				totalPrices();
-			});
+    // 수량감소
+    $("#olist").on('click', '.countDown', function () {
+      var count = Number($(this).closest("tr").children().eq(3).text());
+      var mp = Number($(this).closest("tr").children().eq(5).text());
 
-			// 수량감소
-			$("#olist").on('click', '.countDown', function () {
-				var count = Number($(this).closest("tr").children().eq(3).text());
-				var mp = Number($(this).closest("tr").children().eq(5).text());
+      if (count == 1) {
+        $(this).closest("tr").remove(); // 수량이 1인데 감소를 누르면 장바구니에서 이 상품을 없앰
+      } else {
+        var b = mp / count; // 상품의 원가를 알기 위한 변수
+        count--;
+        var c = b * count;
+        $(this).closest("tr").children().eq(3).text(count);
+        $(this).closest("tr").children().eq(5).text(c);
+      }
+      totalPrices();
+    });
 
-				if (count == 1) {
-					$(this).closest("tr").remove(); // 수량이 1인데 감소를 누르면 장바구니에서 이 상품을 없앰
-				} else {
-					var b = mp / count; // 상품의 원가를 알기 위한 변수
-					count--;
-					var c = b * count;
-					$(this).closest("tr").children().eq(3).text(count);
-					$(this).closest("tr").children().eq(5).text(c);
-				}
-				totalPrices();
-			});
+    // 삭제
+    $("#olist").on('click', '.deletecCart', function () {
+      $(this).closest("tr").remove();
+      totalPrices();
+    });
 
-			// 삭제
-			$("#olist").on('click', '.deletecCart', function () {
-				$(this).closest("tr").remove();
-				totalPrices();
-			});
-			
-			// 총 가격
-			function totalPrices(){
-				var olistLenght = $("#olist tr").length;  // 장바구니 테이블의 길이
-				var sum =0; // 장바구니 총가격
-				for(var i = 0; i < olistLenght+1;i++){
-						var idchk = Number($("#olist").children().eq(i).children().eq(5).text());	
-						sum = sum + idchk;		
-				}
-				$(".ttp").text(sum);
-			}
-			
-			// 결제
-			$(".pay").on('click', function(){
-				var olistLenght = $("#olist tr").length;  // 장바구니 테이블의 길이
-				var cartbox = [];
-				for(var i = 0; i < olistLenght;i++){
-					var orlId = $("#olist").children().eq(i).children().eq(0).text();
-					console.log("orlId : "+orlId);
-					var orlName = $("#olist").children().eq(i).children().eq(1).text();
-					console.log("orlName : "+orlName);
-					var orlCount = $("#olist").children().eq(i).children().eq(3).text();
-					console.log("orlCount : "+orlCount);
-					var orlPrice = $("#olist").children().eq(i).children().eq(5).text();
-					console.log("orlPrice : "+orlPrice);
-					cartbox[i] = {
-						orlId,orlName,orlCount,orlPrice
-					}
-				}
-				console.log(cartbox);
-			});
-			
-		});
+    function totalPrices(){
+      var olistLenght = $("#olist tr").length;  // 장바구니 테이블의 길이
+      sum = 0;
+      for(var i = 0; i < olistLenght+1;i++){
 
-	</script>
+        var idchk = Number($("#olist").children().eq(i).children().eq(5).text());
+        sum = sum + idchk;
+      }
+      $(".ttp").text(sum);
+    }
+
+
+
+    // 결제
+    $("#pay").on('click', function() {
+      console.log("pay");
+      var olistLenght = $("#olist tr").length;  // 장바구니 테이블의 길이
+      var cartbox = [];
+      for (var i = 0; i < olistLenght; i++) {
+        var orlId = $("#olist").children().eq(i).children().eq(0).text(); // 메뉴아이디
+        // console.log("orlId : "+orlId);
+        var orlCount = $("#olist").children().eq(i).children().eq(3).text(); // 수량
+        // console.log("orlCount : "+orlCount);
+        var orlPayment = $("#olist").children().eq(i).children().eq(5).text(); // 가격
+        // console.log("orlPrice : "+orlPrice);
+        // var pPayment = Number($(".ttp").text());
+        cartbox[i] = {
+          orlId, orlCount, orlPayment // orlId : 메뉴아이디
+          // mid,orlpayment, orltotalprice,pPayment //orltotalprice : 수량
+        }
+      }
+      console.log(cartbox[0]);
+      const path = 'api/Pay';
+      const json = JSON.stringify(cartbox);
+      // console.log(json);
+      const csrfToken =/*[[${_csrf.token}]]*/ null;
+      const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+      // console.log(cartbox);
+
+      $.ajax({
+        url: path,
+        type: 'POST',
+        contentType: 'application/json',
+        data: json,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader(csrfHeader, csrfToken);
+        }
+      })
+              .done((response) => {
+                if (response.result == 'ok') {
+                  alert('결제되었습니다.');
+                  window.location.href = '/order'
+                  console.log(1);
+                } else {
+                  alert('결제되지 않았습니다.');
+                  console.log(2);
+
+                }
+              })
+              .fail((response) => {
+                alert('(에러)');
+                console.log(3);
+
+              });
+
+    });
+  });
+
+</script>
 </body>
 
-</html>
+</html>                                                                                                      

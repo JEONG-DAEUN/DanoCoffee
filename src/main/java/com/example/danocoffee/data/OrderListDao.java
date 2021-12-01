@@ -4,30 +4,21 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name="orderlist")
-public class OrderList implements Serializable {
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY) //int.autoincrement
+
+public class OrderListDao {
     private int orlId;
-
-    @ManyToOne
-    @JoinColumn(name="mId")
     private Menu mId; //메누아이디
-
-    @ManyToOne
-    @JoinColumn(name="pId")
     private Pay pId; //결제아이디
-
-    @Column
     private int orlPayment; //가격
     private int orlCount; //수량
+    private int pPayment; // 총 결제금액
 
-    public OrderList(Menu mId, Pay getpId, int getorlCount, int orlPayment) {
-        this.mId = mId;
-        this.pId = getpId;
-        this.orlCount = getorlCount;
-        this.orlPayment = orlPayment;
+    public int getpPayment() {
+        return pPayment;
+    }
+
+    public void setpPayment(int pPayment) {
+        this.pPayment = pPayment;
     }
 
     public int getOrlId() {
@@ -61,15 +52,15 @@ public class OrderList implements Serializable {
         this.orlPayment = orlPayment;
     }
 
-    public int orlCount() {
+    public int getorlCount() {
         return orlCount;
     }
 
-    public void orlCount(int orlCount) {
+    public void setorlCount(int orlCount) {
         this.orlCount = orlCount;
     }
 
 
-    public OrderList() {
+    public OrderListDao() {
     }
 }

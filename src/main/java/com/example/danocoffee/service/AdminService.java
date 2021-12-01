@@ -1,13 +1,10 @@
 package com.example.danocoffee.service;
 
-import com.example.danocoffee.data.Category;
-import com.example.danocoffee.data.Manager;
-import com.example.danocoffee.data.Menu;
-import com.example.danocoffee.data.OrderList;
+import com.example.danocoffee.data.*;
 import com.example.danocoffee.repository.CategoryRepository;
-import com.example.danocoffee.repository.ManagerRepository;
 import com.example.danocoffee.repository.MenuRepository;
 import com.example.danocoffee.repository.OrderListRepository;
+import com.example.danocoffee.repository.PayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,28 +17,21 @@ public class AdminService {
 
     @Autowired
     CategoryRepository categoryRepository;
+
     @Autowired
-    ManagerRepository managerRepository;
+    PayRepository payRepository;
+
     @Autowired
     OrderListRepository orderListRepository;
 
-    public void save(Menu menu) {
-        menuRepository.save(menu);
-    }
 
-    public void save(Manager manager) {
-        managerRepository.save(manager);
+    public AdminService(MenuRepository menuRepository) {
+        this.menuRepository = menuRepository;
     }
 
     public void deleteMenu(int mId) {
         menuRepository.deleteById(mId);
     }
-    public void deleteManager(int mnNumber) { managerRepository.deleteById(mnNumber); }
-
-
-//    public void deleteManager(int mId) {
-//        managerRepository.deleteById(mId);
-//    }
 
 //    public void updateMenu(int mId) {
 //        menuRepository.(mId);
@@ -53,27 +43,11 @@ public class AdminService {
         return searchMenu;
     }
 
-    public Manager findByMnId(String mnId) {
-        Manager findManagerId = managerRepository.findByMnId(mnId);
-        return findManagerId;
-    }
 
 
-
-    public Menu findMenuId(int mId) throws Exception{
+    public Menu findMenuId(int mId) {
         Optional<Menu> findMenu = menuRepository.findById(mId);
-        if(findMenu.isPresent()) {
-        return findMenu.get(); //mId 없으면 whitelabel뜸.
-        }else throw new Exception ("메뉴 아이디 없음. 수정 불가");
-
-    }
-
-    public Manager findManagerId(int mnNumber) throws Exception{
-        Optional<Manager> findManager = managerRepository.findById(mnNumber);
-        if(findManager.isPresent()) {
-            return findManager.get();
-        }else throw new Exception("관리자 아이디 없음. 수정 불가");
-
+        return findMenu.get();
     }
 
     public Category findCategoryId(int cId) {
@@ -85,17 +59,11 @@ public class AdminService {
         menuRepository.save(menu);
     }
 
+    public void addPay(Pay pay) { payRepository.save(pay); }
 
-    public Manager findById(int mnNumber) {
-        Optional<Manager> findById = managerRepository.findById(mnNumber);
-        return findById.get();
+    public void addOrderList(OrderList orderList) { orderListRepository.save(orderList);}
+
+    public void deleteMenu(Menu menu) {
+        menuRepository.deleteById(menu.getmId());
     }
-
-    public Menu findBymId(int mId) {
-        Optional<Menu> findById = menuRepository.findById(mId);
-        return findById.get();
-    }
-
-
-//    public Menu findBy(int cId)
 }
