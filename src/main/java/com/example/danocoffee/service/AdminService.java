@@ -96,5 +96,7 @@ public class AdminService {
     public void addOrderList(OrderList orderList) { orderListRepository.save(orderList);}
 
     public void addPay(Pay pay) { payRepository.save(pay); }
+    
+    
    
 }

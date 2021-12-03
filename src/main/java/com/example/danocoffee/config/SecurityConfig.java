@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //                .antMatchers("/mypoint/**").hasAnyRole("admin", "user")
                 .antMatchers("/addmenu").hasRole("admin") //관리자만 접근 가능
                 .antMatchers("/addmanager").hasRole("admin") //관리자만 접근 가능
+                .antMatchers("/statistics").hasRole("admin") //관리자만 접근 가능
                 .antMatchers("/**").permitAll() //위 경우를 빼고 모든 권한을 줌 = 로그인 필요 없음.
                 .anyRequest().authenticated()
                 .and()

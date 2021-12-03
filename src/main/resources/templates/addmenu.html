@@ -1,335 +1,332 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	th:replace="~{layout::layout(~{::title},~{},~{::#content})}">
 
 <head>
 	<meta charset="UTF-8">
-	<title>Add User</title>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<title>menu</title>
 </head>
 
 <body>
-	<span th:text="${mnName}"></span>님의 관리자 페이지 (메뉴 등록 및 수정,삭제)
-	<br>
+	<div id="content">
+		<table border="2px">
+			<thead>
+				<tr>
+					<th style="display:none;">메뉴 아이디</th>
+					<th>메뉴명</th>
+					<th>가격</th>
+					<th>재고여부</th>
+					<th>이미지</th>
+					<th>카테고리</th>
+					<th>메누명 수정</th>
+					<th>가격 수정</th>
+					<th>재고 수정</th>
+					<th>이미지 수정</th>
+					<th>카테고리 수정</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="product : ${Menu}">
+					<td style="display:none;" th:text="${product.mId}"></td>
+					<td th:text="${product.mName}"></td>
+					<td th:text="${product.mPrice}"></td>
+					<td th:text="${product.mInven}"></td>
+					<td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}" /></td>
+					<td th:text="${product.cId.cName}"></td>
 
-	<table border="2px">
-		<thead>
-			<tr>
-
-				<th style="display:none;">메뉴 아이디</th>
-				<th>메뉴명</th>
-				<th>가격</th>
-				<th>재고여부</th>
-				<th>이미지</th>
-				<th>카테고리</th>
-				<th>메누명 수정</th>
-				<th>가격 수정</th>
-				<th>재고 수정</th>
-				<th>이미지 수정</th>
-				<th>카테고리 수정</th>
-				<th>삭제</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="product : ${Menu}">
-				<td style="display:none;" th:text="${product.mId}"></td>
-				<td th:text="${product.mName}"></td>
-				<td th:text="${product.mPrice}"></td>
-				<td th:text="${product.mInven}"></td>
-				<td><img width="100" height="100" th:src="@{|/static/images/${product.mImgName}|}" /></td>
-				<td th:text="${product.cId.cName}"></td>
-
-				<td>
-					<button class="updateName">메뉴명 수정</button>
-				</td>
-				<td>
-					<button class="updatePrice">가격 수정</button>
-				</td>
-				<td>
-					<button class="updateInven">재고 수정</button>
-				</td>
-				<td>
-					<form method="post" th:action="@{api/updateImage}" enctype="multipart/form-data">
-						<input name="mId" style="visibility:hidden" th:value="${product.mId}" />
-						<input name="mImg" id="inputImage" type="file" />
-						<button>제출</button>
-					</form>
-				</td>
-				<td>
-					<form th:action="@{/api/updateCategory}" method="post">
-						<input name="mId" style="visibility:hidden" th:value="${product.mId}" />
-						<label>카테고리<select name="cId">
-								<option value=1>커피</option>
-								<option value=2>에이드</option>
-								<option value=3>티</option>
-							</select></label><br>
-						<input type="submit" class="updateCategory">카테고리 수정</input>
-					</form>
-				</td>
-				<td>
-					<button class="deleteMenu">삭제</button>
-					<br></td>
+					<td>
+						<button class="updateName">메뉴명 수정</button>
+					</td>
+					<td>
+						<button class="updatePrice">가격 수정</button>
+					</td>
+					<td>
+						<button class="updateInven">재고 수정</button>
+					</td>
+					<td>
+						<form method="post" th:action="@{api/updateImage}" enctype="multipart/form-data">
+							<input name="mId" style="visibility:hidden" th:value="${product.mId}" />
+							<input name="mImg" id="inputImage" type="file" />
+							<button>제출</button>
+						</form>
+					</td>
+					<td>
+						<form th:action="@{/api/updateCategory}" method="post">
+							<input name="mId" style="visibility:hidden" th:value="${product.mId}" />
+							<label>카테고리<select name="cId">
+									<option value=1>커피</option>
+									<option value=2>에이드</option>
+									<option value=3>티</option>
+								</select></label><br>
+							<input type="submit" class="updateCategory">카테고리 수정</input>
+						</form>
+					</td>
+					<td>
+						<button class="deleteMenu">삭제</button>
+						<br></td>
 
 
-			</tr>
-		</tbody>
-	</table>
-	<form th:action="@{/api/addMenu}" enctype="multipart/form-data" method="post">
-		<label>메뉴명<input type="text" placeholder="메뉴명" name="mName"></label><br>
-		<label>메뉴가격<input type="number" placeholder="메뉴가격" name="mPrice"></label><br>
-		<label>재고여부<select name="mInven">
-				<option>true</option>
-				<option>false</option>
-			</select></label><br>
-		<label>이미지<input type="file" name="mImg" accept="image/jpeg"></label><br>
-		<!--    name : 파일 이름으로 날리는건 name으로 날려야함.-->
-		<label>카테고리<select name="cId">
-				<option value=1>커피</option>
-				<option value=2>티</option>
-				<option value=3>에이드</option>
-			</select></label><br>
-		<input type="submit" id="addMenu"></input>
-	</form>
+				</tr>
+			</tbody>
+		</table>
+		<form th:action="@{/api/addMenu}" enctype="multipart/form-data" method="post">
+			<label>메뉴명<input type="text" placeholder="메뉴명" name="mName"></label><br>
+			<label>메뉴가격<input type="number" placeholder="메뉴가격" name="mPrice"></label><br>
+			<label>재고여부<select name="mInven">
+					<option>true</option>
+					<option>false</option>
+				</select></label><br>
+			<label>이미지<input type="file" name="mImg" accept="image/jpeg"></label><br>
+			<!--    name : 파일 이름으로 날리는건 name으로 날려야함.-->
+			<label>카테고리<select name="cId">
+					<option value=1>커피</option>
+					<option value=2>티</option>
+					<option value=3>에이드</option>
+				</select></label><br>
+			<input type="submit" id="addMenu"></input>
+		</form>
 
 
-	<!--스크립트-->
-	<script th:inline="javascript">
-		$(function () {
+		<!--스크립트-->
+		<script th:inline="javascript">
+			$(function () {
 
-			// //  메뉴 등록
-			// $('#addMenu').click((event) => {
-			//
-			//     const mName = $('#mName').val();
-			//     const mPrice = Number($('#mPrice').val());
-			//     const mInven = $('#mInven option:selected').val();
-			//     // console.log(mInven);
-			//     const cId = Number($('#cId option:selected').val());
-			//     const path = 'api/addMenu';
-			//     const json = JSON.stringify({
-			//         'mName': mName,
-			//         'mPrice': mPrice,
-			//         'mInven': mInven,
-			//         'cId': {
-			//             'cId': cId
-			//         }
-			//     });
-			//
-			//     const csrfToken =/*[[${_csrf.token}]]*/ null;
-			//     const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
-			//
-			//     console.log(json);
-			//     $.ajax({
-			//         url: path,
-			//         type: 'POST',
-			//         contentType: 'application/json',
-			//         data: json,
-			//         beforeSend: function (xhr) {
-			//             xhr.setRequestHeader(csrfHeader, csrfToken);
-			//         }
-			//     })
-			//         .done((response) => {
-			//             if (response.result == 'ok') {
-			//                 alert('등록되었습니다.');
-			//                 window.location.href = '/addmenu'
-			//                 console.log(1);
-			//             } else {
-			//                 alert('등록되지 않았습니다.');
-			//                 console.log(2);
-			//
-			//             }
-			//         })
-			//         .fail((response) => {
-			//             alert('(에러)등록되지 않았습니다.');
-			//             console.log(3);
-			//
-			//         });
-			// });
+				// //  메뉴 등록
+				// $('#addMenu').click((event) => {
+				//
+				//     const mName = $('#mName').val();
+				//     const mPrice = Number($('#mPrice').val());
+				//     const mInven = $('#mInven option:selected').val();
+				//     // console.log(mInven);
+				//     const cId = Number($('#cId option:selected').val());
+				//     const path = 'api/addMenu';
+				//     const json = JSON.stringify({
+				//         'mName': mName,
+				//         'mPrice': mPrice,
+				//         'mInven': mInven,
+				//         'cId': {
+				//             'cId': cId
+				//         }
+				//     });
+				//
+				//     const csrfToken =/*[[${_csrf.token}]]*/ null;
+				//     const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+				//
+				//     console.log(json);
+				//     $.ajax({
+				//         url: path,
+				//         type: 'POST',
+				//         contentType: 'application/json',
+				//         data: json,
+				//         beforeSend: function (xhr) {
+				//             xhr.setRequestHeader(csrfHeader, csrfToken);
+				//         }
+				//     })
+				//         .done((response) => {
+				//             if (response.result == 'ok') {
+				//                 alert('등록되었습니다.');
+				//                 window.location.href = '/addmenu'
+				//                 console.log(1);
+				//             } else {
+				//                 alert('등록되지 않았습니다.');
+				//                 console.log(2);
+				//
+				//             }
+				//         })
+				//         .fail((response) => {
+				//             alert('(에러)등록되지 않았습니다.');
+				//             console.log(3);
+				//
+				//         });
+				// });
 
 
 
 
-			//  //메뉴 삭제
-			$('.deleteMenu').click(function () {
-				var mId = $(this).closest("tr").children().eq(0).text();
-				console.log(mId);
+				//  //메뉴 삭제
+				$('.deleteMenu').click(function () {
+					var mId = $(this).closest("tr").children().eq(0).text();
+					console.log(mId);
 
-				const path = 'api/deleteMenu';
-				const json = JSON.stringify({
-					'mId': mId
-				});
-				console.log(json);
-				const csrfToken =/*[[${_csrf.token}]]*/ null;
-				const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+					const path = 'api/deleteMenu';
+					const json = JSON.stringify({
+						'mId': mId
+					});
+					console.log(json);
+					const csrfToken =/*[[${_csrf.token}]]*/ null;
+					const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
 
-				$.ajax({
-					url: path,
-					type: 'DELETE',
-					contentType: 'application/json',
-					data: json,
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(csrfHeader, csrfToken);
-					}
-				})
-					.done((response) => {
-						if (response.result == 'ok') {
-							alert('메뉴가 삭제되었습니다.');
-							window.location.href = '/addmenu'
-							console.log(1);
-						} else {
-							alert('메뉴가 삭제되지 않았습니다.');
-							console.log(2);
-
+					$.ajax({
+						url: path,
+						type: 'DELETE',
+						contentType: 'application/json',
+						data: json,
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(csrfHeader, csrfToken);
 						}
 					})
-					.fail((response) => {
-						alert('(에러)');
-						console.log(3);
+						.done((response) => {
+							if (response.result == 'ok') {
+								alert('메뉴가 삭제되었습니다.');
+								window.location.href = '/addmenu'
+								console.log(1);
+							} else {
+								alert('메뉴가 삭제되지 않았습니다.');
+								console.log(2);
 
-					});
-			});
+							}
+						})
+						.fail((response) => {
+							alert('(에러)');
+							console.log(3);
 
-
-
-			// 메뉴명 수정 : updateName
-			$('.updateName').click(function () {
-				var newmName = prompt("수정할 메뉴명을 입력하세요.");
-				var mId = Number($(this).closest("tr").children().eq(0).text());
-				console.log(mId);
-				const path = 'api/updatemenuname';
-				const json = JSON.stringify({
-					'mId': mId,
-					'newmName': newmName
+						});
 				});
-				console.log(json);
-				const csrfToken =/*[[${_csrf.token}]]*/ null;
-				const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
 
-				$.ajax({
-					url: path,
-					type: 'PUT',
-					contentType: 'application/json',
-					data: json,
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(csrfHeader, csrfToken);
-					}
-				})
-					.done((response) => {
-						if (response.result == 'ok') {
-							alert('메뉴명이 수정되었습니다.');
-							window.location.href = '/addmenu'
-							console.log(1);
-						} else {
-							alert('메뉴명이 수정되지 않았습니다.');
-							console.log(2);
 
+
+				// 메뉴명 수정 : updateName
+				$('.updateName').click(function () {
+					var newmName = prompt("수정할 메뉴명을 입력하세요.");
+					var mId = Number($(this).closest("tr").children().eq(0).text());
+					console.log(mId);
+					const path = 'api/updatemenuname';
+					const json = JSON.stringify({
+						'mId': mId,
+						'newmName': newmName
+					});
+					console.log(json);
+					const csrfToken =/*[[${_csrf.token}]]*/ null;
+					const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+					$.ajax({
+						url: path,
+						type: 'PUT',
+						contentType: 'application/json',
+						data: json,
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(csrfHeader, csrfToken);
 						}
 					})
-					.fail((response) => {
-						alert('(에러)');
-						console.log(3);
+						.done((response) => {
+							if (response.result == 'ok') {
+								alert('메뉴명이 수정되었습니다.');
+								window.location.href = '/addmenu'
+								console.log(1);
+							} else {
+								alert('메뉴명이 수정되지 않았습니다.');
+								console.log(2);
 
-					});
-			});
+							}
+						})
+						.fail((response) => {
+							alert('(에러)');
+							console.log(3);
 
-
-
-
-			//가격 수정
-			$('.updatePrice').click(function () {
-				var newmPrice = prompt("수정할 가격을 입력하세요.");
-				var mId = Number($(this).closest("tr").children().eq(0).text());
-				console.log(mId);
-				//수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써.
-				//수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써
-				const path = 'api/updatePrice';
-				const json = JSON.stringify({
-					'mId': mId,
-					'newmPrice': newmPrice
+						});
 				});
-				console.log(json);
-				const csrfToken =/*[[${_csrf.token}]]*/ null;
-				const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
 
-				$.ajax({
-					url: path,
-					type: 'PUT',
-					contentType: 'application/json',
-					data: json,
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(csrfHeader, csrfToken);
-					}
-				})
-					.done((response) => {
-						if (response.result == 'ok') {
-							alert('가격이 수정되었습니다.');
-							window.location.href = '/addmenu'
-							console.log(1);
-						} else {
-							alert('가격이 수정되지 않았습니다.');
-							console.log(2);
 
+
+
+				//가격 수정
+				$('.updatePrice').click(function () {
+					var newmPrice = prompt("수정할 가격을 입력하세요.");
+					var mId = Number($(this).closest("tr").children().eq(0).text());
+					console.log(mId);
+					//수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써.
+					//수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써
+					const path = 'api/updatePrice';
+					const json = JSON.stringify({
+						'mId': mId,
+						'newmPrice': newmPrice
+					});
+					console.log(json);
+					const csrfToken =/*[[${_csrf.token}]]*/ null;
+					const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+					$.ajax({
+						url: path,
+						type: 'PUT',
+						contentType: 'application/json',
+						data: json,
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(csrfHeader, csrfToken);
 						}
 					})
-					.fail((response) => {
-						alert('(에러)');
-						console.log(3);
+						.done((response) => {
+							if (response.result == 'ok') {
+								alert('가격이 수정되었습니다.');
+								window.location.href = '/addmenu'
+								console.log(1);
+							} else {
+								alert('가격이 수정되지 않았습니다.');
+								console.log(2);
 
-					});
-			});
+							}
+						})
+						.fail((response) => {
+							alert('(에러)');
+							console.log(3);
 
-
-			// 재고 수정
-			$('.updateInven').click(function () {
-				// var newmPrice= prompt("수정할 가격을 입력하세요.");
-				// document.write(newmPrice);
-				var mId = Number($(this).closest("tr").children().eq(0).text());
-
-
-				console.log(mId);
-
-				//수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써
-				const path = 'api/updateInven';
-				const json = JSON.stringify({
-					'mId': mId,
-
+						});
 				});
-				console.log(json);
 
-				const csrfToken =/*[[${_csrf.token}]]*/ null;
-				const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
 
-				$.ajax({
-					url: path,
-					type: 'PUT',
-					contentType: 'application/json',
-					data: json,
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(csrfHeader, csrfToken);
-					}
-				})
-					.done((response) => {
+				// 재고 수정
+				$('.updateInven').click(function () {
+					// var newmPrice= prompt("수정할 가격을 입력하세요.");
+					// document.write(newmPrice);
+					var mId = Number($(this).closest("tr").children().eq(0).text());
 
-						$(this).closest("tr").children().eq(3).text(response.mInven);
-						console.log($(this).closest("tr").children().eq(3).text());
 
-						// if (response.result == 'ok') {
-						//     alert('재고가 수정되었습니다.');
-						//     window.location.href = '/addmenu'
-						//     console.log(1);
-						// } else {
-						//     alert('재고가 수정되지 않았습니다.');
-						//     console.log(2);
-						//
-						// }
-					})
-					.fail((response) => {
-						alert('(에러)');
-						console.log(3);
+					console.log(mId);
+
+					//수정 : 아이디 값을 같은 값을 얻어와.. 그 row 값 다 입력 시켜. 덮어써
+					const path = 'api/updateInven';
+					const json = JSON.stringify({
+						'mId': mId,
 
 					});
+					console.log(json);
+
+					const csrfToken =/*[[${_csrf.token}]]*/ null;
+					const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
+
+					$.ajax({
+						url: path,
+						type: 'PUT',
+						contentType: 'application/json',
+						data: json,
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(csrfHeader, csrfToken);
+						}
+					})
+						.done((response) => {
+
+							$(this).closest("tr").children().eq(3).text(response.mInven);
+							console.log($(this).closest("tr").children().eq(3).text());
+
+							// if (response.result == 'ok') {
+							//     alert('재고가 수정되었습니다.');
+							//     window.location.href = '/addmenu'
+							//     console.log(1);
+							// } else {
+							//     alert('재고가 수정되지 않았습니다.');
+							//     console.log(2);
+							//
+							// }
+						})
+						.fail((response) => {
+							alert('(에러)');
+							console.log(3);
+
+						});
+				});
 			});
-		});
-	</script>
+		</script>
+	</div>
 </body>
 
 </html>

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class OrderListDao {
     private int orlId;
-    private Menu mId; //메누아이디
+    private Menu mId; //메뉴아이디
     private Pay pId; //결제아이디
     private int orlPayment; //가격
     private int orlCount; //수량

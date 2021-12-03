@@ -23,7 +23,6 @@ public class Pay {
     public Pay(int pPayment, Date date) {
         this.pPayment = pPayment;
         this.timestampField = date;
-
     }
 
     public int getpId() {
@@ -42,14 +41,6 @@ public class Pay {
         this.pPayment = pPayment;
     }
 
-//    public String getpMethod() {
-//        return pMethod;
-//    }
-//
-//    public void setpMethod(String pMethod) {
-//        this.pMethod = pMethod;
-//    }
-
     public Date getTimestampField() {
         return timestampField;
     }
@@ -58,6 +49,6 @@ public class Pay {
         this.timestampField = timestampField;
     }
 
-    public Pay() {
+	public Pay() {
     }
 }
