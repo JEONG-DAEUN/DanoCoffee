@@ -76,26 +76,97 @@ public class WebController {
 	@GetMapping("/statistics")
 	public String statistics(Model model, Principal user) {
 		model.addAttribute("mnName", user.getName());
+		return "statistics";
+	}
+	
+	@GetMapping("/statistics/year")
+	public String statisticsYear(Model model, Principal user) {
+		model.addAttribute("mnName", user.getName());
 		List<List<String>> sqlResult = payRepository.findByGroupYear();
 		System.out.println(sqlResult.toString());
 		String[] pday = new String[sqlResult.size()];
 		String[] totalPayment = new String[sqlResult.size()];
-		int cnt =0;
 		for (int i = 0; i < sqlResult.size(); i++) {
 			for (int j = 0; j < sqlResult.get(0).size(); j++) {
 				String a = sqlResult.get(i).get(j).toString();
 				if (j == 0) {
-					pday[cnt]=a;
+					totalPayment[i]=a;
 				} else {
-					totalPayment[cnt]=a;
+					pday[i]=a;
 				}
 			}
-			cnt++;
 		}
-		System.out.println(pday[0]);
-		System.out.println(totalPayment[0]);
-		model.addAttribute("pday",pday);
-		model.addAttribute("totalPayment",totalPayment);
-		return "statistics";
+		model.addAttribute("YearArr",pday);
+		model.addAttribute("TotalPriceArr",totalPayment);
+		return "statisticsYear";
+	}
+	
+	@GetMapping("/statistics/month")
+	public String statisticsMonth(Model model, Principal user) {
+		model.addAttribute("mnName", user.getName());
+		List<List<String>> sqlResult = payRepository.findByGroupMonth();
+		System.out.println(sqlResult.toString());
+		String[] pday = new String[sqlResult.size()];
+		String[] totalPayment = new String[sqlResult.size()];
+		for (int i = 0; i < sqlResult.size(); i++) {
+			for (int j = 0; j < sqlResult.get(0).size(); j++) {
+				String a = sqlResult.get(i).get(j).toString();
+				if (j == 0) {
+					totalPayment[i]=a;
+				} else {
+					pday[i]=a;
+				}
+			}
+		}
+		model.addAttribute("MonthArr",pday);
+		model.addAttribute("TotalPriceArr",totalPayment);
+		
+		return "statisticsMonth";
+	}
+	
+	@GetMapping("/statistics/day")
+	public String statisticsDay(Model model, Principal user) {
+		model.addAttribute("mnName", user.getName());
+		List<List<String>> sqlResult = payRepository.findByGroupDay();
+		System.out.println(sqlResult.toString());
+		String[] pday = new String[sqlResult.size()];
+		String[] totalPayment = new String[sqlResult.size()];
+		for (int i = 0; i < sqlResult.size(); i++) {
+			for (int j = 0; j < sqlResult.get(0).size(); j++) {
+				String a = sqlResult.get(i).get(j).toString();
+				if (j == 0) {
+					totalPayment[i]=a;
+				} else {
+					pday[i]=a;
+				}
+			}
+		}
+		model.addAttribute("DayArr",pday);
+		model.addAttribute("TotalPriceArr",totalPayment);
+		
+		return "statisticsDay";
+	}
+	
+	@GetMapping("/statistics/today")
+	public String statisticsToday(Model model, Principal user) {
+		model.addAttribute("mnName", user.getName());
+		List<List<String>> sqlResult = payRepository.findByGroupToday();
+		System.out.println(sqlResult.toString());
+		String[] pday = new String[sqlResult.size()];
+		String[] totalPayment = new String[sqlResult.size()];
+		for (int i = 0; i < sqlResult.size(); i++) {
+			for (int j = 0; j < sqlResult.get(0).size(); j++) {
+				String a = sqlResult.get(i).get(j).toString();
+				if (j == 0) {
+					totalPayment[i]=a;
+				} else {
+					pday[i]=a;
+				}
+			}
+		}
+		model.addAttribute("TodayArr",pday);
+		model.addAttribute("TotalPriceArr",totalPayment);
+		
+		return "statisticsToday";
 	}
 }
