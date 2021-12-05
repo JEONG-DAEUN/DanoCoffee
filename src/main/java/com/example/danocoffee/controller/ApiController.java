@@ -67,10 +67,12 @@ public class ApiController {
 		Manager deleteManager = adminService.findManagerId(manager.getMnId());
 		System.out.println(deleteManager);
 		System.out.println(manager.getMnId());
+		String a = manager.getMnId().toString();
+		System.out.println("a : " + a );
 		if (deleteManager == null) {
 			return new Result("no"); // 삭제 실패
 		} else {
-			managerRepository.deleteByMnId(manager.getMnId()); // 없는 경우 추가 있는 경우 변경 -> save함수
+			managerRepository.deleteByMnId(a); // 없는 경우 추가 있는 경우 변경 -> save함수
 			return new Result("ok");
 		}
 	}
@@ -121,9 +123,7 @@ public class ApiController {
 		System.out.println("1 " + updatePrice.getmId());
 		System.out.println("2 " + updatePrice.getmPrice());
 		System.out.println("3 " + menu.getNewmPrice());
-		if (updatePrice == null) { // 가격 수정 실패
-			return new Result("no");
-		} else {
+
 			updatePrice.setmPrice(menu.getNewmPrice());
 
 			adminService.save(updatePrice);
@@ -131,7 +131,6 @@ public class ApiController {
 			System.out.println("4 " + menu.getNewmPrice());
 
 			return new Result("ok"); // 가격 수정 성공
-		}
 	}
 
 	// 메뉴 재고 수정 : updateInven

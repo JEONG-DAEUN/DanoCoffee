@@ -27,7 +27,7 @@ public class AdminService {
 
     @Autowired
     OrderListRepository orderListRepository;
-
+    
     public void save(Manager manager) {
         managerRepository.save(manager);
     }
@@ -51,7 +51,6 @@ public class AdminService {
 		Optional<Manager> findManagerId = managerRepository.findByMnId(mnId);
 		return findManagerId.get();
 	}
-
     
     public AdminService(MenuRepository menuRepository) {
         this.menuRepository = menuRepository;

@@ -43,15 +43,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                 //.antMatchers("/mypoint/**").hasAnyAuthority("QUERY", "WRITE") //접근 권한
 //                .antMatchers("/mypoint/**").hasAnyRole("admin", "user")
+                .antMatchers("/home").hasRole("admin") //관리자만 접근 가능
                 .antMatchers("/addmenu").hasRole("admin") //관리자만 접근 가능
                 .antMatchers("/addmanager").hasRole("admin") //관리자만 접근 가능
-                .antMatchers("/statistics").hasRole("admin") //관리자만 접근 가능
+                .antMatchers("/statistics/**").hasRole("admin") //관리자만 접근 가능
                 .antMatchers("/**").permitAll() //위 경우를 빼고 모든 권한을 줌 = 로그인 필요 없음.
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login") //이 줄을 지우면 스프링이 제공하는 폼이 출력됨.
-                .defaultSuccessUrl("/addmanager") //로그아웃 이후 갈 페이지
+                .defaultSuccessUrl("/home") //로그아웃 이후 갈 페이지
                 //.usernameParameter("userid") //로그인 폼에서 username을 사용하지 않았다면 여기서 처리
                 .permitAll()
                 .and()

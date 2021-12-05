@@ -12,6 +12,6 @@ public interface ManagerRepository extends JpaRepository<Manager, String> {
     public Optional<Manager> findByMnId(String mnId);
 
     public Manager findByMnName(String mnName);
-
-	public Manager deleteByMnId(String mnId);
+    
+    public Manager deleteByMnId(String mnId);
 }

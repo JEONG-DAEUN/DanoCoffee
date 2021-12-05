@@ -122,12 +122,12 @@
 
 			//관리자 삭제
 			$('.deleteManager').click(function () {
-				var mId = $(this).closest("tr").children().eq(0).text();
-				console.log(mId);
+				var mnId = $(this).closest("tr").children().eq(0).text();
+				console.log(mnId);
 
 				const path = 'api/deleteManager';
 				const json = JSON.stringify({
-					'mId': mId
+					'mnId': mnId
 				});
 				console.log(json);
 				const csrfToken =/*[[${_csrf.token}]]*/ null;

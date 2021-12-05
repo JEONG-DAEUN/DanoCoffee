@@ -31,8 +31,8 @@ public class WebController {
 	AdminService adminService;
 
 	@GetMapping(value = { "/home" })
-	public String home(Model model) {
-		model.addAttribute("title", "메인입니다.");
+	public String home(Model model, Principal user) {
+		model.addAttribute("mnName", user.getName());;
 		return "home";
 	}
 
@@ -76,9 +76,10 @@ public class WebController {
 	@GetMapping("/statistics")
 	public String statistics(Model model, Principal user) {
 		model.addAttribute("mnName", user.getName());
+
 		return "statistics";
 	}
-	
+
 	@GetMapping("/statistics/year")
 	public String statisticsYear(Model model, Principal user) {
 		model.addAttribute("mnName", user.getName());
@@ -90,17 +91,17 @@ public class WebController {
 			for (int j = 0; j < sqlResult.get(0).size(); j++) {
 				String a = sqlResult.get(i).get(j).toString();
 				if (j == 0) {
-					totalPayment[i]=a;
+					totalPayment[i] = a;
 				} else {
-					pday[i]=a;
+					pday[i] = a;
 				}
 			}
 		}
-		model.addAttribute("YearArr",pday);
-		model.addAttribute("TotalPriceArr",totalPayment);
+		model.addAttribute("YearArr", pday);
+		model.addAttribute("TotalPriceArr", totalPayment);
 		return "statisticsYear";
 	}
-	
+
 	@GetMapping("/statistics/month")
 	public String statisticsMonth(Model model, Principal user) {
 		model.addAttribute("mnName", user.getName());
@@ -112,18 +113,18 @@ public class WebController {
 			for (int j = 0; j < sqlResult.get(0).size(); j++) {
 				String a = sqlResult.get(i).get(j).toString();
 				if (j == 0) {
-					totalPayment[i]=a;
+					totalPayment[i] = a;
 				} else {
-					pday[i]=a;
+					pday[i] = a;
 				}
 			}
 		}
-		model.addAttribute("MonthArr",pday);
-		model.addAttribute("TotalPriceArr",totalPayment);
-		
+		model.addAttribute("MonthArr", pday);
+		model.addAttribute("TotalPriceArr", totalPayment);
+
 		return "statisticsMonth";
 	}
-	
+
 	@GetMapping("/statistics/day")
 	public String statisticsDay(Model model, Principal user) {
 		model.addAttribute("mnName", user.getName());
@@ -135,18 +136,18 @@ public class WebController {
 			for (int j = 0; j < sqlResult.get(0).size(); j++) {
 				String a = sqlResult.get(i).get(j).toString();
 				if (j == 0) {
-					totalPayment[i]=a;
+					totalPayment[i] = a;
 				} else {
-					pday[i]=a;
+					pday[i] = a;
 				}
 			}
 		}
-		model.addAttribute("DayArr",pday);
-		model.addAttribute("TotalPriceArr",totalPayment);
-		
+		model.addAttribute("DayArr", pday);
+		model.addAttribute("TotalPriceArr", totalPayment);
+
 		return "statisticsDay";
 	}
-	
+
 	@GetMapping("/statistics/today")
 	public String statisticsToday(Model model, Principal user) {
 		model.addAttribute("mnName", user.getName());
@@ -158,15 +159,24 @@ public class WebController {
 			for (int j = 0; j < sqlResult.get(0).size(); j++) {
 				String a = sqlResult.get(i).get(j).toString();
 				if (j == 0) {
-					totalPayment[i]=a;
+					totalPayment[i] = a;
 				} else {
-					pday[i]=a;
+					pday[i] = a;
 				}
 			}
 		}
-		model.addAttribute("TodayArr",pday);
-		model.addAttribute("TotalPriceArr",totalPayment);
-		
+		model.addAttribute("TodayArr", pday);
+		model.addAttribute("TotalPriceArr", totalPayment);
+
 		return "statisticsToday";
+	}
+	
+	@GetMapping("/statistics/menu")
+	public String statisticsMenu(Model model, Principal user) {
+		model.addAttribute("mnName", user.getName());
+		model.addAttribute("Day", payRepository.findByGroupMenuDay());
+		model.addAttribute("Month", payRepository.findByGroupMenuMonth());
+		model.addAttribute("Year", payRepository.findByGroupMenuYear());
+		return "statisticsMenu";
 	}
 }

@@ -5,184 +5,245 @@
 	<meta charset="UTF-8">
 	<title>Order</title>
 	<style>
+		html {
+			font-size: 30px;
+		}
+
+		.top {
+			text-align: center;
+		}
+
 		.scrolltbody table {
 			width: 500px;
 			border-top: 1px solid #444444;
 			border-collapse: collapse;
 			text-align: center;
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
 		}
 
 		.scrolltbody tr,
 		.scrolltbody td {
 			border-bottom: 1px solid #444444;
 			padding: 10px;
-
+			font-size: 20px;
 		}
 
 		.scrolltbody thead {
 			background-color: rgb(128, 64, 64);
 			font-size: 18px;
 			color: #ffffff;
+			width: 300px;
 		}
 
-		#croll-tbody {
-			max-height: 200px;
+		#scroll-tbody {
+			max-height: 700px;
 			overflow: auto;
 		}
+
+		.cartbox thead {
+			background-color: rgb(128, 64, 64);
+			font-size: 18px;
+			color: #ffffff;
+		}
+
+		.cartbox tr,
+		.cartbox td {
+			border-bottom: 1px solid #444444;
+			padding: 10px;
+			font-size: 20px;
+		}
+
+		button {
+			color: #ffffff;
+			font-size: 20px;
+			width: 100px;
+			height: 40px;
+			background-color: rgb(128, 64, 64);
+			border-radius: 20px;
+		}
+
+		.menu-bar {
+			border: 100px;
+		}
+
+		.flex {
+			right: 50%;
+			display: flex;
+		}
+
+		.table-div {
+			display: flex;
+			background-color: rgb(128, 64, 64);
+			font-size: 25px;
+			color: #ffffff;
+			width: 700px;
+			height: 60px;
+		}
+
+		.table-div p {
+			border-left: 5px;
+			border-right: 5px;
+			text-align: center;
+		}
+
+		#t-menu {
+			width: 450px;
+		}
+
+		#t-pr {
+			width: 110px;
+		}
+
+		#t-put {
+			width: 100px;
+		}
 	</style>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 </head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <body>
-	<button onclick="allMenu()" id="allMenu">전체</button>
-	<button onclick="fcoffee()" id="coffee">커피</button>
-	<button onclick="fade()" id="ade">에이드</button>
-	<button onclick="ftea()" id="tea">티</button>
-	<hr>
-	<table class='scrolltbody'>
-		<colgroup>
-			<col width="25%">
-			<col width="10%">
-			<col width="10%">
-			<col width="10%">
-			<col width="10%">
-			<col width="10%">
-			<col width="8%">
-		</colgroup>
-		<thead>
-			<tr>
-				<th style="display:none;">메뉴 아이디</th>
-				<th>이미지</th>
-				<th>메뉴명</th>
-				<th>가격</th>
-				<th>담기</th>
-			</tr>
-		</thead>
-		<tbody class="shtcnt" id="scroll-tbody">
-			<tr th:class="|id${product.cId.cId}|" th:each="product : ${Menu}">
-				<td style="display:none;" th:text="${product.mId}"></td>
-				<td><img width="50%" height="50%" th:src="@{|/static/images/${product.mImgName}|}" /></td>
-				<td th:text="${product.mName}"></td>
-				<td th:text="${product.mPrice}"></td>
-				<td>
-					<button class="putCart">담기</button>
-				</td>
-				<td style="display:none;" th:text="${product.mInven}"></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<div class="cartbox">
-		<p>장바구니</p>
-		<hr>
+	<div class="top">
+		<h1>DANOCOFFEE</h1>
+	</div>
+	<div class="menu-bar">
 		<div>
-			<table border="1">
-				<thead>
-					<tr>
-						<td>메뉴명</td>
-						<td>감소</td>
-						<td>수량</td>
-						<td>증가</td>
-						<td>가격</td>
-						<td>삭제</td>
-					</tr>
-				</thead>
-				<tbody id="olist">
-
-				</tbody>
-			</table>
+			<div>
+				<button onclick="allMenu()" id="allMenu">전체</button>
+				<button onclick="fcoffee()" id="coffee">커피</button>
+				<button onclick="fade()" id="ade">에이드</button>
+				<button onclick="ftea()" id="tea">티</button>
+			</div>
+			<div class="table-div">
+				<p id="t-menu">메뉴</p>
+				<p id="t-pr">가격</p>
+				<p id="t-put">담기</p>
+			</div>
+			<div id="scroll-tbody">
+				<table class='scrolltbody'>
+					<tbody class="shtcnt">
+						<tr th:class="|id${product.cId.cId}|" th:each="product : ${Menu}">
+							<td style="display:none;" th:text="${product.mId}"></td>
+							<td><img width="50%" height="50%" th:src="@{|/static/images/${product.mImgName}|}" /></td>
+							<td th:text="${product.mName}"></td>
+							<td th:text="${product.mPrice}"></td>
+							<td>
+								<button class="putCart">담기</button>
+							</td>
+							<td style="display:none;" th:text="${product.mInven}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
-		<hr>
-		<div>
-			총금액 : <p class="ttp">0</p>
+
+		<div class="cartbox">
+			<p>장바구니</p>
+			<hr>
+			<div>
+				<table>
+					<thead>
+						<tr>
+							<td>메뉴명</td>
+							<td>감소</td>
+							<td>수량</td>
+							<td>증가</td>
+							<td>가격</td>
+							<td>삭제</td>
+						</tr>
+					</thead>
+					<tbody id="olist">
+
+					</tbody>
+				</table>
+			</div>
+			<div class="flex">
+				<p>총금액 :</p>
+				<p class="ttp"> 0</p>
+				<p>원</p>
+			</div>
+			<button id="pay">결제</button>
 		</div>
 	</div>
-	<button id="pay">결제</button>
-
 
 	<script th:inline="javascript">
-	
-				var coffeeLength = document.getElementsByClassName('id1').length;
-			var adeLength = document.getElementsByClassName('id2').length;
-			var teaLength = document.getElementsByClassName('id3').length;
-			var all = adeLength + coffeeLength + teaLength;
-			var coffee = document.getElementsByClassName('id1');
-			var ade = document.getElementsByClassName('id2');
-			var tea = document.getElementsByClassName('id3');
 
-			// 전체 메뉴 포시
-			function allMenu() {
-				console.log("allmenu");
-				for (i = 0; i < coffeeLength; i++) {
-					coffee[i].style.display = '';
-				}
-				for (i = 0; i < adeLength; i++) {
-					ade[i].style.display = '';
-				}
-				for (i = 0; i < teaLength; i++) {
-					tea[i].style.display = '';
-				}
-			}
-			// 커피 카테고리만 표시
-			function fcoffee() {
-				console.log("coffee");
-				console.log(document.getElementsByClassName('id1').length);
-				for (i = 0; i < adeLength; i++) {
-					ade[i].style.display = 'none';
-				}
-				for (i = 0; i < teaLength; i++) {
-					tea[i].style.display = 'none';
-				}
-				for (i = 0; i < coffeeLength; i++) {
-					coffee[i].style.display = '';
-				}
+		var coffeeLength = document.getElementsByClassName('id1').length;
+		var adeLength = document.getElementsByClassName('id2').length;
+		var teaLength = document.getElementsByClassName('id3').length;
+		var all = adeLength + coffeeLength + teaLength;
+		var coffee = document.getElementsByClassName('id1');
+		var ade = document.getElementsByClassName('id2');
+		var tea = document.getElementsByClassName('id3');
 
+		// 전체 메뉴 포시
+		function allMenu() {
+			for (i = 0; i < coffeeLength; i++) {
+				coffee[i].style.display = '';
 			}
-			//에이드 카테고리만 표시
-			function fade() {
-				console.log("ade");
-				console.log(document.getElementsByClassName('id2').length);
-				for (i = 0; i < coffeeLength; i++) {
-					coffee[i].style.display = 'none';
-				}
-				for (i = 0; i < teaLength; i++) {
-					tea[i].style.display = 'none';
-				}
-				for (i = 0; i < adeLength; i++) {
-					ade[i].style.display = '';
-				}
+			for (i = 0; i < adeLength; i++) {
+				ade[i].style.display = '';
+			}
+			for (i = 0; i < teaLength; i++) {
+				tea[i].style.display = '';
+			}
+		}
+		// 커피 카테고리만 표시
+		function fcoffee() {
+			for (i = 0; i < adeLength; i++) {
+				ade[i].style.display = 'none';
+			}
+			for (i = 0; i < teaLength; i++) {
+				tea[i].style.display = 'none';
+			}
+			for (i = 0; i < coffeeLength; i++) {
+				coffee[i].style.display = '';
+			}
 
+		}
+		//에이드 카테고리만 표시
+		function fade() {
+			for (i = 0; i < coffeeLength; i++) {
+				coffee[i].style.display = 'none';
 			}
-			// 티 카테고리만 표시
-			function ftea() {
-				console.log("tea");
-				for (i = 0; i < coffeeLength; i++) {
-					coffee[i].style.display = 'none';
-				}
-				for (i = 0; i < adeLength; i++) {
-					ade[i].style.display = 'none';
-				}
-				for (i = 0; i < teaLength; i++) {
-					tea[i].style.display = '';
-				}
+			for (i = 0; i < teaLength; i++) {
+				tea[i].style.display = 'none';
 			}
+			for (i = 0; i < adeLength; i++) {
+				ade[i].style.display = '';
+			}
+
+		}
+		// 티 카테고리만 표시
+		function ftea() {
+			for (i = 0; i < coffeeLength; i++) {
+				coffee[i].style.display = 'none';
+			}
+			for (i = 0; i < adeLength; i++) {
+				ade[i].style.display = 'none';
+			}
+			for (i = 0; i < teaLength; i++) {
+				tea[i].style.display = '';
+			}
+		}
 		$(() => {
-			
+
 			function invenchk() {
 				var shtcntLenght = $(".shtcnt tr").length;
-				for(var i = 0;i<shtcntLenght;i++){					
-				var inven = $(".shtcnt").children().eq(i).children().eq(5).text();
-				console.log(inven);
-					if(inven == 'false'){
+				for (var i = 0; i < shtcntLenght; i++) {
+					var inven = $(".shtcnt").children().eq(i).children().eq(5).text();
+					if (inven == 'false') {
 						$(".shtcnt").children().eq(i).remove();
 					}
 				}
 			}
 			invenchk();
-			
+
 			var sum = 0; // 장바구니 총가격
-			
+
 
 
 			//  장바구니 담기
@@ -203,7 +264,6 @@
 					var ll = 0; // 이거는 중복이 있을 때 장바구니에 새로 행을 추가하는 것을 방지하기 위해 만든것이다 (별다른 의미 없음)
 					for (var i = 0; i < olistLenght + 1; i++) {
 						var idchk = Number($("#olist").children().eq(i).children().eq(0).text()); // 중복되는 메뉴의 아이디가 있는지 확인하기 위한 변수
-						console.log("idchk : " + idchk);
 
 						if (mId == idchk) {  // 만일 중복 아이디가 있다면
 							var cnt = Number($("#olist").children().eq(i).children().eq(3).text()); // 장바구니 상품의 수량
@@ -281,24 +341,17 @@
 				var cartbox = [];
 				for (var i = 0; i < olistLenght; i++) {
 					var orlId = $("#olist").children().eq(i).children().eq(0).text(); // 메뉴아이디
-					// console.log("orlId : "+orlId);
 					var orlCount = $("#olist").children().eq(i).children().eq(3).text(); // 수량
-					// console.log("orlCount : "+orlCount);
 					var orlPayment = $("#olist").children().eq(i).children().eq(5).text(); // 가격
-					// console.log("orlPrice : "+orlPrice);
-					// var pPayment = Number($(".ttp").text());
 					cartbox[i] = {
 						orlId, orlCount, orlPayment // orlId : 메뉴아이디
-						// mid,orlpayment, orltotalprice,pPayment //orltotalprice : 수량
 					}
 				}
 				console.log(cartbox[0]);
 				const path = 'api/Pay';
 				const json = JSON.stringify(cartbox);
-				// console.log(json);
 				const csrfToken =/*[[${_csrf.token}]]*/ null;
 				const csrfHeader =/*[[${_csrf.headerName}]]*/ null;
-				// console.log(cartbox);
 
 				$.ajax({
 					url: path,
@@ -312,18 +365,14 @@
 					.done((response) => {
 						if (response.result == 'ok') {
 							alert('결제되었습니다.');
+							alert('메인화면으로 이동합니다.');
 							window.location.href = '/'
-							console.log(1);
 						} else {
 							alert('결제되지 않았습니다.');
-							console.log(2);
-
 						}
 					})
 					.fail((response) => {
 						alert('(에러)');
-						console.log(3);
-
 					});
 
 			});

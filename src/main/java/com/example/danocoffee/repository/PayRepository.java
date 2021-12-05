@@ -32,6 +32,35 @@ public interface PayRepository extends JpaRepository<Pay, Integer> {
 			, nativeQuery = true)
 	public List<List<String>> findByGroupToday();
 	
+	@Query(value = 
+			"SELECT c.c_name AS 카테고리,SUM(o.orl_count) AS 판매량 ,SUM(o.orl_payment) AS 총판매액\r\n"
+			+ "FROM pay p, orderlist o, menu m, category c \r\n"
+			+ "WHERE p.p_id = o.p_id AND m.m_id= o.m_id AND c.c_id = m.c_id AND MONTH(p_time) = MONTH(CURDATE())\r\n"
+			+ "GROUP BY 카테고리\r\n"
+			+ "ORDER BY 판매량"
+			, nativeQuery = true)
+	public Object[] findByGroupCategory();
+	
+	@Query(value = 
+			"SELECT menu.m_name AS menus, SUM(orderlist.orl_count) AS amount ,SUM(orderlist.orl_payment) AS totalPayment "
+			+ "FROM pay, orderlist, menu "
+			+ "WHERE pay.p_id = orderlist.p_id AND menu.m_id= orderlist.m_id  AND DAY(p_time) = DAY(CURDATE()) GROUP BY menus ORDER BY menus"
+			, nativeQuery = true)
+	public Object[] findByGroupMenuDay();
+	
+	@Query(value = 
+			"SELECT menu.m_name AS menus, SUM(orderlist.orl_count) AS amount ,SUM(orderlist.orl_payment) AS totalPayment "
+			+ "FROM pay, orderlist, menu "
+			+ "WHERE pay.p_id = orderlist.p_id AND menu.m_id= orderlist.m_id  AND MONTH(p_time) = MONTH(CURDATE()) GROUP BY menus ORDER BY menus"
+			, nativeQuery = true)
+	public Object[] findByGroupMenuMonth();
+	
+	@Query(value = 
+			"SELECT menu.m_name AS menus, SUM(orderlist.orl_count) AS amount ,SUM(orderlist.orl_payment) AS totalPayment "
+			+ "FROM pay, orderlist, menu "
+			+ "WHERE pay.p_id = orderlist.p_id AND menu.m_id= orderlist.m_id  AND YEAR(p_time) = YEAR(CURDATE()) GROUP BY menus ORDER BY menus"
+			, nativeQuery = true)
+	public Object[] findByGroupMenuYear();
 	
 	
 	
