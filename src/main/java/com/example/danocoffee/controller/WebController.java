@@ -179,4 +179,33 @@ public class WebController {
 		model.addAttribute("Year", payRepository.findByGroupMenuYear());
 		return "statisticsMenu";
 	}
+	
+	// findByCategory
+	   @GetMapping("/statistics/category")
+	   public String categorystatis(Model model, Principal user) {
+	      model.addAttribute("mnName", user.getName());
+	      
+	      // 카테고리별 통계
+	      List<List<String>> sqlResultCat = payRepository.findByCategory();
+	      System.out.println(sqlResultCat.toString());
+	      String[] CatName = new String[sqlResultCat.size()];
+	      String[] TotalPriceArrCat = new String[sqlResultCat.size()];
+	      
+	      for (int i = 0; i < sqlResultCat.size(); i++) {
+	         for (int j = 0; j < sqlResultCat.get(0).size(); j++) {
+	            String a = sqlResultCat.get(i).get(j).toString();
+	            if (j == 0) {
+	            	CatName[i] = a;
+	            } else {
+	            	TotalPriceArrCat[i] = a;
+	            }
+	         }
+	      }
+	      System.out.println("TotalPriceArrCat[i]" + TotalPriceArrCat[0]);
+	      System.out.println("TotalPriceArrCat[i]" + TotalPriceArrCat[1]);
+	      System.out.println("TotalPriceArrCat[i]" + TotalPriceArrCat[2]);
+	      model.addAttribute("CatName",CatName);
+	      model.addAttribute("TotalPriceArrCat",TotalPriceArrCat);
+	      return "statisticsCategory";
+	   }
 }

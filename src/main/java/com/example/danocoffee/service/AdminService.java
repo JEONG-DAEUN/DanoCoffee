@@ -28,9 +28,11 @@ public class AdminService {
     @Autowired
     OrderListRepository orderListRepository;
     
+    // 관리자 추가
     public void save(Manager manager) {
         managerRepository.save(manager);
     }
+    
     
     public void deleteManager(String mnId) { managerRepository.deleteById(mnId); }
 
